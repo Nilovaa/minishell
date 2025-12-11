@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:36:36 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/02 16:27:40 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:24:19 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,58 +76,10 @@ char **cpy_arg(t_pars *token)
 	return (arg);
 }
 
-t_pars	*_token(char *split_pipe)
-{
-	t_pars	*pars;
-	t_pars	*tmp;
-	
-	pars = ft_calloc(sizeof(t_pars), 1);
-	if (!pars)
-		return (NULL);
-	pars->count_token = count_token(split_pipe);
-	pars->all_token = split_token(split_pipe);
-	if (!pars->all_token)
-		return (NULL);
-	pars->redir = init_dir(pars->all_token);
-	if (!pars->redir)
-		return (NULL);
-	pars->cmd = pars->all_token[0];
-	tmp = pars;
-	pars->arg = cpy_arg(tmp);
-	if (!pars->arg)
-		return (NULL);
-	return (pars);
-}
-
-t_pars	*init_token(char *split_pipe)
-{
-	t_pars	*pars;
-	t_pars	*tmp;
-	
-	pars = ft_calloc(sizeof(t_pars), 1);
-	if (!pars)
-		return (NULL);
-	pars->count_token = count_token(split_pipe);
-	pars->all_token = split_token(split_pipe);
-	if (!pars->all_token)
-		return (NULL);
-	pars->redir = init_dir(pars->all_token);
-	if (!pars->redir)
-		return (NULL);
-	pars->cmd = pars->all_token[0];
-	tmp = pars;
-	pars->arg = cpy_arg(tmp);
-	if (!pars->arg)
-		return (NULL);
-	return (pars);
-}
-
-
 t_cmd	*cmd_init(char *line)
 {
 	t_cmd		*cmd;
-	// t_global	*sav;
-	// t_pars		**token
+	t_pars		*tmp;
 	int			i;
 	
 	i = 0;
@@ -140,11 +92,14 @@ t_cmd	*cmd_init(char *line)
 	cmd->all = ft_calloc(sizeof(t_pars), ft_count_pipe(line) + 1);
 	if (!cmd->all)
 		return (NULL);
+	cmd->all = init_token(cmd->sav->split_pipe[i]);
+	tmp = cmd->all;
+	i++;
 	while (cmd->sav->split_pipe[i])
 	{
-		cmd->all[i] = init_token(cmd->sav->split_pipe[i]);  
+		add_list_last(cmd->all, cmd->sav->split_pipe[i]);  
 		i++;
 	}
-	cmd->all[i] = NULL;
+	cmd->all = tmp;
 	return (cmd);
 }

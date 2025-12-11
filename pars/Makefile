@@ -8,6 +8,7 @@ SRC =	main.c \
 		tokenisation.c \
 		struct_init.c \
 		checker_pipe.c \
+		list_pars.c \
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,12 +6,11 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:01:07 by andriamr          #+#    #+#             */
-/*   Updated: 2025/11/25 15:36:02 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:04:13 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parssing.h"
-#include <stdio.h>
 
 int	ft_count_pipe(char *str)
 {
@@ -38,7 +37,7 @@ int	ft_count_pipe(char *str)
 		}
 		i++;
 		if (tmp == 0)
-			return (printf("ERROR QUOTE\n"),0);
+			return (0);
 	}
 	return (count + 1);
 }

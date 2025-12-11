@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 09:03:51 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/02 15:13:52 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/11 12:42:37 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	free_cmd2(char **dest)
 		i++;
 	}
 	free (dest);
+	dest = NULL;
 }
 
 void	free_redir(t_dir *redir)
@@ -56,7 +57,6 @@ void	free_redir(t_dir *redir)
 	free (redir);
 }
 
-
 void free_pars(t_pars	*pars)
 {
 	if (pars->all_token)
@@ -69,12 +69,8 @@ void free_pars(t_pars	*pars)
 		free_redir(pars->redir);
 }
 
-
 void free_all(t_cmd *cmd)
 {
-	int i;
-
-	i = 0;
 	if (cmd->sav)
 	{
 		free(cmd->sav->line);
@@ -84,11 +80,11 @@ void free_all(t_cmd *cmd)
 	}
 	if (cmd->all)
 	{
-		while (cmd->all[i])
+		while (cmd->all->next != NULL)
 		{
-			if (cmd->all[i])
-				free_pars(cmd->all[i]);
-			i++;
+			if (cmd->all)
+				free_pars(cmd->all);
+			cmd->all = cmd->all->next;
 		}
 		free (cmd->all);
 	}

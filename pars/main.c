@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:46:43 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/11 09:42:11 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/11 14:00:35 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,44 +36,7 @@ void	print_token(char **str)
 		printf("token%d == \"%s\" \n", i, str[i]);
 		i++;
 	}
-
 }
-
-// void parsing(void )
-// {
-// 	char		*line;
-// 	char		**cmd;
-// 	char		**token;
-// 	int			i;
-	
-// 	while (1)
-// 	{
-// 		line = readline("minishell$ ");
-// 		cmd = split_pipe(line);
-// 		if (cmd != NULL)
-// 		{
-// 			free (line);
-// 			i = 0;
-// 			while(cmd[i])
-// 			{
-// 				token = split_token(cmd[i]);
-// 				if (!token)
-// 					break ;
-// 				printf("\n PART %d == %s \n", i + 1, cmd[i]);
-// 				print_token(token);
-// 				free_cmd2(token);
-// 				i++;
-// 			}
-// 			free_cmd2(cmd);
-// 		}
-// 		else
-// 		{
-// 			printf("ERROR cmd\n");
-// 			free(line);	
-// 		}
-// 	}
-// }
-
 
 void parsing(void )
 {
@@ -91,49 +54,46 @@ void parsing(void )
 		else if (!check_pipe(line))
 		{
 			free(line);
-			write (1, "ERROR pipe \n", 12);			
+			write (2, "ERROR pipe \n", 12);			
 		}
 		cmd = cmd_init(line);
 		if (cmd != NULL)
 		{
 			j = 0;
-			while (cmd->all[j])
+			while (cmd->all != NULL)
 			{
-				printf("PART %d\n", j+1);
 				i = 0;
-				if (cmd->all[j])
-				{
+				if (cmd->all)
+				{					
+					printf("PART %d\n", j+1);
 					printf("all token == {");
-					while (cmd->all[j]->all_token[i])
+					while (cmd->all->all_token[i])
 					{
-						printf(" %s,", cmd->all[j]->all_token[i]);
+						printf(" %s,", cmd->all->all_token[i]);
 						i++;
 					}
 					printf("...}\n");
-
 					i = 0;
-					printf("commande == %s\n", cmd->all[j]->cmd);
-					if (cmd->all[j]->arg)
+					printf("commande == %s\n", cmd->all->cmd);
+					if (cmd->all->arg)
 					{
 						printf("argument == {");
-						while (cmd->all[j]->arg[i])
+						while (cmd->all->arg[i])
 						{
-							printf("%s ,", cmd->all[j]->arg[i]);
+							printf("%s ,", cmd->all->arg[i]);
 							i++;
 						}
 						printf("...}\n");
 					}
 				}
 				j++;
+				cmd->all = cmd->all->next;
 			}
 		}
-		else
-			printf("ERROR cmd\n");
 		free(line);
 		line = NULL;
 		printf("\033[1;31mminishell$\033[0m ==>");  
 	}
-	// free_all(cmd);
 }
 
 int	main(void)

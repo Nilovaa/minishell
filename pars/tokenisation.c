@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 13:37:55 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/02 12:14:37 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:00:30 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char *cpy_token(char *str, char *dest)
 	int  i;
 
 	i = 0;
-	// printf("\n le len token == %d\n",len_token(str));
 	while (i < len_token(str) && str[i])
 	{
 		// if (str[i] == 39)
@@ -75,9 +74,7 @@ int len_token(char *str)
 		}
 	}
 	while (str[i] && !ft_is_space(str[i]))
-	{
 		i++;
-	}
 	return (i);
 }
 
@@ -158,7 +155,7 @@ char **split_token(char *str)
 
 	if (check_qote(str))
 		return (NULL);
-	// printf("\nle nombre de token == %d\n\n", count_token(str));
+	// printf("\nle nombre de token == %d\n\n", count_token(str))
 	dest = ft_calloc(sizeof(char *), count_token(str) + 1);
 	if (!dest)
 		return (NULL);
