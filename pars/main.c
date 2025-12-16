@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:46:43 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/16 15:26:54 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:42:14 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void parsing(void )
 			print_all(cmd);
 		free(line);
 		line = NULL;
-		free_all(cmd);
+		// free_all(cmd);
 		printf("\033[1;31mminishell$\033[0m ==>");  
 	}
 }

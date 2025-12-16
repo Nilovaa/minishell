@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/16 14:52:08 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:43:04 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ t_pars	*init_token(char *split_pipe)
 	pars->all_token = split_token(split_pipe);
 	if (!pars->all_token)
 		return (NULL);
-	pars->redir = init_redir(pars->all_token);
-	if (!pars->redir)
-		return (NULL);
+	// pars->redir = init_redir(pars->all_token);
+	// if (!pars->redir)
+	// 	return (NULL);
 	pars->cmd = pars->all_token[0];
 	tmp = pars;
 	pars->arg = cpy_arg(tmp);

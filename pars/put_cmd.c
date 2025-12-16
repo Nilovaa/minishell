@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 16:00:06 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/16 15:21:02 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:46:41 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,28 @@
 void print_all(t_cmd *cmd)
 {
 	int i = 0;
+	int j = 0;
 
 	while(cmd->all)
 	{
-		i = 0;
 		printf("\nPART  == %d\n", i + 1);
 		printf("all_toker == {");
-		while (cmd->all->all_token[i])
+		j = 0;
+		while (cmd->all->all_token[j])
 		{
-			printf(" %s,", cmd->all->all_token[i]);
-			i++;
+			printf(" %s,", cmd->all->all_token[j]);
+			j++;
 		}
 		printf("...}\n");
-		i = 0;
 		printf("commande == %s\n", cmd->all->cmd);
 		if (cmd->all->arg)
 		{
 			printf("argument == {");
-			while (cmd->all->arg[i])
+			j = 0;
+			while (cmd->all->arg[j])
 			{
-				printf("%s ,", cmd->all->arg[i]);
-				i++;
+				printf("%s ,", cmd->all->arg[j]);
+				j++;
 			}
 			printf("...}\n");
 		}
