@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/11 12:37:45 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 14:41:00 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,9 @@ typedef struct s_global
 
 typedef struct s_dir
 {
-	int		dir_in;
 	char	**file_in;
-	int		dir_out;
 	char	**file_out;
-	int		dir_in2;
 	char	**file_in2;
-	int		dir_out2;
 	char	**file_out2;
 }	t_dir;
 
@@ -51,29 +47,50 @@ typedef struct s_cmd
 	t_global		*sav;
 }	t_cmd;
 
+// split_utils
+int			len_sep(char *str);
 int			ft_count_pipe(char *str);
+// 	main
+t_pars		*parssing(char *str);
+void		print_cmd(char **str);
+void		print_token(char **str);
+// 	ft_quote
 int			skip_2cot(char *str);
 int			skip_1cot(char *str);
-char		**split_pipe(char *str);
-int			len_sep(char *str);
-void		free_cmd2(char **dest);
-void		ft_exit(void);
 int			cat_1cot(char *src, char *dest, int i, int k);
 int			cat_2cot(char *src, char *dest, int i, int k);
-int			ft_is_space(char c);
-int			skip_space(char *str);
-int			count_token(char *str);
-char		**split_token_utils(char *str, char **dest);
-int			len_token(char *str);
-char		*cpy_token(char *str, char *dest);
-char		**split_token(char *str);
-int			check_qote(char *str);
+// 	ft_exit
+void		ft_exit(void);
+void		free_cmd2(char **dest);
+void		free_redir(t_dir *redir);
+void 		free_pars(t_pars	*pars);
+void		free_all(t_cmd *cmd);
+// 	checker_pipe
+int			check_double_pipe(int i, char *str);
+int			check_pipe(char *str);
+// list_pars
+void		add_list_last(t_pars *pars, char *split_pipe);
+t_pars		*init_token(char *split_pipe);
+t_dir		*init_redir(char **all_token);
+char **join_redir(char *file, char **redir);
+//  split_by_pipie
+char		**split_pipe(char *str);
+// struct_init
 t_global	*global_init(char *line);
 t_dir		*init_dir(char **token);
 char		**cpy_arg(t_pars *token);
-t_pars		*init_token(char *split_pipe);
 t_cmd		*cmd_init(char *line);
-int			check_pipe(char *str);
-void		free_all(t_cmd *cmd);
-void		add_list_last(t_pars *pars, char *split_pipe);
-t_pars		*parssing(char *str);
+// tokenisation
+int			ft_is_space(char c);
+int			skip_space(char *str);
+int			check_qote(char *str);
+// split_token
+char		**split_token_utils(char *str, char **dest);
+char		**split_token(char *str);
+int			count_token(char *str);
+int			len_token(char *str);
+char		*cpy_token(char *str, char *dest);
+// put_cmd
+void		print_all(t_cmd *cmd);
+void print_cdm2(char **str);
+void print_redir(t_dir *redir);

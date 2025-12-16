@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:10:37 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/11 10:27:07 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/12 11:23:11 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*cpy_cmd(char *str, char *dest)
 	return (dest);
 }
 
-char	**utils_split(char *str, char **dest)
+static char	**utils_split(char *str, char **dest)
 {
 	int	i;
 	int	j;

@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 09:03:51 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/11 12:42:37 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/12 16:23:25 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,14 @@ void	free_cmd2(char **dest)
 
 void	free_redir(t_dir *redir)
 {
-	if (redir->dir_in)
-	{
-		if (redir->file_in)
-			free_cmd2(redir->file_in);
-	}
-	if (redir->dir_out)
-	{
-		if (redir->file_out)
-			free_cmd2(redir->file_out);
-	}
-	if (redir->dir_in2)
-	{
-		if (redir->file_in2)
-			free_cmd2(redir->file_in2);
-	}
-	if (redir->dir_out2)
-	{
-		if (redir->file_out2)
-			free_cmd2(redir->file_out2);
-	}
+	if (redir->file_in)
+		free_cmd2(redir->file_in);
+	if (redir->file_out)
+		free_cmd2(redir->file_out);
+	if (redir->file_in2)
+		free_cmd2(redir->file_in2);
+	if (redir->file_out2)
+		free_cmd2(redir->file_out2);
 	free (redir);
 }
 

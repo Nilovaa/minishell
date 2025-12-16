@@ -9,6 +9,8 @@ SRC =	main.c \
 		struct_init.c \
 		checker_pipe.c \
 		list_pars.c \
+		split_token.c \
+		put_cmd.c \
 
 OBJ = $(SRC:.c=.o)
 

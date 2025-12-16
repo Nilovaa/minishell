@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:46:43 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/11 14:00:35 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:26:54 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void	print_token(char **str)
 void parsing(void )
 {
 	char		*line;
-	int			i;
-	int			j;
 	t_cmd		*cmd;
 	
 	while (1)
@@ -55,49 +53,23 @@ void parsing(void )
 		{
 			free(line);
 			write (2, "ERROR pipe \n", 12);			
-		}
-		cmd = cmd_init(line);
+		}			
+		cmd = cmd_init(line);			
 		if (cmd != NULL)
-		{
-			j = 0;
-			while (cmd->all != NULL)
-			{
-				i = 0;
-				if (cmd->all)
-				{					
-					printf("PART %d\n", j+1);
-					printf("all token == {");
-					while (cmd->all->all_token[i])
-					{
-						printf(" %s,", cmd->all->all_token[i]);
-						i++;
-					}
-					printf("...}\n");
-					i = 0;
-					printf("commande == %s\n", cmd->all->cmd);
-					if (cmd->all->arg)
-					{
-						printf("argument == {");
-						while (cmd->all->arg[i])
-						{
-							printf("%s ,", cmd->all->arg[i]);
-							i++;
-						}
-						printf("...}\n");
-					}
-				}
-				j++;
-				cmd->all = cmd->all->next;
-			}
-		}
+			print_all(cmd);
 		free(line);
 		line = NULL;
+		free_all(cmd);
 		printf("\033[1;31mminishell$\033[0m ==>");  
 	}
 }
 
-int	main(void)
+int	main(int ac, char **av)
 {
+	if (ac != 1)
+		return (ft_putstr_fd("ERROR AC\n", 2), 0);
+	if (!ft_strncmp(av[0], "minishell", 9))
+		return (ft_putstr_fd("ERROR ARG\n", 2), 0);
 	parsing();
 	return (0);
 }

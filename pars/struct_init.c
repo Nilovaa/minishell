@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:36:36 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/11 13:24:19 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:15:40 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,33 @@ t_global	*global_init(char *line)
 	return (tmp);
 }
 
-t_dir	*init_dir(char **token)
-{
-	int 	i;
-	t_dir	*redir;
+// t_dir	*init_dir(char **token)
+// {
+// 	int 	i;
+// 	t_dir	*redir;
 
-	i = 0;
-	redir = ft_calloc(sizeof(t_dir), 1);
-	if (!redir)
-		return (NULL);
-	redir->dir_in = 0;
-	redir->dir_out = 0;
-	redir->dir_in2 = 0;
-	redir->dir_out2 = 0;
-	while (	token[i])
-	{
-		if (ft_strncmp(">", token[i], 2))
-			redir->dir_in++;
-		else if (ft_strncmp("<", token[i], 2))
-			redir->dir_out++;
-		else if (ft_strncmp("<<", token[i], 3))
-			redir->dir_in2++;
-		else if (ft_strncmp(">>", token[i], 3))
-			redir->dir_out2++;
-		i++;
-	}
-	return (redir);
-}
+// 	i = 0;
+// 	redir = ft_calloc(sizeof(t_dir), 1);
+// 	if (!redir)
+// 		return (NULL);
+// 	redir->dir_in = 0;
+// 	redir->dir_out = 0;
+// 	redir->dir_in2 = 0;
+// 	redir->dir_out2 = 0;
+// 	while (	token[i])
+// 	{
+// 		if (ft_strncmp(">", token[i], 2))
+// 			redir->dir_in++;
+// 		else if (ft_strncmp("<", token[i], 2))
+// 			redir->dir_out++;
+// 		else if (ft_strncmp("<<", token[i], 3))
+// 			redir->dir_in2++;
+// 		else if (ft_strncmp(">>", token[i], 3))
+// 			redir->dir_out2++;
+// 		i++;
+// 	}
+// 	return (redir);
+// }
 
 char **cpy_arg(t_pars *token)
 {
@@ -85,13 +85,13 @@ t_cmd	*cmd_init(char *line)
 	i = 0;
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
-		return (NULL);
+		return (NULL);			
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
-		return (NULL);
+		return (NULL);		
 	cmd->all = ft_calloc(sizeof(t_pars), ft_count_pipe(line) + 1);
 	if (!cmd->all)
-		return (NULL);
+		return (NULL);		
 	cmd->all = init_token(cmd->sav->split_pipe[i]);
 	tmp = cmd->all;
 	i++;
