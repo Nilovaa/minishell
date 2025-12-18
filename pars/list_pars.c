@@ -6,17 +6,13 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/16 15:43:04 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:34:11 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "LIBFT/libft.h"
 #include "parssing.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
-void add_list_last(t_pars *pars, char *split_pipe)
+void	add_list_last(t_pars *pars, char *split_pipe)
 {
 	t_pars	*last;
 	t_pars	*first;
@@ -25,7 +21,7 @@ void add_list_last(t_pars *pars, char *split_pipe)
 	if (pars == NULL)
 	{
 		pars = last;
-		return;
+		return ;
 	}
 	first = pars;
 	while (first->next != NULL)
@@ -34,7 +30,7 @@ void add_list_last(t_pars *pars, char *split_pipe)
 	last->next = NULL;
 }
 
-t_pars	*init_token(char *split_pipe)
+t_pars	*init_token1(t_cmd *cmd)
 {
 	t_pars	*pars;
 	t_pars	*tmp;
@@ -42,13 +38,14 @@ t_pars	*init_token(char *split_pipe)
 	pars = ft_calloc(sizeof(t_pars), 1);
 	if (!pars)
 		return (NULL);
-	pars->count_token = count_token(split_pipe);
-	pars->all_token = split_token(split_pipe);
+	pars->count_token = count_token(cmd->sav->split_pipe[0]);
+	pars->global = cmd->all->global;
+	pars->all_token = split_token(cmd->sav->split_pipe[0]);
 	if (!pars->all_token)
 		return (NULL);
-	// pars->redir = init_redir(pars->all_token);
-	// if (!pars->redir)
-	// 	return (NULL);
+	pars->redir = init_redir(pars->all_token);
+	if (!pars->redir)
+		return (NULL);
 	pars->cmd = pars->all_token[0];
 	tmp = pars;
 	pars->arg = cpy_arg(tmp);
@@ -58,12 +55,12 @@ t_pars	*init_token(char *split_pipe)
 	return (pars);
 }
 
-void	add_redir(t_dir *redir, char **all_token)
+static void	add_redir(t_dir *redir, char **all_token)
 {
-	int i;
-	int in;
-	int out;
-	int in2;
+	int	i;
+	int	in;
+	int	out;
+	int	in2;
 	int	out2;
 
 	in = 0;
@@ -93,39 +90,63 @@ t_dir	*init_redir(char **all_token)
 	if (!redir)
 		return (NULL);
 	add_redir(redir, all_token);
-	return (redir);	
+	return (redir);
 }
 
-char **join_redir(char *file, char **redir)
+t_pars	*init_token(char *split_pipe)
+{
+	t_pars	*pars;
+	t_pars	*tmp;
+
+	pars = ft_calloc(sizeof(t_pars), 1);
+	if (!pars)
+		return (NULL);
+	pars->count_token = count_token(split_pipe);
+	pars->all_token = split_token(split_pipe);
+	if (!pars->all_token)
+		return (NULL);
+	pars->redir = init_redir(pars->all_token);
+	if (!pars->redir)
+		return (NULL);
+	pars->cmd = pars->all_token[0];
+	tmp = pars;
+	pars->arg = cpy_arg(tmp);
+	
+	if (!pars->arg)
+		return (NULL);
+	pars->next = NULL;
+	return (pars);
+}
+
+char	**join_redir(char *file, char **redir)
 {
 	char	**tmp;
 	int		len;
-	
+	int		i;
+
 	len = 0;
 	if (redir)
 	{
-		while(redir[len])
+		while (redir[len])
 			len++;
 	}
-	tmp = malloc(sizeof(char *) * len + 2);
+	tmp = malloc(sizeof(char *) * (len + 2));
 	if (!tmp)
 		return (NULL);
-	len = 0;
 	if (!redir)
 	{
 		tmp[0] = ft_strdup(file);
 		tmp[1] = NULL;
-		redir = tmp;
-		return (redir);
+		return (tmp);
 	}
-	while (redir[len])
+	i = 0;
+	while (i < len)
 	{
-		tmp[len] = ft_strdup(redir[len]);
-		len++;
+		tmp[i] = ft_strdup(redir[i]);
+		i++;
 	}
-	tmp[len] = ft_strdup(file);
-	tmp[len + 1] = NULL;
+	tmp[i] = ft_strdup(file);
+	tmp[i + 1] = NULL;
 	free_cmd2(redir);
-	redir = tmp;
 	return (tmp);
 }

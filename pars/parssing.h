@@ -6,11 +6,11 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/16 14:41:00 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:34:11 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "LIBFT/libft.h"
+#include "../LIBFT/libft.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <readline/readline.h>
@@ -21,14 +21,16 @@ typedef struct s_global
 	char	*line;
 	int		pipe;
 	char	**split_pipe;
+	int		exit;
 }	t_global;
 
 typedef struct s_dir
 {
-	char	**file_in;
-	char	**file_out;
-	char	**file_in2;
-	char	**file_out2;
+	char		**file_in;
+	char		**file_out;
+	char		**file_in2;
+	char		**file_out2;
+	t_global	global;
 }	t_dir;
 
 typedef struct s_pars
@@ -38,6 +40,7 @@ typedef struct s_pars
 	char			*cmd;
 	char			**arg;
 	t_dir			*redir;
+	t_global		*global;
 	struct s_pars	*next;
 }	t_pars;
 
@@ -60,19 +63,19 @@ int			skip_1cot(char *str);
 int			cat_1cot(char *src, char *dest, int i, int k);
 int			cat_2cot(char *src, char *dest, int i, int k);
 // 	ft_exit
-void		ft_exit(void);
 void		free_cmd2(char **dest);
 void		free_redir(t_dir *redir);
-void 		free_pars(t_pars	*pars);
+void		free_pars(t_pars *pars);
 void		free_all(t_cmd *cmd);
 // 	checker_pipe
 int			check_double_pipe(int i, char *str);
 int			check_pipe(char *str);
 // list_pars
 void		add_list_last(t_pars *pars, char *split_pipe);
+t_pars		*init_token1(t_cmd *cmd);
 t_pars		*init_token(char *split_pipe);
 t_dir		*init_redir(char **all_token);
-char **join_redir(char *file, char **redir);
+char		**join_redir(char *file, char **redir);
 //  split_by_pipie
 char		**split_pipe(char *str);
 // struct_init
@@ -92,5 +95,9 @@ int			len_token(char *str);
 char		*cpy_token(char *str, char *dest);
 // put_cmd
 void		print_all(t_cmd *cmd);
-void print_cdm2(char **str);
-void print_redir(t_dir *redir);
+void		print_cdm2(char **str);
+void		print_redir(t_dir *redir);
+//	pars_utils
+void		print_cmd(char **str);
+void		print_token(char **str);
+void		parsing(void);

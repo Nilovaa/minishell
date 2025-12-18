@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   take_all_arg.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/03 13:29:13 by andriamr          #+#    #+#             */
-/*   Updated: 2025/03/14 20:23:39 by andriamr         ###   ########.fr       */
+/*   Created: 2025/11/18 13:28:13 by andriamr          #+#    #+#             */
+/*   Updated: 2025/11/18 13:28:26 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isdigit(int c)
+char **take_av(int ac, char **av)
 {
-	return ((c >= '0') && (c <= '9'));
+	int i;
+	char **str;
+
+	i = 0;
+	str = malloc(sizeof (char *) * ac);
+	if (!str)
+		return (NULL);
+	while (i < ac - 1)
+	{
+		str[i] = ft_strdup(av[i + 1]);
+		i++;
+	}
+	str[i] = NULL;
+	return (str);
 }

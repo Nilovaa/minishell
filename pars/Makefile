@@ -11,10 +11,11 @@ SRC =	main.c \
 		list_pars.c \
 		split_token.c \
 		put_cmd.c \
+		pars_utils.c \
 
 OBJ = $(SRC:.c=.o)
 
-LIBFT = ./LIBFT/libft.a
+LIBFT = ../LIBFT/libft.a
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I./LIBFT

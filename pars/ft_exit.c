@@ -6,17 +6,11 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 09:03:51 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/12 16:23:25 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:38:35 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parssing.h"
-#include <stdlib.h>
-
-void	ft_exit(void)
-{
-	exit (1);
-}
 
 void	free_cmd2(char **dest)
 {
@@ -45,19 +39,19 @@ void	free_redir(t_dir *redir)
 	free (redir);
 }
 
-void free_pars(t_pars	*pars)
+void	free_pars(t_pars	*pars)
 {
 	if (pars->all_token)
 		free_cmd2(pars->all_token);
 	if (pars->all_token)
 		free_cmd2(pars->arg);
 	if (pars->cmd)
-		free(pars->all_token);
+		free(pars->cmd);
 	if (pars->redir)
 		free_redir(pars->redir);
 }
 
-void free_all(t_cmd *cmd)
+void	free_all(t_cmd *cmd)
 {
 	if (cmd->sav)
 	{

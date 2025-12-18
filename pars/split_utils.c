@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:01:07 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/12 11:10:19 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:04:36 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_count_pipe(char *str)
 {
 	int	count;
 	int	i;
-	int tmp;
+	int	tmp;
 
 	i = 0;
 	count = 0;
@@ -26,17 +26,9 @@ int	ft_count_pipe(char *str)
 		if (str[i] == '|')
 			count++;
 		else if (str[i] == '"')
-		{
-			// tmp = skip_2cot(&str[i]);
 			i += skip_2cot(&str[i]);
-			// i += tmp;
-		}
 		else if (str[i] == 39)
-		{
-			// tmp = skip_1cot(&str[i]);
 			i += skip_1cot(&str[i]);
-			// i += tmp; 		
-		}
 		i++;
 		if (tmp == 0)
 			return (0);

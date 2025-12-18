@@ -6,13 +6,13 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 08:58:40 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/11 18:10:06 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:17:40 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parssing.h"
 
-int check_double_pipe(int i, char *str)
+int	check_double_pipe(int i, char *str)
 {
 	i++;
 	while (str[i] && ft_is_space(str[i]))
@@ -24,15 +24,15 @@ int check_double_pipe(int i, char *str)
 	return (1);
 }
 
-void space(int i,char *str)
+void	space(int i, char *str)
 {
 	while (str[i] && ft_is_space(str[i]))
-		i++;	
+		i++;
 }
 
-int check_pipe(char *str)
+int	check_pipe(char *str)
 {
-	int i;
+	int	i;
 	int	last;
 
 	i = 0;

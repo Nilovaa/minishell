@@ -6,22 +6,22 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 13:37:55 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/12 15:36:49 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:02:49 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parssing.h"
 
-int ft_is_space(char c)
+int	ft_is_space(char c)
 {
-	if ((c > 9 && c < 13)  || c == 32)
+	if ((c > 9 && c < 13) || c == 32)
 		return (1);
 	return (0);
 }
 
-int skip_space(char *str)
+int	skip_space(char *str)
 {
-	int  i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -33,7 +33,7 @@ int skip_space(char *str)
 	return (i);
 }
 
-int check_qote(char *str)
+int	check_qote(char *str)
 {
 	int	i;
 	int	cot1;
@@ -47,10 +47,10 @@ int check_qote(char *str)
 		if (str[i] == 39)
 			cot1++;
 		else if (str[i] == '"')
-		 	cot2++;
+			cot2++;
 		i++;
 	}
-	if (cot1%2 != 0 || cot2%2 != 0)
+	if (cot1 % 2 != 0 || cot2 % 2 != 0)
 		return (1);
 	return (0);
 }

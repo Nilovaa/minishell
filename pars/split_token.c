@@ -6,17 +6,17 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 11:28:45 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/12 11:32:11 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:48:58 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parssing.h"
 
-char **split_token_utils(char *str, char **dest)
+char	**split_token_utils(char *str, char **dest)
 {
-	int i;
-	int j;
-	int tmp;
+	int	i;
+	int	j;
+	int	tmp;
 
 	i = 0;
 	j = 0;
@@ -24,7 +24,7 @@ char **split_token_utils(char *str, char **dest)
 	{
 		while (str[i] && ft_is_space(str[i]))
 			i++;
-		dest[j] = ft_calloc(sizeof(char), len_token(&str[i]));
+		dest[j] = ft_calloc(sizeof(char), len_token(&str[i]) + 1);
 		if (!dest[j])
 			return (NULL);
 		cpy_token(&str[i], dest[j]);
@@ -36,7 +36,7 @@ char **split_token_utils(char *str, char **dest)
 	return (dest);
 }
 
-char **split_token(char *str)
+char	**split_token(char *str)
 {
 	char	**dest;
 
@@ -49,10 +49,10 @@ char **split_token(char *str)
 	return (dest);
 }
 
-int count_token(char *str)
+int	count_token(char *str)
 {
-	int count;
-	int i;
+	int	count;
+	int	i;
 
 	i = 0;
 	count = 0;
@@ -70,17 +70,18 @@ int count_token(char *str)
 			count++;
 			i += skip_2cot(&str[i]);
 		}
-		else if (ft_is_space(str[i]) && !ft_is_space(str[i + 1]) && str[i + 1 ] != '\0' )
+		else if (ft_is_space(str[i]) && !ft_is_space(str[i + 1])
+			&& str[i + 1] != '\0' )
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-int len_token(char *str)
+int	len_token(char *str)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (str[i] && ft_is_space(str[i]))
 		i++;
@@ -98,7 +99,7 @@ int len_token(char *str)
 			while (str[i] && str[i] != '"')
 				i++;
 			if (ft_is_space(str[i]))
-				return(i);
+				return (i);
 		}
 	}
 	while (str[i] && !ft_is_space(str[i]))
@@ -106,7 +107,7 @@ int len_token(char *str)
 	return (i);
 }
 
-char *cpy_token(char *str, char *dest)
+char	*cpy_token(char *str, char *dest)
 {
 	int	i;
 	int	j;

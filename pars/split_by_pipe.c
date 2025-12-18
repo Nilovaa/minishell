@@ -6,11 +6,10 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:10:37 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/12 11:23:11 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:27:40 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "LIBFT/libft.h"
 #include "parssing.h"
 
 static char	*cpy_cmd(char *str, char *dest)
@@ -36,7 +35,7 @@ static char	**utils_split(char *str, char **dest)
 	i = 0;
 	j = 0;
 	if (ft_count_pipe(str) == 0)
-		return (ft_putstr_fd("ERROR QUOTE\n", 2) ,NULL);
+		return (ft_putstr_fd("ERROR QUOTE\n", 2), NULL);
 	while (j < ft_count_pipe(str))
 	{
 		if (str[i] == '|')
@@ -49,7 +48,7 @@ static char	**utils_split(char *str, char **dest)
 			return (free_cmd2(dest), free (str), NULL);
 		cpy_cmd(&str[i], dest[j]);
 		tmp = len_sep(&str[i]);
-		i =  i + tmp + 1 ;
+		i = i + tmp + 1;
 		j++;
 	}
 	dest[j] = NULL;
