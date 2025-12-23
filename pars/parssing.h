@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <sys/wait.h>
 
 typedef struct s_global
 {
