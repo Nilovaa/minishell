@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/18 15:34:11 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/27 18:25:21 by nyrakoto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,3 +102,10 @@ void		print_redir(t_dir *redir);
 void		print_cmd(char **str);
 void		print_token(char **str);
 void		parsing(void);
+
+//	cmd_line
+char *ft_make_path(t_pars *pars, char **envp);
+char	**ft_make_args(t_pars *pars);
+
+//	execution
+void	ft_exec_simple(t_pars *pars, char **envp);
