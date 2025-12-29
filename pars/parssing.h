@@ -80,6 +80,7 @@ t_dir		*init_redir(char **all_token);
 char		**join_redir(char *file, char **redir);
 //  split_by_pipie
 char		**split_pipe(char *str);
+int			len_split(char **split);
 // struct_init
 t_global	*global_init(char *line);
 t_dir		*init_dir(char **token);
