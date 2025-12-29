@@ -136,5 +136,5 @@ char	**join_redir(char *file, char **redir)
 	}
 	tmp[i] = ft_strdup(file);
 	tmp[i + 1] = NULL;
-	return (free_cmd2(redir);, tmp);
+	return (free_cmd2(redir), tmp);
 }
