@@ -6,11 +6,12 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/18 12:34:11 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/29 09:14:31 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parssing.h"
+#include <stdio.h>
 
 void	add_list_last(t_pars *pars, char *split_pipe)
 {
@@ -43,14 +44,26 @@ t_pars	*init_token1(t_cmd *cmd)
 	pars->all_token = split_token(cmd->sav->split_pipe[0]);
 	if (!pars->all_token)
 		return (NULL);
+	// printf("init redir\n");
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (NULL);
-	pars->cmd = pars->all_token[0];
+	// printf("init redir ok\n");
+	
+	// pars->cmd = pars->all_token[0];
+	// printf("add commande \n");
+
+	pars->cmd = add_cmd(pars->all_token);
+	// printf("add commande ok\n");
+
 	tmp = pars;
+	// printf("cpy_arg \n");
+	
 	pars->arg = cpy_arg(tmp);
 	if (!pars->arg)
 		return (NULL);
+	// printf("cpy_arg ok\n");
+
 	pars->next = NULL;
 	return (pars);
 }
@@ -85,6 +98,28 @@ t_dir	*init_redir(char **all_token)
 	return (redir);
 }
 
+char *add_cmd(char **tokens)
+{
+    int i;
+	
+	i = 0;
+
+    while (tokens[i])
+    {
+        if (ft_strncmp(tokens[i], ">", 1) == 0 
+			|| ft_strncmp(tokens[i], "<", 1) == 0)
+        {
+            if (tokens[i + 1])
+                i += 2;
+            else
+                i++;
+        }
+        else
+            return (ft_strdup(tokens[i]));
+    }
+    return (NULL);
+}
+
 t_pars	*init_token(char *split_pipe)
 {
 	t_pars	*pars;
@@ -100,10 +135,9 @@ t_pars	*init_token(char *split_pipe)
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (NULL);
-	pars->cmd = pars->all_token[0];
+	pars->cmd = add_cmd(pars->all_token);
 	tmp = pars;
 	pars->arg = cpy_arg(tmp);
-	
 	if (!pars->arg)
 		return (NULL);
 	pars->next = NULL;

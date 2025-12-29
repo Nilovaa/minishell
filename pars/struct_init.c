@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:36:36 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/18 12:30:02 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/29 09:15:12 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,41 @@ char	**cpy_arg(t_pars *token)
 {
 	char	**arg;
 	int		i;
+	int j= 0;
 
 	i = 0;
 	arg = ft_calloc(sizeof(char *), token->count_token);
 	if (!arg)
 		return (NULL);
-	while (token->all_token[i + 1])
+	while (token->all_token[i])
 	{
-		arg[i] = ft_strdup(token->all_token[i + 1]);
-		if (!arg[i])
+		
+		// printf("mitady cmd ao anaty token \n");
+		
+		if (ft_strncmp(token->all_token[i], 
+			token->cmd, ft_strlen(token->cmd) - 1) == 0)
+		{
+			// printf("hitany \n");
+			break;
+		}
+			i++;
+	}
+	i++;
+	// printf("debut arg == %s \n", token->all_token[i]);
+	
+	while (token->all_token[i])
+	{
+		if (ft_strncmp(token->all_token[i], ">", 1) == 0 || ft_strncmp(token->all_token[i], "<", 1) == 0)
+			break;
+		arg[j] = ft_strdup(token->all_token[i]);
+		if (!arg[j])
 			return (NULL);
 		i++;
+		j++;
 	}
-	arg[i] = NULL;
+	// printf("\n hi print arg \n");
+	// print_cdm2(arg);
+	arg[j] = NULL;
 	return (arg);
 }
 
@@ -58,20 +80,45 @@ t_cmd	*cmd_init(char *line)
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (NULL);
+	// printf("global init\n");
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
 		return (NULL);
+	// printf("ok\n");
+
 	cmd->all = ft_calloc(sizeof(t_pars), ft_count_pipe(line) + 1);
 	if (!cmd->all)
 		return (NULL);
+	// printf("init token 1\n");
 	cmd->all = init_token1(cmd);
+	// printf("ok\n");
 	tmp = cmd->all;
 	i++;
 	while (cmd->sav->split_pipe[i])
 	{
+		// printf("add list %d\n", i + 1);
 		add_list_last(cmd->all, cmd->sav->split_pipe[i]);
+		// printf("ok\n");
 		i++;
 	}
 	cmd->all = tmp;
+	// printf_test(cmd);
 	return (cmd);
+}
+
+void printf_test(t_cmd *cmd)
+{
+	printf("debut test\n");
+	printf("test global ==\n");
+	printf("cmd->global->line = %s\n", cmd->sav->line);
+	printf("cmd->global->pipe = %d\n", cmd->sav->pipe);
+	printf("split-pipe\n");
+	print_cmd(cmd->sav->split_pipe);
+	printf("split-pipe\n");
+	printf("\ntest pars\n");
+	
+	printf("cmd->pars->count_token = %d\n", cmd->all->count_token);
+	print_token(cmd->all->all_token);
+	printf("cmd->pars->cmd = %s\n", cmd->all->cmd);
+	print_cmd(cmd->all->arg);
 }
