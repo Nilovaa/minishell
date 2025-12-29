@@ -55,6 +55,18 @@ static char	**utils_split(char *str, char **dest)
 	return (dest);
 }
 
+int	len_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	if (!split)
+		return (0);
+	while (split[i])
+		i++;
+	return (i);
+}
+
 char	**split_pipe(char *str)
 {
 	char	**dest;
