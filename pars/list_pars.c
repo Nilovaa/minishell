@@ -58,15 +58,7 @@ t_pars	*init_token1(t_cmd *cmd)
 static void	add_redir(t_dir *redir, char **all_token)
 {
 	int	i;
-	// int	in;
-	// int	out;
-	// int	in2;
-	// int	out2;
 
-	// in = 0;
-	// out = 0;
-	// in2 = 0;
-	// out2 = 0;
 	i = 0;
 	while (all_token[i])
 	{
@@ -126,10 +118,7 @@ char	**join_redir(char *file, char **redir)
 
 	len = 0;
 	if (redir)
-	{
-		while (redir[len])
-			len++;
-	}
+		len = len_split(redir);
 	tmp = malloc(sizeof(char *) * (len + 2));
 	if (!tmp)
 		return (NULL);
