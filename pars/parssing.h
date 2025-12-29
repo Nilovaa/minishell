@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/27 18:25:21 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2025/12/28 22:29:27 by nyrakoto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/wait.h>
+#include <linux/limits.h>
 
 typedef struct s_global
 {
@@ -40,6 +41,7 @@ typedef struct s_pars
 	char			**all_token;
 	char			*cmd;
 	char			**arg;
+	int				return_value;
 	t_dir			*redir;
 	t_global		*global;
 	struct s_pars	*next;
@@ -50,7 +52,6 @@ typedef struct s_cmd
 	t_pars			*all;
 	t_global		*sav;
 }	t_cmd;
-
 // split_utils
 int			len_sep(char *str);
 int			ft_count_pipe(char *str);
@@ -109,3 +110,8 @@ char	**ft_make_args(t_pars *pars);
 
 //	execution
 void	ft_exec_simple(t_pars *pars, char **envp);
+
+// builtins
+int		ft_echo(t_pars *pars);
+int		ft_cd(t_pars *pars);
+int		ft_pwd(t_pars *pars);
