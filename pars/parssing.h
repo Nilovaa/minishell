@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/28 22:29:27 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2025/12/29 08:55:28 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,17 @@ t_pars		*init_token1(t_cmd *cmd);
 t_pars		*init_token(char *split_pipe);
 t_dir		*init_redir(char **all_token);
 char		**join_redir(char *file, char **redir);
+char		*add_cmd(char **all_token);
 //  split_by_pipie
 char		**split_pipe(char *str);
+int			len_split(char **split);
 // struct_init
 t_global	*global_init(char *line);
 t_dir		*init_dir(char **token);
 char		**cpy_arg(t_pars *token);
 t_cmd		*cmd_init(char *line);
+void printf_test(t_cmd *cmd);
+
 // tokenisation
 int			ft_is_space(char c);
 int			skip_space(char *str);
@@ -103,14 +107,11 @@ void		print_redir(t_dir *redir);
 void		print_cmd(char **str);
 void		print_token(char **str);
 void		parsing(void);
-
 //	cmd_line
 char *ft_make_path(t_pars *pars, char **envp);
 char	**ft_make_args(t_pars *pars);
-
 //	execution
 void	ft_exec_simple(t_pars *pars, char **envp);
-
 // builtins
 int		ft_echo(t_pars *pars);
 int		ft_cd(t_pars *pars);
