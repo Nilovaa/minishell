@@ -74,6 +74,8 @@ void		free_all(t_cmd *cmd);
 // 	checker_pipe
 int			check_double_pipe(int i, char *str);
 int			check_pipe(char *str);
+char *get_cmd_name(char **tokens);
+char *add_cmd(char **all_token);
 // list_pars
 void		add_list_last(t_pars *pars, char *split_pipe);
 t_pars		*init_token1(t_cmd *cmd);
