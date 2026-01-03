@@ -11,27 +11,38 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 
 void	ft_exec_simple(t_pars *pars, char **envp)
 {
 	pid_t	pid;
 	char *path = ft_make_path(pars, envp);
 	char	**argv;
+	int		status;
 
 	if (!pars || !pars->cmd)
 		return ;
 	if (!path)
+	{
+		pars->return_value = 127;     // cmd not found
 		return ;
+	}
 	argv = ft_make_args(pars);
 	if (!argv)
 	{
 		free(path);
+		pars->return_value = 1;
 		return ;
 	}
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork")	;
+		pars->return_value = 1;
+		free(path);
+		ft_free_split(argv);
 		return ;
 	}
 	if (pid == 0)						//enfant
@@ -41,7 +52,13 @@ void	ft_exec_simple(t_pars *pars, char **envp)
 		exit (1);
 	}
 	else
-		waitpid(pid, NULL, 0);				//parent
+	{
+		waitpid(pid, &status, 0);				//parent
+		if (WIFEXITED(status))              // return 1 si enfant termine normalement
+			pars->return_value = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))       // return d'un signal
+			pars->return_value = 128 + WTERMSIG(status);
+	}
 	free(path);
 	free(argv);
 }

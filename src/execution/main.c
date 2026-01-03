@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
+#include <unistd.h>
 
 int main(int ac, char **av, char **envp)
 {
@@ -29,7 +31,7 @@ int main(int ac, char **av, char **envp)
 			add_history(line);
 			ft_bzero(&pars, sizeof(t_pars));
 			//parsing
-			pars.cmd = "ls";
+			pars.cmd = "lo";
 			pars.arg = (char *[]){"-al",NULL};
 			pars.global = NULL;
 			ft_exec_simple(&pars, envp);
