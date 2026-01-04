@@ -126,4 +126,9 @@ int		ft_export(t_pars *pars, char ***env);
 int		ft_unset(t_pars *pars, char ***env);
 int		ft_env(t_pars *pars, char **env);
 
+// pipe ray
+void    ft_first_child(t_pars *pars, char **envp, int fd[2]);
+void    ft_second_child(t_pars *pars, char **envp, int fd[2]);
+void    ft_exec_simple_pipe(t_pars *pars, char **envp);
+
 #endif

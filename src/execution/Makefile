@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 READLINE_FLAGS = -lreadline -lncurses
 
-SRCS = main.c cmd_line.c execution.c ../builtins/echo.c
+SRCS = main.c cmd_line.c execution.c pipe.c
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_DIR = ../../LIBFT

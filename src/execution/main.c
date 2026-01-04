@@ -20,7 +20,8 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 
 	char *line;
-	t_pars pars;
+	t_pars pars1;
+	t_pars pars2;
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -29,12 +30,17 @@ int main(int ac, char **av, char **envp)
 		if (line[0] != '\0')				//up and down
 		{
 			add_history(line);
-			ft_bzero(&pars, sizeof(t_pars));
+			ft_bzero(&pars1, sizeof(t_pars));
+			ft_bzero(&pars2, sizeof(t_pars));
 			//parsing
-			pars.cmd = "lo";
-			pars.arg = (char *[]){"-al",NULL};
-			pars.global = NULL;
-			ft_exec_simple(&pars, envp);
+			pars1.cmd = "ls";
+   			pars1.arg = (char *[]){"-l", NULL};
+ 			pars1.next = &pars2;
+
+			pars2.cmd = "grep";
+			pars2.arg = (char *[]){"main", NULL};
+			pars2.next = NULL;
+			ft_exec_simple_pipe(&pars1, envp);
 		}
 		free(line);
 	}
