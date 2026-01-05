@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 20:27:45 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/05 14:06:31 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/05 14:38:42 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int main(int ac, char **av, char **env)
 		if (!line)					//ctrl + d
 			break ;
 		cmd = cmd_init(line, env);
-		printf_test(cmd);
+		// printf_test(cmd);
 		if (line[0] != '\0')				//up and down
 		{
 			add_history(line);

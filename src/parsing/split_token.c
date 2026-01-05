@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 11:28:45 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/18 15:48:58 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/05 14:34:08 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,33 +49,73 @@ char	**split_token(char *str)
 	return (dest);
 }
 
-int	count_token(char *str)
-{
-	int	count;
-	int	i;
+// int	count_token(char *str)
+// {
+// 	int	count;
+// 	int	i;
 
-	i = 0;
-	count = 0;
-	if (!ft_is_space(str[i]))
-		count++ ;
+// 	i = 0;
+// 	count = 0;
+// 	if (!ft_is_space(str[i]))
+// 		count++ ;
+// 	while (str[i])
+// 	{
+// 		if (ft_is_space(str[i]) && str[i + 1] == '"')
+// 		{
+// 			count++;
+// 			i += skip_2cot(&str[i]);
+// 		}
+// 		else if (ft_is_space(str[i]) && str[i + 1] == 39)
+// 		{
+// 			count++;
+// 			i += skip_2cot(&str[i]);
+// 		}
+// 		else if (ft_is_space(str[i]) && !ft_is_space(str[i + 1])
+// 			&& str[i + 1] != '\0' )
+// 			count++;
+// 		i++;
+// 	}
+// 	return (count);
+// }
+
+int count_token(char *str)
+{
+	int i = 0;
+	int count = 0;
+
 	while (str[i])
-	{
-		if (ft_is_space(str[i]) && str[i + 1] == '"')
+	{	
+		while (str[i] && ft_is_space(str[i]))
+			i++;
+		if (!str[i])
+			break;
+		if (str[i] == 39)
 		{
+			i++;
+			while (str[i] && str[i] != 39)
+				i++;
+			if (str[i] == 39)
+				i++;
 			count++;
-			i += skip_2cot(&str[i]);
 		}
-		else if (ft_is_space(str[i]) && str[i + 1] == 39)
+		else if (str[i] == '"')
 		{
+			i++;
+			while (str[i] && str[i] != '"')
+				i++;
+			if (str[i] == '"')
+				i++;
 			count++;
-			i += skip_2cot(&str[i]);
 		}
-		else if (ft_is_space(str[i]) && !ft_is_space(str[i + 1])
-			&& str[i + 1] != '\0' )
+		else
+		{
+			while (str[i] && !ft_is_space(str[i]) && str[i] != 39 && str[i] != '"')
+				i++;
 			count++;
-		i++;
+		}
 	}
-	return (count);
+	return count;
+
 }
 
 int	len_token(char *str)
