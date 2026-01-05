@@ -14,7 +14,6 @@
 
 char *add_cmd(char **all_token)
 {
-	int i =0;
 	char	*cmd;
 
 

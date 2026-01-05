@@ -11,21 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-/*
-static int	ft_check_name(char *str)
-{
-	int i;
-	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
-		return (0);
-	i = 1;
-	while (str[i] && str[i] != '=')
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}*/
 
 static int	ft_find_var(char **env, char *name)
 {
@@ -70,7 +55,6 @@ int	ft_export(t_pars *pars, char ***env)
 {
 	int i;
 	int j;
-	int check;
 	char **dest_env;
 	if (!pars || !pars->arg || !pars->arg[1])
 	{
@@ -78,7 +62,6 @@ int	ft_export(t_pars *pars, char ***env)
 		return (0);
 	}
 	j = 1;
-	check = 0;
 	while (pars->arg[j])
 	{
 		if (!ft_strchr(pars->arg[1], '='))

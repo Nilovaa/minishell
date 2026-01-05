@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/28 22:29:27 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/05 10:42:08 by nyrakoto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,4 +131,5 @@ void    ft_first_child(t_pars *pars, char **envp, int fd[2]);
 void    ft_second_child(t_pars *pars, char **envp, int fd[2]);
 void    ft_exec_simple_pipe(t_pars *pars, char **envp);
 
+void	ft_check_builtins(t_pars *pars, char **env);
 #endif

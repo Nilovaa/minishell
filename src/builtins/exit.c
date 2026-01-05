@@ -14,12 +14,6 @@
 
 int ft_exit(t_pars *pars)
 {
-	if (pars && pars->arg && pars->arg[1])
-	{
-		ft_putstr_fd("exit : too many arguments\n", 2);
-		pars->return_value = 1;
-		return (1);
-	}
 	if (pars)
 		exit(pars->return_value);
 	exit(0);

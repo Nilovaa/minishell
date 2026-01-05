@@ -14,19 +14,19 @@
 
 int	ft_cd(t_pars *pars)
 {
-	if (!pars || !pars->arg || !pars->arg[1])
+	if (!pars || !pars->arg)
 	{
 		ft_putstr_fd("cd : need an argument\n", 2);
 		pars->return_value = 1;
 		return (1);
 	}
-
-	if (chdir(pars->arg[1]) != 0)
+	if (chdir(pars->arg[0]) != 0)
 	{
 		perror("cd");
 		pars->return_value = 1;
 		return (1);
 	}
+	chdir(pars->arg[0]);
 	pars->return_value = 0;
 	return (0);
 }

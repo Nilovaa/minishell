@@ -96,7 +96,7 @@ t_dir	*init_redir(char **all_token)
 	add_redir(redir, all_token);
 	return (redir);
 }
-
+/*
 char *add_cmd(char **tokens)
 {
     int i;
@@ -117,7 +117,7 @@ char *add_cmd(char **tokens)
             return (ft_strdup(tokens[i]));
     }
     return (NULL);
-}
+}*/
 
 t_pars	*init_token(char *split_pipe)
 {
@@ -141,6 +141,19 @@ t_pars	*init_token(char *split_pipe)
 		return (NULL);
 	pars->next = NULL;
 	return (pars);
+}
+
+int len_split(char **split)
+{
+	int i;
+
+	i = 0;
+	while (split[i])
+	{
+
+		i++;
+	}
+	return (i);
 }
 
 char	**join_redir(char *file, char **redir)
