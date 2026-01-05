@@ -12,16 +12,17 @@
 
 #include "../../include/minishell.h"
 
-void	ft_echo_expand(char *str, t_pars *pars)
+void	ft_expansion(char *str, t_pars *pars)
 {
-	int		i = 0;
+	int		i;
 	int		start;
 	char	*key;
 	char	*value;
 
+	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && str[i + 1])
 		{
 			i++;
 			if (str[i] == '?')
@@ -29,40 +30,52 @@ void	ft_echo_expand(char *str, t_pars *pars)
 				ft_putnbr_fd(pars->return_value, 1);
 				i++;
 			}
-			else
+			else if (ft_isalpha(str[i]) || str[i] == '_')
 			{
 				start = i;
 				while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 					i++;
 				key = ft_substr(str, start, i - start);
-				if (!key)
-					return;
-				value = getenv(key);
-				if (value)
-					write(1, value, ft_strlen(value));
-				free(key);
+				if (key)
+				{
+					value = getenv(key);
+					if (value)
+						ft_putstr_fd(value, 1);
+					free(key);
+				}
+			}
+			else
+			{
+				write(1, "$", 1);
 			}
 		}
 		else
-			write(1, &str[i++], 1);
+		{
+			write(1, &str[i], 1);
+			i++;
+		}
 	}
 }
 
-
 int	ft_echo(t_pars *pars)
 {
-	int	i = 1;
+	int	i;
 	int	j;
-	int	n = 0;
+	int	n;
 
-	if (!pars || !pars->arg)
+	if (!pars)
 		return (0);
-
-	while (pars->arg[i])
+	i = 0;
+	n = 0;
+	if (!pars->arg || !pars->arg[0])
+	{
+		write(1, "\n", 1);
+		pars->return_value = 0;
+		return (0);
+	}
+	while (pars->arg[i] && pars->arg[i][0] == '-' && pars->arg[i][1] == 'n')
 	{
 		j = 1;
-		if (pars->arg[i][0] != '-')
-			break;
 		while (pars->arg[i][j] == 'n')
 			j++;
 		if (pars->arg[i][j] != '\0')
@@ -70,18 +83,15 @@ int	ft_echo(t_pars *pars)
 		n = 1;
 		i++;
 	}
-
 	while (pars->arg[i])
 	{
-		ft_echo_expand(pars->arg[i], pars);
+		ft_expansion(pars->arg[i], pars);
 		if (pars->arg[i + 1])
 			write(1, " ", 1);
 		i++;
 	}
-
 	if (!n)
 		write(1, "\n", 1);
-
 	pars->return_value = 0;
 	return (0);
 }

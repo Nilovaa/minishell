@@ -13,7 +13,7 @@
 #include "../../include/minishell.h"
 #include <stdio.h>
 #include <unistd.h>
-
+/*
 void printf_test(t_cmd *cmd)
 {	
 	printf("\n \033[1;32mdebut test$\033[0m \n");
@@ -30,7 +30,7 @@ void printf_test(t_cmd *cmd)
 	print_cmd(cmd->all->arg);
 	printf("\033[1;31mEXEC$\033[0m \n");
 }
-
+*/
 
 int main(int ac, char **av, char **env)
 {
@@ -45,7 +45,6 @@ int main(int ac, char **av, char **env)
 		if (!line)					//ctrl + d
 			break ;
 		cmd = cmd_init(line, env);
-		// printf_test(cmd);
 		if (line[0] != '\0')				//up and down
 		{
 			add_history(line);
