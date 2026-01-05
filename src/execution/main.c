@@ -25,7 +25,7 @@ int main(int ac, char **av, char **envp)
 	{
 		line = readline("minishell$ ");
 		if (!line)					//ctrl + d
-			exit(0);
+			break ;
 		cmd = cmd_init(line);
 		if (line[0] != '\0')				//up and down
 		{
