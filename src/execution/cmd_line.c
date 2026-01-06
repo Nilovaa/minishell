@@ -33,7 +33,7 @@ char	**ft_make_args(t_pars *pars)			//manambotra anle pars.args ho ilaina amle e
 	return (argv);							//exec(path, argv, NULL) => args: "cmd, arg0, arg1, arg2, ... , NULL"
 }
 
-char *ft_make_path(t_pars *pars, char **envp)  // mitady anle path ao anaty env
+char *ft_make_path(t_pars *pars, t_cmd *cmd)  // mitady anle path ao anaty env
 {
 	int i = 0;
 	char **paths;
@@ -45,11 +45,11 @@ char *ft_make_path(t_pars *pars, char **envp)  // mitady anle path ao anaty env
 	{
 		return (ft_strdup(pars->cmd));
 	}
-	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5))
+	while (cmd->env[i] && ft_strncmp(cmd->env[i], "PATH=", 5))
 		i++;
-	if (!envp[i])
+	if (!cmd->env[i])
 		return (NULL);
-	paths = ft_split(envp[i] + 5, ':');
+	paths = ft_split(cmd->env[i] + 5, ':');
 	if (!paths || !paths[0])
 		return (NULL);
 	i = 0;

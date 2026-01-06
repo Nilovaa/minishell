@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void    ft_first_child(t_pars *pars, char **envp, int fd[2])
+void    ft_first_child(t_pars *pars, t_cmd *cmd, int fd[2])
 {
     char *path;
     char **arg;
@@ -24,7 +24,7 @@ void    ft_first_child(t_pars *pars, char **envp, int fd[2])
         exit(1);
     }
     close(fd[1]);
-    path = ft_make_path(pars, envp);
+    path = ft_make_path(pars, cmd);
     arg = ft_make_args(pars);
     if (!path || !arg)
     {
@@ -34,14 +34,14 @@ void    ft_first_child(t_pars *pars, char **envp, int fd[2])
             ft_free_split(arg);
         exit (127);
     }
-    execve(path, arg, envp);
+    execve(path, arg, cmd->env);
     perror("execve");
     free(path);
     ft_free_split(arg);
     exit (1);
 }
 
-void    ft_second_child(t_pars *pars, char **envp, int fd[2])
+void    ft_second_child(t_pars *pars, t_cmd *cmd, int fd[2])
 {
     char *path;
     char **arg;
@@ -53,7 +53,7 @@ void    ft_second_child(t_pars *pars, char **envp, int fd[2])
         exit(1);
     }
     close(fd[0]);
-    path = ft_make_path(pars, envp);
+    path = ft_make_path(pars, cmd);
     arg = ft_make_args(pars);
     if (!path || !arg)
     {
@@ -63,14 +63,14 @@ void    ft_second_child(t_pars *pars, char **envp, int fd[2])
             ft_free_split(arg);
         exit (127);
     }
-    execve(path, arg, envp);
+    execve(path, arg, cmd->env);
     perror("execve");
     free(path);
     ft_free_split(arg);
     exit (1);
 }
 
-void    ft_exec_simple_pipe(t_pars *pars, char **envp)
+void    ft_exec_simple_pipe(t_pars *pars, t_cmd *cmd)
 {
     int fd[2];
     pid_t pid1;
@@ -99,7 +99,7 @@ void    ft_exec_simple_pipe(t_pars *pars, char **envp)
         return ;
     }
     if (pid1 == 0)
-        ft_first_child(pars, envp, fd);
+        ft_first_child(pars, cmd, fd);
     pid2 = fork();
     if (pid2 == -1)
     {
@@ -110,11 +110,11 @@ void    ft_exec_simple_pipe(t_pars *pars, char **envp)
         return ;
     }
     if (pid2 == 0)
-        ft_second_child(pars->next, envp, fd);
+        ft_second_child(pars->next, cmd, fd);
     close(fd[0]);
     close(fd[1]);
-    waitpid(pid1, NULL, 0);
-    waitpid(pid2, NULL, 0);
+    waitpid(pid1, &status, 0);
+    waitpid(pid2, &status, 0);
     if (WIFEXITED(status))
         pars->return_value = WEXITSTATUS(status);
     else if (WIFSIGNALED(status))

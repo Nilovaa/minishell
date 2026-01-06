@@ -37,18 +37,25 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 
-	char *line;
-	t_cmd *cmd;
+	char	*line;
+	t_cmd	*cmd;
+	t_cmd	*cmd_base;
+
+	cmd_base = cmd_init(NULL, env);
+	if (!cmd_base)
+		return (1);
 	while (1)
 	{
 		line = readline("minishell$ ");
-		if (!line)					//ctrl + d
+		if (!line)
 			break ;
-		cmd = cmd_init(line, env);
-		if (line[0] != '\0')				//up and down
+		if (line[0] != '\0')
 		{
 			add_history(line);
-			ft_check_builtins(cmd->all, cmd->env);
+			cmd = cmd_init(line, cmd_base->env);
+			if (cmd && cmd->all && cmd->all->cmd)
+				ft_check_builtins(cmd->all, cmd);
+			cmd_base->env = cmd->env;
 		}
 		free(line);
 	}

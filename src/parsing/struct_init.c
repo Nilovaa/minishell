@@ -19,6 +19,14 @@ t_global	*global_init(char *line)
 	tmp = ft_calloc(sizeof(t_global), 1);
 	if (!tmp)
 		return (NULL);
+	if (!line)
+	{
+		tmp->line = NULL;
+		tmp->exit = 0;
+		tmp->pipe = 0;
+		tmp->split_pipe = NULL;
+		return (tmp);
+	}
 	tmp->line = line;
 	tmp->exit = 0;
 	tmp->pipe = ft_count_pipe(line);
@@ -70,30 +78,27 @@ t_cmd	*cmd_init(char *line, char **envp)
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (NULL);
-	// printf("global init\n");
 	cmd->env = cpy_env(envp);
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
 		return (NULL);
-	// printf("ok\n");
-
+	if (!line)
+	{
+		cmd->all = NULL;
+		return (cmd);
+	}
 	cmd->all = ft_calloc(sizeof(t_pars), ft_count_pipe(line) + 1);
 	if (!cmd->all)
 		return (NULL);
-	// printf("init token 1\n");
 	cmd->all = init_token1(cmd);
-	// printf("ok\n");
 	tmp = cmd->all;
 	i++;
 	while (cmd->sav->split_pipe[i])
 	{
-		// printf("add list %d\n", i + 1);
 		add_list_last(cmd->all, cmd->sav->split_pipe[i]);
-		// printf("ok\n");
 		i++;
 	}
 	cmd->all = tmp;
-	// printf_test(cmd);
 	return (cmd);
 }
 

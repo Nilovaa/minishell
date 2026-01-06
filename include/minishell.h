@@ -111,13 +111,9 @@ void		print_cmd(char **str);
 void		print_token(char **str);
 void		parsing(void);
 
-//	cmd_line
-char *ft_make_path(t_pars *pars, char **envp);
-char	**ft_make_args(t_pars *pars);
-
 //	execution
-void	ft_exec_simple(t_pars *pars, char **envp);
-char 	*ft_make_path(t_pars *pars, char **envp);
+void	ft_exec_simple(t_pars *pars, t_cmd *cmd);
+char 	*ft_make_path(t_pars *pars, t_cmd *cmd);
 char	**ft_make_args(t_pars *pars);
 
 // builtins
@@ -125,14 +121,28 @@ int		ft_echo(t_pars *pars);
 int		ft_cd(t_pars *pars);
 int		ft_pwd(t_pars *pars);
 int		ft_exit(t_pars *pars);
-int		ft_export(t_pars *pars, char ***env);
-int		ft_unset(t_pars *pars, char ***env);
-int		ft_env(t_pars *pars, char **env);
+int		ft_export(t_pars *pars, t_cmd *cmd);
+int		ft_unset(t_pars *pars, t_cmd *cmd);
+int		ft_env(t_pars *pars, t_cmd *cmd);
 
 // pipe ray
-void    ft_first_child(t_pars *pars, char **envp, int fd[2]);
-void    ft_second_child(t_pars *pars, char **envp, int fd[2]);
-void    ft_exec_simple_pipe(t_pars *pars, char **envp);
+void    ft_first_child(t_pars *pars, t_cmd *cmd, int fd[2]);
+void    ft_second_child(t_pars *pars, t_cmd *cmd, int fd[2]);
+void    ft_exec_simple_pipe(t_pars *pars, t_cmd *cmd);
 
-void	ft_check_builtins(t_pars *pars, char **env);
+int	ft_is_builtin(char *cmd);
+int	ft_exec_builtin_only(t_pars *pars, t_cmd *cmd);
+void	ft_check_builtins(t_pars *pars, t_cmd *cmd);
+
+// pipeline
+void	ft_exec_pipeline(t_pars *pars, t_cmd *cmd);
+int	ft_wait_all(pid_t *pids, int nb_cmds);
+pid_t	*ft_fork_processes(t_pars *pars, t_cmd *cmd, int **pipes, int nb_cmds);
+void	ft_child_process(t_pars *pars, t_cmd *cmd, int **pipes, int index, int nb_cmds);
+void	ft_setup_redirections(int **pipes, int index, int nb_cmds);
+int	**ft_create_pipes(int nb_pipes);
+void	ft_free_pipes(int **pipes, int nb_pipes);
+void	ft_close_all_pipes(int **pipes, int nb_pipes);
+int	ft_count_cmds(t_pars *pars);
+
 #endif

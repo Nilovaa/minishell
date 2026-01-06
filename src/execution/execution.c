@@ -15,10 +15,10 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void	ft_exec_simple(t_pars *pars, char **envp)
+void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 {
 	pid_t	pid;
-	char *path = ft_make_path(pars, envp);
+	char *path = ft_make_path(pars, cmd);
 	char	**argv;
 	int		status;
 
@@ -47,7 +47,7 @@ void	ft_exec_simple(t_pars *pars, char **envp)
 	}
 	if (pid == 0)						//enfant
 	{
-		execve(path, argv, envp);
+		execve(path, argv, cmd->env);
 		perror("execve");
 		exit (1);
 	}

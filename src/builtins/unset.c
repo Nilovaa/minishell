@@ -42,54 +42,75 @@ static int ft_find_var(char **env, char *name)
 
 static char **ft_remove_var(char **env, int index_env)
 {
-	int i = 0, j = 0;
-	char **dest_env;
+	int		i;
+	int		j;
+	char	**dest_env;
+
+	i = 0;
 	while (env[i])
 		i++;
 	dest_env = malloc(sizeof(char *) * i);
 	if (!dest_env)
 		return (NULL);
+	i = 0;
+	j = 0;
 	while (env[i])
 	{
 		if (i != index_env)
-			dest_env[j++] = ft_strdup(env[i]);
+		{
+			dest_env[j] = ft_strdup(env[i]);
+			if (!dest_env[j])
+				return (NULL);
+			j++;
+		}
 		i++;
 	}
 	dest_env[j] = NULL;
 	return (dest_env);
 }
 
-int	ft_unset(t_pars *pars, char ***env)
+int	ft_unset(t_pars *pars, t_cmd *cmd)
 {
-	int i;
-	int check;
-	int index_env;
-	char **dest_env;
-	if (!pars || !pars->arg || !pars->arg[1])
+	int		i;
+	int		check;
+	int		index_env;
+	char	**dest_env;
+
+	if (!pars || !pars->arg)
 	{
 		pars->return_value = 0;
 		return (0);
 	}
-	i = 1;
+	if (!pars->arg[0])
+	{
+		pars->return_value = 0;
+		return (0);
+	}
+	i = 0;
 	check = 0;
 	while (pars->arg[i])
 	{
 		if (!ft_check_name(pars->arg[i]))
 		{
-			ft_putstr_fd("unset : not a valid identifier", 2);
+			ft_putstr_fd("unset: not a valid identifier\n", 2);
 			check = 1;
 			i++;
-			continue;
+			continue ;
 		}
-		index_env = ft_find_var(*env, pars->arg[1])	;
+		index_env = ft_find_var(cmd->env, pars->arg[i]);
 		if (index_env >= 0)
 		{
-			dest_env = ft_remove_var(*env, index_env);
-			ft_free_split(*env);
-			*env = dest_env;
+			dest_env = ft_remove_var(cmd->env, index_env);
+			if (!dest_env)
+			{
+				pars->return_value = 1;
+				return (1);
+			}
+			ft_free_split(cmd->env);
+			cmd->env = dest_env;
 		}
 		i++;
 	}
-	pars->return_value = 0;
+	pars->return_value = check;
 	return (check);
 }

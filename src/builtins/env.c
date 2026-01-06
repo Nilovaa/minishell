@@ -12,21 +12,15 @@
 
 #include "../../include/minishell.h"
 
-int	ft_env(t_pars *pars, char **env)
+int	ft_env(t_pars *pars, t_cmd *cmd)
 {
 	int	i;
 	if (!pars)
 		return (1);
-	if (pars->arg && pars->arg[1])
-	{
-		ft_putstr_fd("env : too many arguments", 2);
-		pars->return_value = 1;
-		return (1);
-	}
 	i = 0;
-	while (env && env[i])
+	while (cmd->env && cmd->env[i])
 	{
-		ft_putstr_fd(env[i], 1);
+		ft_putstr_fd(cmd->env[i], 1);
 		ft_putstr_fd("\n", 1);
 		i++;
 	}
