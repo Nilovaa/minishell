@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:46:21 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/07 09:17:38 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/07 10:34:28 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,14 @@ t_env	*creat_list_env(char *env_line)
 		return (NULL);
 	i = 0;
 	while (env_line[i] && env_line[i] != '=')
+	{
+		if (!ft_isalnum(env_line[i]))
+			return (free (new), NULL);
 		i++;
+	}
 	new->key = ft_calloc(sizeof(char), i + 1);
 	if (!new->key)
-		return (NULL);
+		return (free (new) ,NULL);
 	while (env_line[j] && j < i)
 	{
 		new->key[j] = env_line[j];
