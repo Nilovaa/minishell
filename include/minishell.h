@@ -20,6 +20,13 @@
 # include <sys/wait.h>
 # include <linux/limits.h>
 
+typedef struct s_env
+{
+	char 			*key;
+	char 			*value;
+	struct	s_env	*next;
+}	t_env;
+
 typedef struct s_global
 {
 	char	*line;
@@ -144,5 +151,8 @@ int	**ft_create_pipes(int nb_pipes);
 void	ft_free_pipes(int **pipes, int nb_pipes);
 void	ft_close_all_pipes(int **pipes, int nb_pipes);
 int	ft_count_cmds(t_pars *pars);
+
+//struct_env
+void	init_env(t_cmd *cmd, char **envp);
 
 #endif
