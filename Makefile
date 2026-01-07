@@ -23,6 +23,7 @@ SRCS = src/execution/main.c \
 		src/parsing/split_utils.c \
 		src/parsing/struct_init.c \
 		src/parsing/tokenisation.c \
+		src/parsing/struct_env.c \
 		src/builtins/check_builtins.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
