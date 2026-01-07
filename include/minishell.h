@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/05 14:22:46 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/07 09:28:23 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ typedef struct s_cmd
 {
 	t_pars			*all;
 	t_global		*sav;
-	char			**env;
+	t_env			*env;
 }	t_cmd;
+
 // split_utils
 int			len_sep(char *str);
 int			ft_count_pipe(char *str);
@@ -96,7 +97,9 @@ char		**split_pipe(char *str);
 t_global	*global_init(char *line);
 t_dir		*init_dir(char **token);
 char		**cpy_arg(t_pars *token);
-t_cmd		*cmd_init(char *line, char **env);
+// t_cmd		*cmd_init(char *line, t_env *env);
+t_cmd		*cmd_init(char *line);
+
 char	**cpy_env(char **envp);
 
 // tokenisation
@@ -154,5 +157,7 @@ int	ft_count_cmds(t_pars *pars);
 
 //struct_env
 void	init_env(t_cmd *cmd, char **envp);
+void	add_list_env(t_env *env, char *env_line);
+t_cmd	*cpy_env_list(char **env);
 
 #endif
