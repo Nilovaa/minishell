@@ -6,11 +6,13 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:46:21 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/07 10:34:28 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/07 11:31:22 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 t_env	*creat_list_env(char *env_line)
 {
@@ -19,16 +21,12 @@ t_env	*creat_list_env(char *env_line)
 	int		j;
 
 	j = 0;
-	new = ft_calloc(sizeof(t_env), 1);
+	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
 	i = 0;
 	while (env_line[i] && env_line[i] != '=')
-	{
-		if (!ft_isalnum(env_line[i]))
-			return (free (new), NULL);
 		i++;
-	}
 	new->key = ft_calloc(sizeof(char), i + 1);
 	if (!new->key)
 		return (free (new) ,NULL);
@@ -42,6 +40,9 @@ t_env	*creat_list_env(char *env_line)
 	else
 		new->value = NULL;
 	new->next = NULL;
+	printf("key == %s \n",new->key);
+	printf("value == %s\n\n",new->value);
+	
 	return (new);
 }
 
@@ -49,7 +50,9 @@ void	add_list_env(t_env *env, char *env_line)
 {
 	t_env	*first;
 	t_env	*new;
-
+	t_env	*tmp;
+	
+	tmp = env;
 	new = creat_list_env(env_line);
 	if (!new)
 		return ;
@@ -63,6 +66,7 @@ void	add_list_env(t_env *env, char *env_line)
 		first = first->next;
 	first->next = new;
 	new->next = NULL;
+	env = tmp;
 }
 
 void	init_env(t_cmd *cmd, char **envp)
@@ -90,10 +94,11 @@ t_cmd	*cpy_env_list(char **env)
 		return (NULL);
 	tmp = NULL;
 	while (env[i])
-	{	
+	{
 		add_list_env(tmp, env[i]);
 		i++;
 	}
+	put_env(tmp);
 	cmd_base->env = tmp;
 	return (cmd_base);
 }
