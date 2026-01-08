@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/05 14:01:34 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/08 09:38:09 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,15 @@ t_pars	*init_token1(t_cmd *cmd)
 static void	add_redir(t_dir *redir, char **all_token)
 {
 	int	i;
+	int	in;
+	int	out;
+	int	in2;
+	int	out2;
 
+	in = 0;
+	out = 0;
+	in2 = 0;
+	out2 = 0;
 	i = 0;
 	while (all_token[i])
 	{
@@ -85,6 +93,25 @@ static void	add_redir(t_dir *redir, char **all_token)
 		i++;
 	}
 }
+
+// static void	add_redir(t_dir *redir, char **all_token)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (all_token[i])
+// 	{
+// 		if (ft_strncmp(all_token[i], ">>", 2) == 0)
+// 			redir->file_out2 = join_redir(all_token[i + 1], redir->file_out2);
+// 		else if (ft_strncmp(all_token[i], "<<", 2) == 0)
+// 			redir->file_in2 = join_redir(all_token[i + 1], redir->file_in2);
+// 		else if (ft_strncmp(all_token[i], "<", 1) == 0)
+// 			redir->file_in = join_redir(all_token[i + 1], redir->file_in);
+// 		else if (ft_strncmp(all_token[i], ">", 1) == 0)
+// 			redir->file_out = join_redir(all_token[i + 1], redir->file_out);
+// 		i++;
+// 	}
+// }
 
 t_dir	*init_redir(char **all_token)
 {

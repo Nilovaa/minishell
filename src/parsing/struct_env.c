@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:46:21 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/07 11:31:22 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/08 09:59:52 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ t_env	*creat_list_env(char *env_line)
 	else
 		new->value = NULL;
 	new->next = NULL;
-	printf("key == %s \n",new->key);
-	printf("value == %s\n\n",new->value);
+	// printf("key == %s \n",new->key);
+	// printf("value == %s\n\n",new->value);
 	
 	return (new);
 }
@@ -98,7 +98,7 @@ t_cmd	*cpy_env_list(char **env)
 		add_list_env(tmp, env[i]);
 		i++;
 	}
-	put_env(tmp);
+	// put_env(tmp);
 	cmd_base->env = tmp;
 	return (cmd_base);
 }
