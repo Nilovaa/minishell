@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 09:38:09 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/08 11:54:33 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,10 @@ t_pars	*init_token1(t_cmd *cmd)
 	pars->all_token = split_token(cmd->sav->split_pipe[0]);
 	if (!pars->all_token)
 		return (NULL);
-	// printf("init redir\n");
+	pars->cmd = add_cmd(pars->all_token);
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (NULL);
-	// printf("init redir ok\n");
-	
-	// pars->cmd = pars->all_token[0];
-	// printf("add commande \n");
-
-	pars->cmd = add_cmd(pars->all_token);
 	// printf("add commande ok\n");
 
 	tmp = pars;

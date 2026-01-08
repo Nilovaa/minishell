@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:36:36 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/07 09:30:57 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/08 14:08:41 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_cmd	*cmd_init(char *line)
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (NULL);
+	printf("global init\n");
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
 		return (NULL);
@@ -90,6 +91,7 @@ t_cmd	*cmd_init(char *line)
 	cmd->all = ft_calloc(sizeof(t_pars), ft_count_pipe(line) + 1);
 	if (!cmd->all)
 		return (NULL);
+	printf("init token\n");
 	cmd->all = init_token1(cmd);
 	tmp = cmd->all;
 	i++;

@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 11:20:36 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 11:29:43 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/08 14:33:24 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,3 +49,4 @@ void 	add_list_str(t_str *list, char *str)
 	firs->next = NULL;
 	list = tmp;
 }
+

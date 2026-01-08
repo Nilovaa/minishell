@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 08:58:40 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 10:20:27 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/08 10:30:44 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_pipe(char *str)
 		if (str[i] == '|')
 		{
 			if (!check_double_pipe(i, str))
-				return (printf("double pipe \n") ,0);
+				return (0);
 			last = i;
 		}
 		i++;
