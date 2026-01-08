@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/07 09:28:23 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/08 14:34:17 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <linux/limits.h>
+
+typedef struct s_str
+{
+	char 			*str;
+	struct	s_str 	*next;
+} 	t_str;
 
 typedef struct s_env
 {
@@ -48,6 +54,7 @@ typedef struct s_pars
 {
 	int				count_token;
 	char			**all_token;
+	t_str			*token;
 	char			*cmd;
 	char			**arg;
 	int				return_value;
@@ -61,6 +68,7 @@ typedef struct s_cmd
 	t_pars			*all;
 	t_global		*sav;
 	t_env			*env;
+	char			**envp;
 }	t_cmd;
 
 // split_utils
@@ -99,6 +107,7 @@ t_dir		*init_dir(char **token);
 char		**cpy_arg(t_pars *token);
 // t_cmd		*cmd_init(char *line, t_env *env);
 t_cmd		*cmd_init(char *line);
+// t_cmd		*cmd_init(char **env);
 
 char	**cpy_env(char **envp);
 
