@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 14:34:17 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/08 16:53:56 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_cmd
 {
 	t_pars			*all;
 	t_global		*sav;
-	t_env			*env;
+	t_env			*env_list;
 	char			**envp;
 }	t_cmd;
 
