@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 16:53:56 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/09 11:42:18 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ char	**ft_listtochar(t_env *env);
 int		ft_echo(t_pars *pars);
 int		ft_cd(t_pars *pars);
 int		ft_pwd(t_pars *pars);
-int		ft_exit(t_pars *pars);
+int		ft_exit(t_cmd *pars);
 int		ft_export(t_pars *pars, t_cmd *cmd);
 int		ft_unset(t_pars *pars, t_cmd *cmd);
 int		ft_env(t_pars *pars, t_cmd *cmd);

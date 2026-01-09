@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 11:54:33 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/09 11:38:24 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,15 @@ t_pars	*init_token1(t_cmd *cmd)
 static void	add_redir(t_dir *redir, char **all_token)
 {
 	int	i;
-	int	in;
-	int	out;
-	int	in2;
-	int	out2;
+	// int	in;
+	// int	out;
+	// int	in2;
+	// int	out2;
 
-	in = 0;
-	out = 0;
-	in2 = 0;
-	out2 = 0;
+	// in = 0;
+	// out = 0;
+	// in2 = 0;
+	// out2 = 0;
 	i = 0;
 	while (all_token[i])
 	{

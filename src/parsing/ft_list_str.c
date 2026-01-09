@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 11:20:36 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 14:33:24 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/09 11:39:31 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 t_str	*new_list(char *str)
 {
 	t_str	*new;
-	int		j;
-	int 	len;
-	j = 0;
+	// int		j;
+	// int 	len;
+	
+	// j = 0;
 	new = malloc(sizeof(t_str));
 	if (!new)
 		return (NULL);

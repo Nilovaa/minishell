@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 10:25:13 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/05 10:43:55 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/09 11:44:14 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	ft_exec_builtin_only(t_pars *pars, t_cmd *cmd)
 	else if (!ft_strncmp(pars->cmd, "env", 4) && pars->cmd[3] == '\0')
 		ret = ft_env(pars, cmd);
 	else if (!ft_strncmp(pars->cmd, "exit", 5) && pars->cmd[4] == '\0')
-		ft_exit(pars);
+		ft_exit(cmd);
 	else if (!ft_strncmp(pars->cmd, "export", 7) && pars->cmd[6] == '\0')
 		ret = ft_export(pars, cmd);
 	else if (!ft_strncmp(pars->cmd, "pwd", 4) && pars->cmd[3] == '\0')

@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:46:21 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 16:55:15 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/09 11:38:50 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_cmd	*cpy_env_list(char **env)
 		new_env[len] = ft_strdup(env[len]);
 		len++;
 	}
-	cmd_base->envp = new_env;
+	cmd_base->env = new_env;
 	while (env[i])
 	{
 		add_list_env(tmp, env[i]);
