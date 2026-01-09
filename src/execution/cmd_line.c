@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-char	**ft_make_args(t_pars *pars)			//manambotra anle pars.args ho ilaina amle execve
+char	**ft_make_args(t_pars *pars)
 {
 	int i = 0;
 	int len = 0;
@@ -30,35 +30,43 @@ char	**ft_make_args(t_pars *pars)			//manambotra anle pars.args ho ilaina amle e
 		i++;
 	}
 	argv[i + 1] = NULL;
-	return (argv);							//exec(path, argv, NULL) => args: "cmd, arg0, arg1, arg2, ... , NULL"
+	return (argv);
 }
 
-char *ft_make_path(t_pars *pars, t_cmd *cmd)  // mitady anle path ao anaty env
+char *ft_make_path(t_pars *pars, t_cmd *cmd) 
 {
 	int i = 0;
 	char **paths;
 	char *all;
+	char **env_array;
 
 	if (!pars || !pars->cmd)
 		return (NULL);
-	if (access(pars->cmd, X_OK) == 0)		//verifiena rah efa chemin
+	if (access(pars->cmd, X_OK) == 0)
 	{
 		return (ft_strdup(pars->cmd));
 	}
-	while (cmd->env[i] && ft_strncmp(cmd->env[i], "PATH=", 5))
-		i++;
-	if (!cmd->env[i])
+	env_array = ft_listtochar(cmd->env_list);
+	if (!env_array)
 		return (NULL);
-	paths = ft_split(cmd->env[i] + 5, ':');
+	while (env_array[i] && ft_strncmp(env_array[i], "PATH=", 5))
+		i++;
+	if (!env_array[i])
+	{
+		ft_free_split(env_array);
+		return (NULL);
+	}
+	paths = ft_split(env_array[i] + 5, ':');
 	if (!paths || !paths[0])
 		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
-		all = ft_strjoin3(paths[i], "/", pars->cmd);		//creation anle chemin anle path
+		all = ft_strjoin3(paths[i], "/", pars->cmd);
 		if (access(all, X_OK) == 0)
 		{
 			ft_free_split(paths);
+			ft_free_split(env_array);
 			return (all);
 		}
 		free(all);
@@ -68,5 +76,6 @@ char *ft_make_path(t_pars *pars, t_cmd *cmd)  // mitady anle path ao anaty env
 	ft_putstr_fd(pars->cmd, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	ft_free_split(paths);
+	ft_free_split(env_array);
 	return (NULL);
 }

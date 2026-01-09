@@ -17,6 +17,8 @@ void	free_cmd2(char **dest)
 	int	i;
 
 	i = 0;
+	if (!dest)
+		return ;
 	while (dest[i])
 	{
 		free (dest[i]);
@@ -28,6 +30,8 @@ void	free_cmd2(char **dest)
 
 void	free_redir(t_dir *redir)
 {
+	if (!redir)
+		return ;
 	if (redir->file_in)
 		free_cmd2(redir->file_in);
 	if (redir->file_out)
@@ -53,9 +57,12 @@ void	free_pars(t_pars	*pars)
 
 void	free_all(t_cmd *cmd)
 {
+	t_pars	*tmp;
+
+	if (!cmd)
+		return ;
 	if (cmd->sav)
 	{
-		free(cmd->sav->line);
 		if (cmd->sav->split_pipe)
 			free_cmd2(cmd->sav->split_pipe);
 		free(cmd->sav);
@@ -64,11 +71,13 @@ void	free_all(t_cmd *cmd)
 	{
 		while (cmd->all->next != NULL)
 		{
-			if (cmd->all)
-				free_pars(cmd->all);
-			cmd->all = cmd->all->next;
+			tmp = cmd->all->next;
+			free_pars(cmd->all);
+			free(cmd->all);
+			cmd->all = tmp;
 		}
-		free (cmd->all);
 	}
+	if (cmd->env)
+		free_cmd2(cmd->env);
 	free (cmd);
 }

@@ -68,7 +68,7 @@ typedef struct s_cmd
 	t_pars			*all;
 	t_global		*sav;
 	t_env			*env_list;
-	char			**envp;
+	char			**env;
 }	t_cmd;
 
 // split_utils
@@ -134,6 +134,7 @@ void		parsing(void);
 void	ft_exec_simple(t_pars *pars, t_cmd *cmd);
 char 	*ft_make_path(t_pars *pars, t_cmd *cmd);
 char	**ft_make_args(t_pars *pars);
+char	**ft_listtochar(t_env *env);
 
 // builtins
 int		ft_echo(t_pars *pars);

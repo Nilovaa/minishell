@@ -43,7 +43,9 @@ void	ft_child_process(t_pars *pars, t_cmd *cmd, int **pipes, int index, int nb_c
 		ft_putstr_fd("command not found\n", 2);
 		exit(127);
 	}
-	execve(path, argv, cmd->env);
+	char **env = ft_listtochar(cmd->env_list);
+	execve(path, argv, env);
+	ft_free_split(env);
 	perror("execve");
 	free(path);
 	ft_free_split(argv);

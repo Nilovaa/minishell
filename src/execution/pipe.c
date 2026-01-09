@@ -34,7 +34,9 @@ void    ft_first_child(t_pars *pars, t_cmd *cmd, int fd[2])
             ft_free_split(arg);
         exit (127);
     }
-    execve(path, arg, cmd->env);
+    char **env = ft_listtochar(cmd->env_list);
+    execve(path, arg, env);
+    ft_free_split(env);
     perror("execve");
     free(path);
     ft_free_split(arg);
@@ -63,7 +65,9 @@ void    ft_second_child(t_pars *pars, t_cmd *cmd, int fd[2])
             ft_free_split(arg);
         exit (127);
     }
-    execve(path, arg, cmd->env);
+    char **env = ft_listtochar(cmd->env_list);
+    execve(path, arg, env);
+    ft_free_split(env);
     perror("execve");
     free(path);
     ft_free_split(arg);

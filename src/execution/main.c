@@ -55,14 +55,18 @@ int main(int ac, char **av, char **env)
 			cmd = cmd_init(line);
 			if (cmd)
 			{
+				cmd->env_list = cmd_base->env_list;
+				cmd->env = ft_listtochar(cmd->env_list);
 				if (cmd && cmd->all && cmd->all->cmd)
 					ft_check_builtins(cmd->all, cmd);
-				cmd_base->env = cmd->env;
+				cmd_base->env_list = cmd->env_list;
 			}
+			free_all(cmd);
 		}
 		free(line);
 	}
 	rl_clear_history();
+	free_all(cmd_base);
 	return (0);
 }
 

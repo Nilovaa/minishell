@@ -16,43 +16,65 @@ static int	ft_find_var(t_cmd *cmd, char *name)
 {
 	int	i;
 	int	len;
+	char	**env;
 
 	len = 0;
 	i = 0;
 	while (name[len] && name[len] != '=')
 		len++;
-	while (cmd->env && cmd->env[i])
+	env = ft_listtochar(cmd->env_list);
+	if (!env)
+		return (-1);
+	while (env && env[i])
 	{
-		if (!ft_strncmp(cmd->env[i], name, len) && cmd->env[i][len] == '=')
+		if (!ft_strncmp(env[i], name, len) && env[i][len] == '=')
+		{
+			ft_free_split(env);
 			return (i);
+		}
 		i++;
 	}
+	ft_free_split(env);
 	return (-1);
 }
 
 static char **ft_add_var(t_cmd *cmd, char *var)
 {
 	char	**dest_env;
+	char	**env;
 	int		i;
 
+	env = ft_listtochar(cmd->env_list);
+	if (!env)
+		return (NULL);
 	i = 0;
-	while (cmd->env && cmd->env[i])
+	while (env && env[i])
 		i++;
 	dest_env = malloc(sizeof(char *) * (i + 2));
 	if (!dest_env)
-		return (NULL);
-	i = 0;
-	while (cmd->env && cmd->env[i])
 	{
-		dest_env[i] = ft_strdup(cmd->env[i]);
+		ft_free_split(env);
+		return (NULL);
+	}
+	i = 0;
+	while (env && env[i])
+	{
+		dest_env[i] = ft_strdup(env[i]);
 		if (!dest_env[i])
+		{
+			ft_free_split(env);
 			return (NULL);
+		}
 		i++;
 	}
 	dest_env[i] = ft_strdup(var);
 	if (!dest_env[i])
+	{
+		ft_free_split(env);
 		return (NULL);
+	}
 	dest_env[i + 1] = NULL;
+	ft_free_split(env);
 	return (dest_env);
 }
 

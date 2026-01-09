@@ -12,9 +12,10 @@
 
 #include "../../include/minishell.h"
 
-int ft_exit(t_pars *pars)
+int ft_exit(t_pars *pars, t_cmd *cmd)
 {
 	if (pars)
 		exit(pars->return_value);
+	free_all(cmd);
 	exit(0);
 }
