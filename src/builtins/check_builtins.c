@@ -39,7 +39,7 @@ int	ft_exec_builtin_only(t_pars *pars, t_cmd *cmd)
 
 	ret = 0;
 	if (!ft_strncmp(pars->cmd, "cd", 3) && pars->cmd[2] == '\0')
-		ret = ft_cd(pars);
+		ret = ft_cd(pars, cmd);
 	else if (!ft_strncmp(pars->cmd, "echo", 5) && pars->cmd[4] == '\0')
 		ret = ft_echo(pars);
 	else if (!ft_strncmp(pars->cmd, "env", 4) && pars->cmd[3] == '\0')

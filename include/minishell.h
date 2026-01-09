@@ -118,7 +118,7 @@ char	**ft_make_args(t_pars *pars);
 
 // builtins
 int		ft_echo(t_pars *pars);
-int		ft_cd(t_pars *pars);
+int		ft_cd(t_pars *pars, t_cmd *cmd);
 int		ft_pwd(t_pars *pars);
 int		ft_exit(t_pars *pars, t_cmd *cmd);
 int		ft_export(t_pars *pars, t_cmd *cmd);
