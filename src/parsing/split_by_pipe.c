@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:10:37 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/16 17:27:40 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:37:25 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ char	**split_pipe(char *str)
 {
 	char	**dest;
 
+	dest = NULL;
 	if (str[0] == '\0')
-		return (NULL);
+		return (dest);
+	else if (!check_pipe(str))
+		return (ft_putstr_fd("synax error\n", 2) ,dest);
 	dest = ft_calloc(sizeof(char *), (ft_count_pipe(str)) + 1);
 	if (!dest)
 		return (NULL);
