@@ -27,47 +27,31 @@ static int	ft_check_name(char *str)
 	return (1);
 }
 
-static int ft_find_var(t_cmd *cmd, char *name)
+static int ft_find_var(char **env, char *name)
 {
 	int i = 0;
 	int len = ft_strlen(name);
-	char	**env;
-	
-	env = ft_listtochar(cmd->env_list);
-	if (!env)
-		return (-1);
 	while (env && env[i])
 	{
 		if (!ft_strncmp(env[i], name, len) && env[i][len] == '=')
-		{
-			ft_free_split(env);
 			return(i);
-		}
 		i++;
 	}
-	ft_free_split(env);
 	return (-1);
 }
 
-static char **ft_remove_var(t_cmd *cmd, int index_env)
+static char **ft_remove_var(char **env, int index_env)
 {
 	int		i;
 	int		j;
 	char	**dest_env;
-	char	**env;
 
-	env = ft_listtochar(cmd->env_list);
-	if (!env)
-		return (NULL);
 	i = 0;
 	while (env[i])
 		i++;
 	dest_env = malloc(sizeof(char *) * i);
 	if (!dest_env)
-	{
-		ft_free_split(env);
 		return (NULL);
-	}
 	i = 0;
 	j = 0;
 	while (env[i])
@@ -76,16 +60,12 @@ static char **ft_remove_var(t_cmd *cmd, int index_env)
 		{
 			dest_env[j] = ft_strdup(env[i]);
 			if (!dest_env[j])
-			{
-				ft_free_split(env);
 				return (NULL);
-			}
 			j++;
 		}
 		i++;
 	}
 	dest_env[j] = NULL;
-	ft_free_split(env);
 	return (dest_env);
 }
 
@@ -117,10 +97,10 @@ int	ft_unset(t_pars *pars, t_cmd *cmd)
 			i++;
 			continue ;
 		}
-		index_env = ft_find_var(cmd, pars->arg[i]);
+		index_env = ft_find_var(cmd->env, pars->arg[i]);
 		if (index_env >= 0)
 		{
-			dest_env = ft_remove_var(cmd, index_env);
+			dest_env = ft_remove_var(cmd->env, index_env);
 			if (!dest_env)
 			{
 				pars->return_value = 1;

@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:36:36 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/09 11:43:02 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/05 14:04:26 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,17 @@ char	**cpy_arg(t_pars *token)
 	return (arg);
 }
 
-t_cmd	*cmd_init(char *line)
+t_cmd	*cmd_init(char *line, char **envp)
 {
 	t_cmd		*cmd;
 	t_pars		*tmp;
 	int			i;
 
 	i = 0;
-	// cmd->env = cpy_env(envp);
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (NULL);
-	// printf("global init\n");
+	cmd->env = cpy_env(envp);
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
 		return (NULL);
@@ -88,10 +87,6 @@ t_cmd	*cmd_init(char *line)
 		cmd->all = NULL;
 		return (cmd);
 	}
-	cmd->all = ft_calloc(sizeof(t_pars), ft_count_pipe(line) + 1);
-	if (!cmd->all)
-		return (NULL);
-	// printf("init token\n");
 	cmd->all = init_token1(cmd);
 	tmp = cmd->all;
 	i++;
@@ -142,4 +137,3 @@ char	**cpy_env(char **envp)
 	env[i] = NULL;
 	return (env);
 }
-

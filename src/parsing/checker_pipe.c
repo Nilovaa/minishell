@@ -6,12 +6,11 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 08:58:40 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 10:30:44 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:17:40 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
 
 int	check_double_pipe(int i, char *str)
 {
@@ -20,9 +19,7 @@ int	check_double_pipe(int i, char *str)
 		i++;
 	if (!str[i])
 		return (0);
-	while (str[i] && ft_is_space(str[i]))
-		i++;
-	if (str[i] == '|')
+	else if (str[i] == '|')
 		return (0);
 	return (1);
 }

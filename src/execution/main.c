@@ -41,7 +41,7 @@ int main(int ac, char **av, char **env)
 	t_cmd	*cmd;
 	t_cmd	*cmd_base;
 
-	cmd_base = cpy_env_list(env);
+	cmd_base = cmd_init(NULL, env);
 	if (!cmd_base)
 		return (1);
 	while (1)
@@ -52,14 +52,13 @@ int main(int ac, char **av, char **env)
 		if (line[0] != '\0')
 		{
 			add_history(line);
-			cmd = cmd_init(line);
-			if (cmd)
+			cmd = cmd_init(line, cmd_base->env);
+			if (cmd && cmd->all && cmd->all->cmd)
 			{
-				cmd->env_list = cmd_base->env_list;
-				cmd->env = ft_listtochar(cmd->env_list);
-				if (cmd && cmd->all && cmd->all->cmd)
-					ft_check_builtins(cmd->all, cmd);
-				cmd_base->env_list = cmd->env_list;
+				ft_check_builtins(cmd->all, cmd);
+				ft_free_split(cmd_base->env);
+				cmd_base->env = cmd->env;
+				cmd->env = NULL;
 			}
 			free_all(cmd);
 		}

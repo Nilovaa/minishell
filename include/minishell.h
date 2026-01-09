@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/09 11:42:18 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/05 14:22:46 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,6 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <linux/limits.h>
-
-typedef struct s_str
-{
-	char 			*str;
-	struct	s_str 	*next;
-} 	t_str;
-
-typedef struct s_env
-{
-	char 			*key;
-	char 			*value;
-	struct	s_env	*next;
-}	t_env;
 
 typedef struct s_global
 {
@@ -54,7 +41,6 @@ typedef struct s_pars
 {
 	int				count_token;
 	char			**all_token;
-	t_str			*token;
 	char			*cmd;
 	char			**arg;
 	int				return_value;
@@ -67,10 +53,8 @@ typedef struct s_cmd
 {
 	t_pars			*all;
 	t_global		*sav;
-	t_env			*env_list;
 	char			**env;
 }	t_cmd;
-
 // split_utils
 int			len_sep(char *str);
 int			ft_count_pipe(char *str);
@@ -105,10 +89,7 @@ char		**split_pipe(char *str);
 t_global	*global_init(char *line);
 t_dir		*init_dir(char **token);
 char		**cpy_arg(t_pars *token);
-// t_cmd		*cmd_init(char *line, t_env *env);
-t_cmd		*cmd_init(char *line);
-// t_cmd		*cmd_init(char **env);
-
+t_cmd		*cmd_init(char *line, char **env);
 char	**cpy_env(char **envp);
 
 // tokenisation
@@ -134,13 +115,12 @@ void		parsing(void);
 void	ft_exec_simple(t_pars *pars, t_cmd *cmd);
 char 	*ft_make_path(t_pars *pars, t_cmd *cmd);
 char	**ft_make_args(t_pars *pars);
-char	**ft_listtochar(t_env *env);
 
 // builtins
 int		ft_echo(t_pars *pars);
 int		ft_cd(t_pars *pars);
 int		ft_pwd(t_pars *pars);
-int		ft_exit(t_cmd *pars);
+int		ft_exit(t_pars *pars, t_cmd *cmd);
 int		ft_export(t_pars *pars, t_cmd *cmd);
 int		ft_unset(t_pars *pars, t_cmd *cmd);
 int		ft_env(t_pars *pars, t_cmd *cmd);
@@ -164,10 +144,5 @@ int	**ft_create_pipes(int nb_pipes);
 void	ft_free_pipes(int **pipes, int nb_pipes);
 void	ft_close_all_pipes(int **pipes, int nb_pipes);
 int	ft_count_cmds(t_pars *pars);
-
-//struct_env
-void	init_env(t_cmd *cmd, char **envp);
-void	add_list_env(t_env *env, char *env_line);
-t_cmd	*cpy_env_list(char **env);
 
 #endif

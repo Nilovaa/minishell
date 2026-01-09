@@ -26,7 +26,7 @@ void	free_cmd2(char **dest)
 	}
 	free (dest);
 	dest = NULL;
-}
+}	
 
 void	free_redir(t_dir *redir)
 {
@@ -47,7 +47,7 @@ void	free_pars(t_pars	*pars)
 {
 	if (pars->all_token)
 		free_cmd2(pars->all_token);
-	if (pars->all_token)
+	if (pars->arg)
 		free_cmd2(pars->arg);
 	if (pars->cmd)
 		free(pars->cmd);
@@ -69,7 +69,7 @@ void	free_all(t_cmd *cmd)
 	}
 	if (cmd->all)
 	{
-		while (cmd->all->next != NULL)
+		while (cmd->all)
 		{
 			tmp = cmd->all->next;
 			free_pars(cmd->all);
@@ -78,6 +78,6 @@ void	free_all(t_cmd *cmd)
 		}
 	}
 	if (cmd->env)
-		free_cmd2(cmd->env);
-	free (cmd);
+		ft_free_split(cmd->env);
+	free(cmd);
 }

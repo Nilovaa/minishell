@@ -21,7 +21,7 @@ char *add_cmd(char **all_token)
 		return (NULL);
 	else if (all_token[0] && !((ft_strncmp(all_token[0], ">", 1) == 0
 		|| ft_strncmp(all_token[0], "<", 1) == 0 )))
-		return (all_token[0]);
+		return (ft_strdup(all_token[0]));
 	else if (all_token[0] && (ft_strncmp(all_token[0], ">", 1) == 0
 		|| ft_strncmp(all_token[0], "<", 1) == 0 ))
 	{

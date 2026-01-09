@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:10:37 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/07 09:21:06 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:27:40 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ char	**split_pipe(char *str)
 	char	**dest;
 
 	if (str[0] == '\0')
-		return (NULL);
-	else if (!check_pipe(str))
 		return (NULL);
 	dest = ft_calloc(sizeof(char *), (ft_count_pipe(str)) + 1);
 	if (!dest)

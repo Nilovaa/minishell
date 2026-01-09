@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 16:00:06 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/08 14:03:01 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:54:33 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,7 @@ void	print_all(t_cmd *cmd)
 			j++;
 		}
 		printf("...}\n");
-		if (cmd->all->all_token)
-			printf("commande == %s\n", cmd->all->cmd);
-		else
-		 	ft_putstr_fd("NO COMMANDE\n", 2);
+		printf("commande == %s\n", cmd->all->cmd);
 		if (cmd->all->arg)
 		{
 			printf("argument == {");

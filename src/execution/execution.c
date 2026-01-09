@@ -47,9 +47,7 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 	}
 	if (pid == 0)						//enfant
 	{
-		char **env = ft_listtochar(cmd->env_list);
-		execve(path, argv, env);
-		ft_free_split(env);
+		execve(path, argv, cmd->env);
 		perror("execve");
 		exit (1);
 	}
