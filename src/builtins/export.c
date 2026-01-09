@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:49:23 by nyrakoto          #+#    #+#             */
-/*   Updated: 2025/12/29 03:36:41 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:27:38 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	ft_export(t_pars *pars, t_cmd *cmd)
 	if (!pars->arg[0])
 	{
 		pars->return_value = 0;
+		ft_env(pars, cmd);
 		return (0);
 	}
 	j = 0;
