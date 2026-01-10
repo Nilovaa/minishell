@@ -103,6 +103,12 @@ int	ft_cd(t_pars *pars, t_cmd *cmd)
 
 	if (!pars)
 		return (1);
+	if (pars->arg[1] != NULL)
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		pars->return_value = 1;
+		return (1);
+	}
 	if (!pars->arg || !pars->arg[0] || ft_is_only_spaces(pars->arg[0]) 
 					|| (ft_strncmp(pars->arg[0], "~", 2) == 0))
 	{
