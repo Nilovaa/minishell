@@ -47,7 +47,6 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 	}
 	if (pid == 0)						//enfant
 	{
-		// Appliquer les redirections dans le processus enfant
 		if (ft_redirection(pars->redir) < 0)
 		{
 			free(path);

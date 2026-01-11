@@ -6,7 +6,7 @@
 /*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 13:48:44 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/11 15:12:51 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/11 14:37:51 by nyrakoto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@ char	*ft_tmp_heredoc(void)
 	return (file);
 }
 
-/*
-** Lit les lignes depuis stdin jusqu'au délimiteur
-** FIX: Comparaison correcte du délimiteur (sans le +1)
-*/
 int	ft_read_file(char *delim, int fd)
 {
 	char	*line;
@@ -57,11 +53,6 @@ int	ft_read_file(char *delim, int fd)
 	return (0);
 }
 
-/*
-** Gère le heredoc: crée un fichier temporaire, lit les lignes,
-** puis retourne un fd ouvert en lecture
-** FIX: Retourne -1 en cas d'erreur (pas 1)
-*/
 int	ft_take_heredoc(char *delim)
 {
 	char	*tmp_file;
@@ -85,10 +76,6 @@ int	ft_take_heredoc(char *delim)
 	return (fd_read);
 }
 
-/*
-** Applique toutes les redirections pour la commande
-** FIX: Retourne -1 en cas d'erreur (cohérent)
-*/
 int	ft_redirection(t_dir *redir)
 {
 	int	i;
