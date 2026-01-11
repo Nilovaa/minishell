@@ -24,6 +24,13 @@ void    ft_first_child(t_pars *pars, t_cmd *cmd, int fd[2])
         exit(1);
     }
     close(fd[1]);
+    if (ft_redirection(pars->redir) < 0)
+        exit(1);
+    if (ft_is_builtin(pars->cmd))
+    {
+        int ret = ft_exec_builtin_only(pars, cmd);
+        exit(ret);
+    }
     path = ft_make_path(pars, cmd);
     arg = ft_make_args(pars);
     if (!path || !arg)
@@ -53,6 +60,13 @@ void    ft_second_child(t_pars *pars, t_cmd *cmd, int fd[2])
         exit(1);
     }
     close(fd[0]);
+    if (ft_redirection(pars->redir) < 0)
+        exit(1);
+    if (ft_is_builtin(pars->cmd))
+    {
+        int ret = ft_exec_builtin_only(pars, cmd);
+        exit(ret);
+    }
     path = ft_make_path(pars, cmd);
     arg = ft_make_args(pars);
     if (!path || !arg)

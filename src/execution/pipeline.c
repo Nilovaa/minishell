@@ -25,7 +25,8 @@ void	ft_child_process(t_pars *pars, t_cmd *cmd, int **pipes, int index, int nb_c
 
 	ft_setup_redirections(pipes, index, nb_cmds);
 	ft_close_all_pipes(pipes, nb_cmds - 1);
-	
+	if (ft_redirection(pars->redir) < 0)
+		exit (1);
 	if (ft_is_builtin(pars->cmd))
 	{
 		ret = ft_exec_builtin_only(pars, cmd);

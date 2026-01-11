@@ -58,6 +58,9 @@ int	ft_exec_builtin_only(t_pars *pars, t_cmd *cmd)
 
 void	ft_check_builtins(t_pars *pars, t_cmd *cmd)
 {
+	int	stdin_backup;
+	int	stdout_backup;
+
 	if (!pars || !pars->cmd || !cmd)
 		return ;
 	if (pars->next)
@@ -67,7 +70,27 @@ void	ft_check_builtins(t_pars *pars, t_cmd *cmd)
 	}
 	if (ft_is_builtin(pars->cmd))
 	{
+		// Sauvegarder stdin et stdout
+		stdin_backup = dup(STDIN_FILENO);
+		stdout_backup = dup(STDOUT_FILENO);
+		
+		// Appliquer les redirections
+		if (ft_redirection(pars->redir) < 0)
+		{
+			close(stdin_backup);
+			close(stdout_backup);
+			pars->return_value = 1;
+			return ;
+		}
+		
+		// Exécuter le builtin
 		ft_exec_builtin_only(pars, cmd);
+		
+		// Restaurer stdin et stdout
+		dup2(stdin_backup, STDIN_FILENO);
+		dup2(stdout_backup, STDOUT_FILENO);
+		close(stdin_backup);
+		close(stdout_backup);
 		return ;
 	}
 	ft_exec_simple(pars, cmd);

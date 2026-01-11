@@ -19,6 +19,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <linux/limits.h>
+# include <fcntl.h>
 
 typedef struct s_global
 {
@@ -144,5 +145,8 @@ int	**ft_create_pipes(int nb_pipes);
 void	ft_free_pipes(int **pipes, int nb_pipes);
 void	ft_close_all_pipes(int **pipes, int nb_pipes);
 int	ft_count_cmds(t_pars *pars);
+
+// redirections
+int		ft_redirection(t_dir *redir);
 
 #endif
