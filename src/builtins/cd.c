@@ -73,6 +73,7 @@ static int	ft_is_only_spaces(char *str)
 static int	ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd)
 {
 	char	cwd[PATH_MAX];
+	int		has_cwd;
 
 	if (!path)
 	{
@@ -80,19 +81,15 @@ static int	ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd)
 		pars->return_value = 1;
 		return (1);
 	}
-	if (getcwd(cwd, PATH_MAX) == NULL)
-	{
-		perror("cd: getcwd");
-		pars->return_value = 1;
-		return (1);
-	}
+	has_cwd = (getcwd(cwd, PATH_MAX) != NULL);
 	if (chdir(path) != 0)
 	{
 		perror("cd");
 		pars->return_value = 1;
 		return (1);
 	}
-	ft_update_oldpwd(cmd, cwd);
+	if (has_cwd)
+		ft_update_oldpwd(cmd, cwd);
 	pars->return_value = 0;
 	return (0);
 }
