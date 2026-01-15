@@ -17,12 +17,31 @@ char	*ft_tmp_heredoc(void)
 	static int	i = 0;
 	char		*num;
 	char		*file;
+	char		*pid_str;
+	char		*tmp;
+	int			pid;
 
+	pid = getpid();
+	pid_str = ft_itoa(pid);
+	if (!pid_str)
+		return (NULL);
 	num = ft_itoa(i);
 	i++;
 	if (!num)
+	{
+		free(pid_str);
 		return (NULL);
-	file = ft_strjoin3("/tmp/.heredoc_", num, "");
+	}
+	tmp = ft_strjoin3("/tmp/.heredoc_", pid_str, "_");
+	if (!tmp)
+	{
+		free(pid_str);
+		free(num);
+		return (NULL);
+	}
+	file = ft_strjoin(tmp, num);
+	free(tmp);
+	free(pid_str);
 	free(num);
 	return (file);
 }
@@ -33,6 +52,7 @@ int	ft_read_file(char *delim, int fd)
 	size_t	len;
 
 	len = ft_strlen(delim);
+	ft_signal_heredoc();
 	while (1)
 	{
 		line = readline("> ");
@@ -50,6 +70,23 @@ int	ft_read_file(char *delim, int fd)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	ft_signal_interactive();
+	return (0);
+}
+
+int	ft_check_existing_heredoc(char *tmp_file)
+{
+	int	fd;
+
+	if (access(tmp_file, F_OK) == 0)
+	{
+		fd = open(tmp_file, O_RDONLY);
+		if (fd >= 0)
+		{
+			close(fd);
+			return (1);
+		}
+	}
 	return (0);
 }
 
@@ -62,6 +99,12 @@ int	ft_take_heredoc(char *delim)
 	tmp_file = ft_tmp_heredoc();
 	if (!tmp_file)
 		return (-1);
+	if (ft_check_existing_heredoc(tmp_file))
+	{
+		fd_read = open(tmp_file, O_RDONLY);
+		free(tmp_file);
+		return (fd_read);
+	}
 	fd = open(tmp_file, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
 	{

@@ -11,11 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <sys/wait.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <signal.h>
 
 void	ft_child_process(t_pars *pars, t_cmd *cmd, int **pipes, int index, int nb_cmds)
 {
@@ -23,6 +18,7 @@ void	ft_child_process(t_pars *pars, t_cmd *cmd, int **pipes, int index, int nb_c
 	char	**argv;
 	int		ret;
 
+	ft_signal_child();
 	ft_setup_redirections(pipes, index, nb_cmds);
 	ft_close_all_pipes(pipes, nb_cmds - 1);
 	if (ft_redirection(pars->redir) < 0)
@@ -145,7 +141,9 @@ void	ft_exec_pipeline(t_pars *pars, t_cmd *cmd)
 		pars->return_value = 1;
 		return ;
 	}
+	ft_signal_ignore();
 	status = ft_wait_all(pids, nb_cmds);
+	ft_signal_interactive();
 	pars->return_value = status;
 	free(pids);
 	ft_free_pipes(pipes, nb_cmds - 1);

@@ -19,6 +19,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <linux/limits.h>
+#include <signal.h>
 # include <fcntl.h>
 
 typedef struct s_global
@@ -55,6 +56,7 @@ typedef struct s_cmd
 	t_pars			*all;
 	t_global		*sav;
 	char			**env;
+	int				last_exit_status;
 }	t_cmd;
 // split_utils
 int			len_sep(char *str);
@@ -148,5 +150,13 @@ int	ft_count_cmds(t_pars *pars);
 
 // redirections
 int		ft_redirection(t_dir *redir);
+
+// signals
+void	ft_signal_interactive(void);
+void	ft_signal_child(void);
+void	ft_signal_heredoc(void);
+void	ft_signal_ignore(void);
+
+extern int	g_signal_received;
 
 #endif

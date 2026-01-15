@@ -79,6 +79,7 @@ t_cmd	*cmd_init(char *line, char **envp)
 	if (!cmd)
 		return (NULL);
 	cmd->env = cpy_env(envp);
+	cmd->last_exit_status = 0;
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
 		return (NULL);

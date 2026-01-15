@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
 
 void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 {
@@ -47,6 +44,7 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 	}
 	if (pid == 0)						//enfant
 	{
+		ft_signal_child();
 		if (ft_redirection(pars->redir) < 0)
 		{
 			free(path);
@@ -61,7 +59,9 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 	}
 	else
 	{
+		ft_signal_ignore();
 		waitpid(pid, &status, 0);				//parent
+		ft_signal_interactive();
 		if (WIFEXITED(status))              // return 1 si enfant termine normalement
 			pars->return_value = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))       // return d'un signal

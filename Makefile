@@ -12,6 +12,7 @@ SRCS = src/execution/main.c \
 		src/execution/pipeline.c \
 		src/execution/pipeline_utils.c \
 		src/execution/redirection.c \
+		src/execution/signal.c \
 		src/parsing/add_cmd.c \
 		src/parsing/ft_exit.c \
 		src/parsing/checker_pipe.c \

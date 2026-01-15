@@ -44,18 +44,29 @@ int main(int ac, char **av, char **env)
 	cmd_base = cmd_init(NULL, env);
 	if (!cmd_base)
 		return (1);
+	ft_signal_interactive();
 	while (1)
 	{
 		line = readline("minishell$ ");
+		if (g_signal_received)
+		{
+			cmd_base->last_exit_status = g_signal_received;
+			g_signal_received = 0;
+		}
 		if (!line)
+		{
+			ft_putstr_fd("exit\n", 1);
 			break ;
+		}
 		if (line[0] != '\0')
 		{
 			add_history(line);
 			cmd = cmd_init(line, cmd_base->env);
 			if (cmd && cmd->all && cmd->all->cmd)
 			{
+				cmd->all->return_value = cmd_base->last_exit_status;
 				ft_check_builtins(cmd->all, cmd);
+				cmd_base->last_exit_status = cmd->all->return_value;
 				ft_free_split(cmd_base->env);
 				cmd_base->env = cmd->env;
 				cmd->env = NULL;
@@ -68,4 +79,5 @@ int main(int ac, char **av, char **env)
 	free_all(cmd_base);
 	return (0);
 }
+
 

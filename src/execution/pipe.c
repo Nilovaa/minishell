@@ -18,6 +18,7 @@ void    ft_first_child(t_pars *pars, t_cmd *cmd, int fd[2])
     char **arg;
 
     close(fd[0]);
+    ft_signal_child();
     if (dup2(fd[1], STDOUT_FILENO) == -1)
     {
         perror("dup2");
@@ -54,6 +55,7 @@ void    ft_second_child(t_pars *pars, t_cmd *cmd, int fd[2])
     char **arg;
 
     close(fd[1]);
+    ft_signal_child();
     if (dup2(fd[0], STDIN_FILENO) == -1)
     {
         perror("dup2");
@@ -127,8 +129,10 @@ void    ft_exec_simple_pipe(t_pars *pars, t_cmd *cmd)
         ft_second_child(pars->next, cmd, fd);
     close(fd[0]);
     close(fd[1]);
+    ft_signal_ignore();
     waitpid(pid1, &status, 0);
     waitpid(pid2, &status, 0);
+    ft_signal_interactive();
     if (WIFEXITED(status))
         pars->return_value = WEXITSTATUS(status);
     else if (WIFSIGNALED(status))
