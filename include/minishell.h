@@ -162,7 +162,6 @@ void	ft_signal_interactive(void);
 void	ft_signal_child(void);
 void	ft_signal_heredoc(void);
 void	ft_signal_ignore(void);
-
 extern int	g_signal_received;
 
 #endif

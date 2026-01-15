@@ -27,7 +27,7 @@ static int	ft_check_name(char *str)
 	return (1);
 }
 
-static int ft_find_var(char **env, char *name)
+int ft_find_var(char **env, char *name)
 {
 	int i = 0;
 	int len = ft_strlen(name);

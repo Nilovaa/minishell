@@ -74,13 +74,13 @@ static void	add_redir(t_dir *redir, char **all_token)
 	i = 0;
 	while (all_token[i])
 	{
-		if (ft_strncmp(all_token[i], ">>", 2) == 0)
+		if (ft_strncmp(all_token[i], ">>", 2) == 0 && all_token[i + 1])
 			redir->file_out2 = join_redir(all_token[i + 1], redir->file_out2);
-		else if (ft_strncmp(all_token[i], "<<", 2) == 0)
+		else if (ft_strncmp(all_token[i], "<<", 2) == 0 && all_token[i + 1])
 			redir->file_in2 = join_redir(all_token[i + 1], redir->file_in2);
-		else if (ft_strncmp(all_token[i], "<", 1) == 0)
+		else if (ft_strncmp(all_token[i], "<", 1) == 0 && all_token[i + 1])
 			redir->file_in = join_redir(all_token[i + 1], redir->file_in);
-		else if (ft_strncmp(all_token[i], ">", 1) == 0)
+		else if (ft_strncmp(all_token[i], ">", 1) == 0 && all_token[i + 1])
 			redir->file_out = join_redir(all_token[i + 1], redir->file_out);
 		i++;
 	}

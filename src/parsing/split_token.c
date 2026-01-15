@@ -78,6 +78,14 @@ char	**split_token(char *str)
 // 	return (count);
 // }
 
+int ft_is_redir(char *str)
+{
+	if (ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0
+		|| ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0)
+		return (1);
+	return (0);
+}
+
 int count_token(char *str)
 {
 	int i = 0;
@@ -89,6 +97,16 @@ int count_token(char *str)
 			i++;
 		if (!str[i])
 			break;
+		if (ft_is_redir(&str[i]))
+		{
+			if (str[i] == '>' && str[i + 1] == '>')
+				i += 2;
+			else if (str[i] == '<' && str[i + 1] == '<')
+				i += 2;
+			else
+				i++;
+			count++;
+		}
 		if (str[i] == 39)
 		{
 			i++;
@@ -140,6 +158,15 @@ int	len_token(char *str)
 				i++;
 			if (ft_is_space(str[i]))
 				return (i);
+		}
+		else if (ft_is_redir(str))
+		{
+			if (str[i] == '>' && str[i + 1] == '>')
+				return (2);
+			else if (str[i] == '<' && str[i + 1] == '<')
+				return (2);
+			else
+				return (1);
 		}
 	}
 	while (str[i] && !ft_is_space(str[i]))
