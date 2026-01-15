@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/05 14:22:46 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:47:52 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # include <linux/limits.h>
 #include <signal.h>
 # include <fcntl.h>
+
+typedef struct s_str
+{
+	char	*str;
+	struct s_str	*next;
+}	t_str;
 
 typedef struct s_global
 {
