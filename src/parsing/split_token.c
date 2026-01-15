@@ -188,14 +188,14 @@ char	*cpy_token(char *str, char *dest)
 			i++;
 			while (str[i] && str[i] != 39)
 				dest[j++] = str[i++];
-			i++;
+			// i++;
 		}
 		else if (str[i] == '"')
 		{
 			i++;
 			while (str[i] && str[i] != '"')
 				dest[j++] = str[i++];
-			i++;
+			// i++;
 		}
 		else
 			dest[j++] = str[i];
