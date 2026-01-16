@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/16 11:26:33 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 15:02:49 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,10 @@ int			check_pipe(char *str);
 char *get_cmd_name(char **tokens);
 char *add_cmd(char **all_token);
 // list_pars
-void		add_list_last(t_pars *pars, char *split_pipe);
+void	add_list_last(t_pars *pars, char *split_pipe, t_cmd *cmd);
 t_pars		*init_token1(t_cmd *cmd);
-t_pars		*init_token(char *split_pipe);
+t_pars	*init_token(char *split_pipe, t_cmd *cmd);
+
 t_dir		*init_redir(char **all_token);
 char		**join_redir(char *file, char **redir);
 //  split_by_pipie
@@ -100,6 +101,11 @@ t_dir		*init_dir(char **token);
 char		**cpy_arg(t_pars *token);
 t_cmd		*cmd_init(char *line, char **env);
 char	**cpy_env(char **envp);
+// expander
+char	*get_env_val(char *key, t_cmd *cmd);
+int		handle_var(char *str, int i,  char **res, t_cmd *cmd);
+char	*expand_and_clean(char *str, t_cmd *cmd);
+void	process_all_tokens(t_pars *pars, t_cmd *cmd);
 
 // tokenisation
 int			ft_is_space(char c);

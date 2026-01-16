@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 11:28:45 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/05 14:34:08 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 13:48:45 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,23 +183,9 @@ char	*cpy_token(char *str, char *dest)
 	j = 0;
 	while (i < len_token(str) && str[i])
 	{
-		if (str[i] == 39)
-		{
-			i++;
-			while (str[i] && str[i] != 39)
-				dest[j++] = str[i++];
-			// i++;
-		}
-		else if (str[i] == '"')
-		{
-			i++;
-			while (str[i] && str[i] != '"')
-				dest[j++] = str[i++];
-			// i++;
-		}
-		else
-			dest[j++] = str[i];
+		dest[j] = str[i];
 		i++;
+		j++;
 	}
 	dest[j++] = '\0';
 	return (dest);

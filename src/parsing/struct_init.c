@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:36:36 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/05 14:04:26 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 15:03:15 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_cmd	*cmd_init(char *line, char **envp)
 	i++;
 	while (cmd->sav->split_pipe[i])
 	{
-		add_list_last(cmd->all, cmd->sav->split_pipe[i]);
+		add_list_last(cmd->all, cmd->sav->split_pipe[i], cmd);
 		i++;
 	}
 	cmd->all = tmp;

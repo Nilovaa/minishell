@@ -6,18 +6,18 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/05 14:01:34 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 15:02:02 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	add_list_last(t_pars *pars, char *split_pipe)
+void	add_list_last(t_pars *pars, char *split_pipe, t_cmd *cmd)
 {
 	t_pars	*last;
 	t_pars	*first;
 
-	last = init_token(split_pipe);
+	last = init_token(split_pipe, cmd);
 	if (pars == NULL)
 	{
 		pars = last;
@@ -43,26 +43,15 @@ t_pars	*init_token1(t_cmd *cmd)
 	pars->all_token = split_token(cmd->sav->split_pipe[0]);
 	if (!pars->all_token)
 		return (NULL);
-	// printf("init redir\n");
+	process_all_tokens(pars, cmd);
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (NULL);
-	// printf("init redir ok\n");
-	
-	// pars->cmd = pars->all_token[0];
-	// printf("add commande \n");
-
 	pars->cmd = add_cmd(pars->all_token);
-	// printf("add commande ok\n");
-
 	tmp = pars;
-	// printf("cpy_arg \n");
-	
 	pars->arg = cpy_arg(tmp);
 	if (!pars->arg)
 		return (NULL);
-	// printf("cpy_arg ok\n");
-
 	pars->next = NULL;
 	return (pars);
 }
@@ -119,7 +108,7 @@ char *add_cmd(char **tokens)
     return (NULL);
 }*/
 
-t_pars	*init_token(char *split_pipe)
+t_pars	*init_token(char *split_pipe, t_cmd *cmd)
 {
 	t_pars	*pars;
 	t_pars	*tmp;
@@ -131,6 +120,8 @@ t_pars	*init_token(char *split_pipe)
 	pars->all_token = split_token(split_pipe);
 	if (!pars->all_token)
 		return (NULL);
+	process_all_tokens(pars, cmd);
+
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (NULL);

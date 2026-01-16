@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 17:03:35 by nyrakoto          #+#    #+#             */
-/*   Updated: 2025/12/28 22:29:37 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:33:41 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ int	ft_echo(t_pars *pars)
 	}
 	while (pars->arg[i])
 	{
-		ft_expansion(pars->arg[i], pars);
+		// ft_expansion(pars->arg[i], pars);
+		ft_putstr_fd(pars->arg[i], 1);
 		if (pars->arg[i + 1])
 			write(1, " ", 1);
 		i++;
