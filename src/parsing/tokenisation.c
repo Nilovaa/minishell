@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 13:37:55 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/05 13:17:41 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 15:47:39 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int	check_qote(char *str)
 	cot2 = 0;
 	while (str[i])
 	{
-		if (str[i] == 39)
-			cot1++;
-		else if (str[i] == '"')
-			cot2++;
+		if (str[i] == 39 && !cot2)
+			cot1 = !cot1;
+		else if (str[i] == '"' && !cot1)
+			cot2 = !cot2;
 		i++;
 	}
-	if (cot1 % 2 != 0 || cot2 % 2 != 0)
+	if (cot1 || cot2)
 		return (1);
 	return (0);
 }

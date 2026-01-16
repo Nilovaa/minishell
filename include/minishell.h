@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/16 15:02:49 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 15:31:17 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ char		**split_token_utils(char *str, char **dest);
 char		**split_token(char *str);
 int			count_token(char *str);
 int			len_token(char *str);
+void update_quote_state(char c, int *in_sq, int *in_dq);
+
 char		*cpy_token(char *str, char *dest);
 // put_cmd
 void		print_all(t_cmd *cmd);
