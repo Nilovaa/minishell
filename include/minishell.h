@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/15 16:47:52 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 11:26:33 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,14 @@ void		print_redir(t_dir *redir);
 void		print_cmd(char **str);
 void		print_token(char **str);
 void		parsing(void);
+
+// ft_list_str.c
+t_str	*init_str(char *str);
+t_str	*add_str_last(t_str *list, char *str);
+t_str	*char_to_list(char **str);
+int		ft_list_size_str(t_str *list);
+char	**list_to_char(t_str *list);
+
 
 //	execution
 void	ft_exec_simple(t_pars *pars, t_cmd *cmd);
