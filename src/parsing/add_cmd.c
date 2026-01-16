@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 07:03:45 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/29 08:03:59 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:22:14 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,34 @@
 char *add_cmd(char **all_token)
 {
 	char	*cmd;
+	int  	i;
 
+	i = 0;
 
+	cmd = NULL;
 	if (!all_token)
 		return (NULL);
-	else if (all_token[0] && !((ft_strncmp(all_token[0], ">", 1) == 0
-		|| ft_strncmp(all_token[0], "<", 1) == 0 )))
-		return (ft_strdup(all_token[0]));
-	else if (all_token[0] && (ft_strncmp(all_token[0], ">", 1) == 0
-		|| ft_strncmp(all_token[0], "<", 1) == 0 ))
+	while (all_token[i])
 	{
-		if (all_token[2])
-			add_cmd(&all_token[2]);
+		if (ft_strncmp(all_token[i], ">", 1) == 0 || ft_strncmp(all_token[i], "<", 1) == 0)
+		{
+			i++;
+			if (all_token[i])
+				i++;
+		}
+		else 
+			return (ft_strdup(all_token[i]));
 	}
-	cmd = ft_strdup(all_token[2]);
+	// else if (all_token[0] && !((ft_strncmp(all_token[0], ">", 1) == 0
+	// 	|| ft_strncmp(all_token[0], "<", 1) == 0 )))
+	// 	return (ft_strdup(all_token[0]));
+	// else if (all_token[0] && (ft_strncmp(all_token[0], ">", 1) == 0
+	// 	|| ft_strncmp(all_token[0], "<", 1) == 0 ))
+	// {
+	// 	if (all_token[2])
+	// 		add_cmd(&all_token[2]);
+	// }
+	// cmd = ft_strdup(all_token[2]);
 	return (cmd);
 }
 

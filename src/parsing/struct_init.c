@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:36:36 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/16 15:03:15 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:23:53 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ char	**cpy_arg(t_pars *token)
 	
 	j = 0;
 	i = 0;
+	if (!token->cmd)
+		return (NULL);
 	arg = ft_calloc(sizeof(char *), token->count_token);
 	if (!arg)
 		return (NULL);

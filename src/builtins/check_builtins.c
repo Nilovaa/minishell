@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 10:25:13 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/05 10:43:55 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:28:36 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,14 @@ void	ft_check_builtins(t_pars *pars, t_cmd *cmd)
 	if (pars->next)
 	{
 		ft_exec_pipeline(pars, cmd);
+		return ;
+	}
+	if (!pars->cmd)
+	{
+		if (ft_redirection(pars->redir) < 0)
+			pars->return_value = 1;
+		else
+			pars->return_value = 0;
 		return ;
 	}
 	if (ft_is_builtin(pars->cmd))
