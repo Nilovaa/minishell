@@ -33,6 +33,13 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 		pars->return_value = 1;
 		return ;
 	}
+	if (ft_process_heredocs(pars->redir) < 0)
+	{
+		free(path);
+		ft_free_split(argv);
+		pars->return_value = 1;
+		return ;
+	}
 	pid = fork();
 	if (pid < 0)
 	{
@@ -40,6 +47,7 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 		pars->return_value = 1;
 		free(path);
 		ft_free_split(argv);
+		ft_cleanup_heredocs(pars->redir);
 		return ;
 	}
 	if (pid == 0)						//enfant
@@ -62,6 +70,7 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 		ft_signal_ignore();
 		waitpid(pid, &status, 0);				//parent
 		ft_signal_interactive();
+		ft_cleanup_heredocs(pars->redir);
 		if (WIFEXITED(status))              // return 1 si enfant termine normalement
 			pars->return_value = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))       // return d'un signal

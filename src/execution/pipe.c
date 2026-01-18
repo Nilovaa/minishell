@@ -99,9 +99,18 @@ void    ft_exec_simple_pipe(t_pars *pars, t_cmd *cmd)
             pars->return_value = 1;
         return ;
     }
+    if (ft_process_heredocs(pars->redir) < 0 || ft_process_heredocs(pars->next->redir) < 0)
+    {
+        ft_cleanup_heredocs(pars->redir);
+        ft_cleanup_heredocs(pars->next->redir);
+        pars->return_value = 1;
+        return ;
+    }
     if (pipe(fd) == -1)
     {
         perror("pipe");
+        ft_cleanup_heredocs(pars->redir);
+        ft_cleanup_heredocs(pars->next->redir);
         pars->return_value = 1;
         return ;
     }
@@ -111,6 +120,8 @@ void    ft_exec_simple_pipe(t_pars *pars, t_cmd *cmd)
         perror("fork");
         close(fd[0]);
         close(fd[1]);
+        ft_cleanup_heredocs(pars->redir);
+        ft_cleanup_heredocs(pars->next->redir);
         pars->return_value = 1;
         return ;
     }
@@ -122,6 +133,8 @@ void    ft_exec_simple_pipe(t_pars *pars, t_cmd *cmd)
         perror("fork");
         close(fd[0]);
         close(fd[1]);
+        ft_cleanup_heredocs(pars->redir);
+        ft_cleanup_heredocs(pars->next->redir);
         pars->return_value = 1;
         return ;
     }
@@ -133,6 +146,8 @@ void    ft_exec_simple_pipe(t_pars *pars, t_cmd *cmd)
     waitpid(pid1, &status, 0);
     waitpid(pid2, &status, 0);
     ft_signal_interactive();
+    ft_cleanup_heredocs(pars->redir);
+    ft_cleanup_heredocs(pars->next->redir);
     if (WIFEXITED(status))
         pars->return_value = WEXITSTATUS(status);
     else if (WIFSIGNALED(status))

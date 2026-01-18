@@ -82,6 +82,7 @@ t_dir	*init_redir(char **all_token)
 	redir = ft_calloc(sizeof(t_dir), 1);
 	if (!redir)
 		return (NULL);
+	redir->heredoc_files = NULL;
 	add_redir(redir, all_token);
 	return (redir);
 }

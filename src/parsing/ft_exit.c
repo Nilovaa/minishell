@@ -40,6 +40,8 @@ void	free_redir(t_dir *redir)
 		free_cmd2(redir->file_in2);
 	if (redir->file_out2)
 		free_cmd2(redir->file_out2);
+	if (redir->heredoc_files)
+		free_cmd2(redir->heredoc_files);
 	free (redir);
 }
 

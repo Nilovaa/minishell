@@ -111,6 +111,7 @@ void	ft_exec_pipeline(t_pars *pars, t_cmd *cmd)
 	int		**pipes;
 	pid_t	*pids;
 	int		status;
+	t_pars	*current;
 
 	if (!pars || !cmd)
 		return ;
@@ -127,9 +128,25 @@ void	ft_exec_pipeline(t_pars *pars, t_cmd *cmd)
 		ft_exec_simple_pipe(pars, cmd);
 		return ;
 	}
+	current = pars;
+	while (current)
+	{
+		if (ft_process_heredocs(current->redir) < 0)
+		{
+			pars->return_value = 1;
+			return ;
+		}
+		current = current->next;
+	}
 	pipes = ft_create_pipes(nb_cmds - 1);
 	if (!pipes)
 	{
+		current = pars;
+		while (current)
+		{
+			ft_cleanup_heredocs(current->redir);
+			current = current->next;
+		}
 		pars->return_value = 1;
 		return ;
 	}
@@ -138,12 +155,24 @@ void	ft_exec_pipeline(t_pars *pars, t_cmd *cmd)
 	if (!pids)
 	{
 		ft_free_pipes(pipes, nb_cmds - 1);
+		current = pars;
+		while (current)
+		{
+			ft_cleanup_heredocs(current->redir);
+			current = current->next;
+		}
 		pars->return_value = 1;
 		return ;
 	}
 	ft_signal_ignore();
 	status = ft_wait_all(pids, nb_cmds);
 	ft_signal_interactive();
+	current = pars;
+	while (current)
+	{
+		ft_cleanup_heredocs(current->redir);
+		current = current->next;
+	}
 	pars->return_value = status;
 	free(pids);
 	ft_free_pipes(pipes, nb_cmds - 1);

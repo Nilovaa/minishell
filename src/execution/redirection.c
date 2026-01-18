@@ -90,33 +90,57 @@ int	ft_check_existing_heredoc(char *tmp_file)
 	return (0);
 }
 
-int	ft_take_heredoc(char *delim)
+int	ft_create_heredoc(char *delim, char *tmp_file)
 {
-	char	*tmp_file;
 	int		fd;
-	int		fd_read;
 
-	tmp_file = ft_tmp_heredoc();
-	if (!tmp_file)
-		return (-1);
-	if (ft_check_existing_heredoc(tmp_file))
-	{
-		fd_read = open(tmp_file, O_RDONLY);
-		free(tmp_file);
-		return (fd_read);
-	}
 	fd = open(tmp_file, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
-	{
-		free(tmp_file);
 		return (-1);
-	}
 	ft_read_file(delim, fd);
 	close(fd);
-	fd_read = open(tmp_file, O_RDONLY);
-	unlink(tmp_file);
-	free(tmp_file);
-	return (fd_read);
+	return (0);
+}
+
+int	ft_process_heredocs(t_dir *redir)
+{
+	int		i;
+	char	*tmp_file;
+
+	if (!redir || !redir->file_in2)
+		return (0);
+	i = 0;
+	while (redir->file_in2[i])
+	{
+		tmp_file = ft_tmp_heredoc();
+		if (!tmp_file)
+			return (-1);
+		if (ft_create_heredoc(redir->file_in2[i], tmp_file) < 0)
+		{
+			free(tmp_file);
+			return (-1);
+		}
+		redir->heredoc_files = join_redir(tmp_file, redir->heredoc_files);
+		free(tmp_file);
+		if (!redir->heredoc_files)
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
+void	ft_cleanup_heredocs(t_dir *redir)
+{
+	int	i;
+
+	if (!redir || !redir->heredoc_files)
+		return ;
+	i = 0;
+	while (redir->heredoc_files[i])
+	{
+		unlink(redir->heredoc_files[i]);
+		i++;
+	}
 }
 
 int	ft_redirection(t_dir *redir)
@@ -143,13 +167,16 @@ int	ft_redirection(t_dir *redir)
 		}
 	}
 	i = 0;
-	if (redir->file_in2)
+	if (redir->heredoc_files)
 	{
-		while (redir->file_in2[i])
+		while (redir->heredoc_files[i])
 		{
-			fd = ft_take_heredoc(redir->file_in2[i]);
+			fd = open(redir->heredoc_files[i], O_RDONLY);
 			if (fd < 0)
+			{
+				perror(redir->heredoc_files[i]);
 				return (-1);
+			}
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 			i++;

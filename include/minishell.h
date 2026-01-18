@@ -42,6 +42,7 @@ typedef struct s_dir
 	char		**file_out;
 	char		**file_in2;
 	char		**file_out2;
+	char		**heredoc_files;
 	t_global	global;
 }	t_dir;
 
@@ -172,6 +173,8 @@ int	ft_count_cmds(t_pars *pars);
 
 // redirections
 int		ft_redirection(t_dir *redir);
+int		ft_process_heredocs(t_dir *redir);
+void	ft_cleanup_heredocs(t_dir *redir);
 
 // signals
 void	ft_signal_interactive(void);
