@@ -41,7 +41,7 @@ int main(int ac, char **av, char **env)
 	t_cmd	*cmd;
 	t_cmd	*cmd_base;
 
-	cmd_base = cmd_init(NULL, env);
+	cmd_base = cmd_init(NULL, env, 0);
 	if (!cmd_base)
 		return (1);
 	ft_signal_interactive();
@@ -61,7 +61,7 @@ int main(int ac, char **av, char **env)
 		if (line[0] != '\0')
 		{
 			add_history(line);
-			cmd = cmd_init(line, cmd_base->env);
+			cmd = cmd_init(line, cmd_base->env, cmd_base->last_exit_status);
 			if (cmd && cmd->all && cmd->all->cmd)
 			{
 				cmd->all->return_value = cmd_base->last_exit_status;

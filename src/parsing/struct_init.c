@@ -70,7 +70,7 @@ char	**cpy_arg(t_pars *token)
 	return (arg);
 }
 
-t_cmd	*cmd_init(char *line, char **envp)
+t_cmd	*cmd_init(char *line, char **envp, int last_exit_status)
 {
 	t_cmd		*cmd;
 	t_pars		*tmp;
@@ -81,7 +81,7 @@ t_cmd	*cmd_init(char *line, char **envp)
 	if (!cmd)
 		return (NULL);
 	cmd->env = cpy_env(envp);
-	cmd->last_exit_status = 0;
+	cmd->last_exit_status = last_exit_status;
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
 		return (NULL);

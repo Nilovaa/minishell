@@ -89,7 +89,7 @@ char *add_cmd(char **all_token);
 // list_pars
 void	add_list_last(t_pars *pars, char *split_pipe, t_cmd *cmd);
 t_pars		*init_token1(t_cmd *cmd);
-t_pars	*init_token(char *split_pipe, t_cmd *cmd);
+t_pars		*init_token(char *split_pipe, t_cmd *cmd);
 
 t_dir		*init_redir(char **all_token);
 char		**join_redir(char *file, char **redir);
@@ -99,7 +99,7 @@ char		**split_pipe(char *str);
 t_global	*global_init(char *line);
 t_dir		*init_dir(char **token);
 char		**cpy_arg(t_pars *token);
-t_cmd		*cmd_init(char *line, char **env);
+t_cmd		*cmd_init(char *line, char **env, int last_exit_status);
 char	**cpy_env(char **envp);
 // expander
 char	*get_env_val(char *key, t_cmd *cmd);
