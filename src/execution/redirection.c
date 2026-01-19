@@ -14,13 +14,14 @@
 
 char	*ft_tmp_heredoc(void)
 {
-	static int	i = 0;
+	static int	i;
 	char		*num;
 	char		*file;
 	char		*pid_str;
 	char		*tmp;
 	int			pid;
 
+	i = 0;
 	pid = getpid();
 	pid_str = ft_itoa(pid);
 	if (!pid_str)

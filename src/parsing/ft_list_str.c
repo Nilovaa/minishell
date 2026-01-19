@@ -40,7 +40,7 @@ t_str	*add_str_last(t_str *list, char *str)
 	return (list);
 }
 
-t_str  *char_to_list(char **str)
+t_str	*char_to_list(char **str)
 {
 	t_str	*list;
 	int		i;
@@ -72,7 +72,7 @@ int	ft_list_size_str(t_str *list)
 	return (i);
 }
 
-char **list_to_char(t_str *list)
+char	**list_to_char(t_str *list)
 {
 	char	**str;
 	t_str	*temp;

@@ -23,7 +23,6 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3)
 	res = malloc(ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1);
 	if (!res)
 		return (NULL);
-
 	i = 0;
 	j = 0;
 	while (s1[j])

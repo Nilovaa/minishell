@@ -12,13 +12,15 @@
 
 #include "../../include/minishell.h"
 
-char	**ft_make_args(t_pars *pars)			//manambotra anle pars.args ho ilaina amle execve
+char	**ft_make_args(t_pars *pars)
 {
-	int i = 0;
-	int len = 0;
-	char **argv;
+	int		i;
+	int		len;
+	char	**argv;
 
-	while (pars->arg && pars->arg[len])	
+	i = 0;
+	len = 0;
+	while (pars->arg && pars->arg[len])
 		len++;
 	argv = malloc(sizeof(char *) * (len + 2));
 	if (!argv)
@@ -30,18 +32,19 @@ char	**ft_make_args(t_pars *pars)			//manambotra anle pars.args ho ilaina amle e
 		i++;
 	}
 	argv[i + 1] = NULL;
-	return (argv);							//exec(path, argv, NULL) => args: "cmd, arg0, arg1, arg2, ... , NULL"
+	return (argv);
 }
 
-char *ft_make_path(t_pars *pars, t_cmd *cmd)  // mitady anle path ao anaty env
+char	*ft_make_path(t_pars *pars, t_cmd *cmd)
 {
-	int i = 0;
-	char **paths;
-	char *all;
+	int		i;
+	char	**paths;
+	char	*all;
 
+	i = 0;
 	if (!pars || !pars->cmd)
 		return (NULL);
-	if (access(pars->cmd, X_OK) == 0)		//verifiena rah efa chemin
+	if (access(pars->cmd, X_OK) == 0)
 	{
 		return (ft_strdup(pars->cmd));
 	}
@@ -55,7 +58,7 @@ char *ft_make_path(t_pars *pars, t_cmd *cmd)  // mitady anle path ao anaty env
 	i = 0;
 	while (paths[i])
 	{
-		all = ft_strjoin3(paths[i], "/", pars->cmd);		//creation anle chemin anle path
+		all = ft_strjoin3(paths[i], "/", pars->cmd);
 		if (access(all, X_OK) == 0)
 		{
 			ft_free_split(paths);

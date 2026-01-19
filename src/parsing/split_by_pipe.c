@@ -63,10 +63,7 @@ char	**split_pipe(char *str)
 	if (str[0] == '\0')
 		return (dest);
 	else if (!check_pipe(str))
-	{
-		
-		return (ft_putstr_fd(" syntax error near unexpected token `|'\n", 2) ,dest);
-	}
+		return (ft_putstr_fd(" syntax error near unexpected token `|'\n", 2), dest);
 	dest = ft_calloc(sizeof(char *), (ft_count_pipe(str)) + 1);
 	if (!dest)
 		return (NULL);

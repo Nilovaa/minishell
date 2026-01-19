@@ -122,7 +122,6 @@ t_pars	*init_token(char *split_pipe, t_cmd *cmd)
 	if (!pars->all_token)
 		return (NULL);
 	process_all_tokens(pars, cmd);
-
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (NULL);
@@ -135,16 +134,13 @@ t_pars	*init_token(char *split_pipe, t_cmd *cmd)
 	return (pars);
 }
 
-int len_split(char **split)
+int	len_split(char **split)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (split[i])
-	{
-
 		i++;
-	}
 	return (i);
 }
 

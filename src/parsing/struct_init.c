@@ -42,13 +42,13 @@ char	**cpy_arg(t_pars *token)
 	int		i;
 	int		j;
 	int		cmd_status;
-	
+
 	j = 0;
 	i = 0;
 	cmd_status = 0;
 	if (!token->cmd)
 		return (NULL);
-	arg = ft_calloc(sizeof(char *), token->count_token + 1 );
+	arg = ft_calloc(sizeof(char *), token->count_token + 1);
 	if (!arg)
 		return (NULL);
 	while (token->all_token[i])

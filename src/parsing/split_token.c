@@ -44,7 +44,7 @@ char	**split_token(char *str)
 	char	**dest;
 
 	if (check_qote(str))
-		return (ft_putstr_fd("Error: Unclosed quote\n", 2) ,NULL);
+		return (ft_putstr_fd("Error: Unclosed quote\n", 2), NULL);
 	dest = ft_calloc(sizeof(char *), count_token(str) + 1);
 	if (!dest)
 		return (NULL);
@@ -52,7 +52,7 @@ char	**split_token(char *str)
 	return (dest);
 }
 
-int ft_is_redir(char *str)
+int	ft_is_redir(char *str)
 {
 	if (ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0
 		|| ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0)
@@ -131,7 +131,7 @@ int	count_token(char *str)
 // 	return count;
 // }
 
-void update_quote_state(char c, int *in_sq, int *in_dq)
+void	update_quote_state(char c, int *in_sq, int *in_dq)
 {
 	if (c == '\'' && !(*in_dq))
 		*in_sq = !(*in_sq);
@@ -157,9 +157,9 @@ int	len_token(char *str)
 	}
 	while (str[i])
 	{
-		
 		update_quote_state(str[i], &in_sq, &in_dq);
-		if (!in_sq && !in_dq && (ft_is_space(str[i]) || str[i] == '<' || str[i] == '>'))
+		if (!in_sq && !in_dq && (ft_is_space(str[i])
+				|| str[i] == '<' || str[i] == '>'))
 			break ;
 		i++;
 	}

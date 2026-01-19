@@ -26,7 +26,7 @@ void	free_cmd2(char **dest)
 	}
 	free (dest);
 	dest = NULL;
-}	
+}
 
 void	free_redir(t_dir *redir)
 {

@@ -11,36 +11,15 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
-#include <unistd.h>
-/*
-void printf_test(t_cmd *cmd)
-{	
-	printf("\n \033[1;32mdebut test$\033[0m \n");
-	printf("test global ==\n");
-	printf("cmd->global->line = %s\n", cmd->sav->line);
-	printf("cmd->global->pipe = %d\n", cmd->sav->pipe);
-	printf("split-pipe\n");
-	print_cmd(cmd->sav->split_pipe);
-	printf("split-pipe\n");
-	printf("\ntest pars\n");
-	printf("cmd->pars->count_token = %d\n", cmd->all->count_token);
-	print_token(cmd->all->all_token);
-	printf("cmd->pars->cmd = %s\n", cmd->all->cmd);
-	print_cmd(cmd->all->arg);
-	printf("\033[1;31mEXEC$\033[0m \n");
-}
-*/
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
-	(void)ac;
-	(void)av;
-
 	char	*line;
 	t_cmd	*cmd;
 	t_cmd	*cmd_base;
 
+	(void)ac;
+	(void)av;
 	cmd_base = cmd_init(NULL, env, 0);
 	if (!cmd_base)
 		return (1);
@@ -79,5 +58,3 @@ int main(int ac, char **av, char **env)
 	free_all(cmd_base);
 	return (0);
 }
-
-

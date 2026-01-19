@@ -28,7 +28,6 @@ void	ft_child_process(t_pars *pars, t_cmd *cmd, int **pipes, int index, int nb_c
 		ret = ft_exec_builtin_only(pars, cmd);
 		exit(ret);
 	}
-	
 	path = ft_make_path(pars, cmd);
 	argv = ft_make_args(pars);
 	if (!path || !argv)

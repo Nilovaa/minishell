@@ -12,25 +12,25 @@
 
 #include "../../include/minishell.h"
 
-char *add_cmd(char **all_token)
+char	*add_cmd(char **all_token)
 {
 	char	*cmd;
-	int  	i;
+	int		i;
 
 	i = 0;
-
 	cmd = NULL;
 	if (!all_token)
 		return (NULL);
 	while (all_token[i])
 	{
-		if (ft_strncmp(all_token[i], ">", 1) == 0 || ft_strncmp(all_token[i], "<", 1) == 0)
+		if (ft_strncmp(all_token[i], ">", 1) == 0
+			|| ft_strncmp(all_token[i], "<", 1) == 0)
 		{
 			i++;
 			if (all_token[i])
 				i++;
 		}
-		else 
+		else
 			return (ft_strdup(all_token[i]));
 	}
 	// else if (all_token[0] && !((ft_strncmp(all_token[0], ">", 1) == 0
@@ -46,25 +46,23 @@ char *add_cmd(char **all_token)
 	return (cmd);
 }
 
-
-char *get_cmd_name(char **tokens)
+char	*get_cmd_name(char **tokens)
 {
-    int i;
-	
-	i = 0;
+	int	i;
 
-    while (tokens[i])
-    {
-        if (ft_strncmp(tokens[i], ">", 1) == 0 
+	i = 0;
+	while (tokens[i])
+	{
+		if (ft_strncmp(tokens[i], ">", 1) == 0
 			|| ft_strncmp(tokens[i], "<", 1) == 0)
-        {
-            if (tokens[i + 1])
-                i += 2;
-            else
-                i++;
-        }
-        else
-            return (tokens[i]);
-    }
-    return (NULL);
+		{
+			if (tokens[i + 1])
+				i += 2;
+			else
+				i++;
+		}
+		else
+			return (tokens[i]);
+	}
+	return (NULL);
 }

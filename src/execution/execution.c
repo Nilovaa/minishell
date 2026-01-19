@@ -14,16 +14,17 @@
 
 void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 {
-	pid_t	pid;
-	char *path = ft_make_path(pars, cmd);
-	char	**argv;
-	int		status;
+	pid_t		pid;
+	char		*path;
+	char		**argv;
+	int			status;
 
 	if (!pars || !pars->cmd)
 		return ;
+	path = ft_make_path(pars, cmd);
 	if (!path)
 	{
-		pars->return_value = 127;     // cmd not found
+		pars->return_value = 127;
 		return ;
 	}
 	argv = ft_make_args(pars);
@@ -43,14 +44,14 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 	pid = fork();
 	if (pid < 0)
 	{
-		perror("fork")	;
+		perror("fork");
 		pars->return_value = 1;
 		free(path);
 		ft_free_split(argv);
 		ft_cleanup_heredocs(pars->redir);
 		return ;
 	}
-	if (pid == 0)						//enfant
+	if (pid == 0)
 	{
 		ft_signal_child();
 		if (ft_redirection(pars->redir) < 0)
@@ -68,12 +69,12 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 	else
 	{
 		ft_signal_ignore();
-		waitpid(pid, &status, 0);				//parent
+		waitpid(pid, &status, 0);
 		ft_signal_interactive();
 		ft_cleanup_heredocs(pars->redir);
-		if (WIFEXITED(status))              // return 1 si enfant termine normalement
+		if (WIFEXITED(status))
 			pars->return_value = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))       // return d'un signal
+		else if (WIFSIGNALED(status))
 			pars->return_value = 128 + WTERMSIG(status);
 	}
 	free(path);
