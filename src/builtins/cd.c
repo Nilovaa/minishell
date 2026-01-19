@@ -54,6 +54,33 @@ static void	ft_update_oldpwd(t_cmd *cmd, char *oldpwd)
 	free(new_var);
 }
 
+static void	ft_update_pwd(t_cmd *cmd)
+{
+	char	cwd[PATH_MAX];
+	char	*new_var;
+	int		i;
+
+	if (!cmd || !cmd->env)
+		return ;
+	if (!getcwd(cwd, PATH_MAX))
+		return ;
+	new_var = ft_strjoin("PWD=", cwd);
+	if (!new_var)
+		return ;
+	i = 0;
+	while (cmd->env[i])
+	{
+		if (ft_strncmp(cmd->env[i], "PWD=", 4) == 0)
+		{
+			free(cmd->env[i]);
+			cmd->env[i] = new_var;
+			return ;
+		}
+		i++;
+	}
+	free(new_var);
+}
+
 static int	ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd)
 {
 	char	cwd[PATH_MAX];
@@ -74,6 +101,7 @@ static int	ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd)
 	}
 	if (has_cwd)
 		ft_update_oldpwd(cmd, cwd);
+	ft_update_pwd(cmd);
 	pars->return_value = 0;
 	return (0);
 }
@@ -82,18 +110,23 @@ static int	ft_cd_home(t_pars *pars, t_cmd *cmd)
 {
 	char	*path;
 
-	if (!pars->arg || !pars->arg[0] || ft_is_only_spaces(pars->arg[0])
-		|| (ft_strncmp(pars->arg[0], "~", 2) == 0))
+	if (!pars->arg || !pars->arg[0])
 	{
 		path = ft_get_env_value(cmd->env, "HOME");
 		return (ft_change_to_dir(path, pars, cmd));
 	}
-	return (0);
+	if (ft_strncmp(pars->arg[0], "~", 2) == 0 && !pars->arg[0][1])
+	{
+		path = ft_get_env_value(cmd->env, "HOME");
+		return (ft_change_to_dir(path, pars, cmd));
+	}
+	return (-1);
 }
 
 int	ft_cd(t_pars *pars, t_cmd *cmd)
 {
 	char	*path;
+	int		home_result;
 
 	if (!pars)
 		return (1);
@@ -103,8 +136,9 @@ int	ft_cd(t_pars *pars, t_cmd *cmd)
 		pars->return_value = 1;
 		return (1);
 	}
-	if (ft_cd_home(pars, cmd) == 0)
-		return (0);
+	home_result = ft_cd_home(pars, cmd);
+	if (home_result != -1)
+		return (home_result);
 	if (ft_strncmp(pars->arg[0], "-", 2) == 0)
 	{
 		path = ft_get_env_value(cmd->env, "OLDPWD");
