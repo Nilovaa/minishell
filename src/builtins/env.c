@@ -15,6 +15,7 @@
 int	ft_env(t_pars *pars, t_cmd *cmd)
 {
 	int	i;
+
 	if (!pars)
 		return (1);
 	i = 0;

@@ -54,22 +54,6 @@ static void	ft_update_oldpwd(t_cmd *cmd, char *oldpwd)
 	free(new_var);
 }
 
-static int	ft_is_only_spaces(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (1);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != ' ' && str[i] != '\t')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 static int	ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd)
 {
 	char	cwd[PATH_MAX];
@@ -94,6 +78,19 @@ static int	ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd)
 	return (0);
 }
 
+static int	ft_cd_home(t_pars *pars, t_cmd *cmd)
+{
+	char	*path;
+
+	if (!pars->arg || !pars->arg[0] || ft_is_only_spaces(pars->arg[0])
+		|| (ft_strncmp(pars->arg[0], "~", 2) == 0))
+	{
+		path = ft_get_env_value(cmd->env, "HOME");
+		return (ft_change_to_dir(path, pars, cmd));
+	}
+	return (0);
+}
+
 int	ft_cd(t_pars *pars, t_cmd *cmd)
 {
 	char	*path;
@@ -106,12 +103,8 @@ int	ft_cd(t_pars *pars, t_cmd *cmd)
 		pars->return_value = 1;
 		return (1);
 	}
-	if (!pars->arg || !pars->arg[0] || ft_is_only_spaces(pars->arg[0]) 
-					|| (ft_strncmp(pars->arg[0], "~", 2) == 0))
-	{
-		path = ft_get_env_value(cmd->env, "HOME");
-		return (ft_change_to_dir(path, pars, cmd));
-	}
+	if (ft_cd_home(pars, cmd) == 0)
+		return (0);
 	if (ft_strncmp(pars->arg[0], "-", 2) == 0)
 	{
 		path = ft_get_env_value(cmd->env, "OLDPWD");

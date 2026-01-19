@@ -152,6 +152,8 @@ int		ft_exit(t_pars *pars, t_cmd *cmd);
 int		ft_export(t_pars *pars, t_cmd *cmd);
 int		ft_unset(t_pars *pars, t_cmd *cmd);
 int		ft_env(t_pars *pars, t_cmd *cmd);
+int		ft_is_only_spaces(char *str);
+void	ft_print_exit_code(t_pars *pars);
 
 // pipe ray
 void    ft_first_child(t_pars *pars, t_cmd *cmd, int fd[2]);

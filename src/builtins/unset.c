@@ -14,7 +14,8 @@
 
 static int	ft_check_name(char *str)
 {
-	int i;
+	int	i;
+
 	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
 		return (0);
 	i = 1;
@@ -27,20 +28,23 @@ static int	ft_check_name(char *str)
 	return (1);
 }
 
-int ft_find_var(char **env, char *name)
+static int	ft_find_var(char **env, char *name)
 {
-	int i = 0;
-	int len = ft_strlen(name);
+	int	i;
+	int	len;
+
+	len = ft_strlen(name);
+	i = 0;
 	while (env && env[i])
 	{
 		if (!ft_strncmp(env[i], name, len) && env[i][len] == '=')
-			return(i);
+			return (i);
 		i++;
 	}
 	return (-1);
 }
 
-static char **ft_remove_var(char **env, int index_env)
+static char	**ft_remove_var(char **env, int index_env)
 {
 	int		i;
 	int		j;
@@ -69,19 +73,32 @@ static char **ft_remove_var(char **env, int index_env)
 	return (dest_env);
 }
 
-int	ft_unset(t_pars *pars, t_cmd *cmd)
+static int	ft_process_unset(t_cmd *cmd, t_pars *pars, char *var_name)
 {
-	int		i;
-	int		check;
 	int		index_env;
 	char	**dest_env;
 
-	if (!pars || !pars->arg)
+	index_env = ft_find_var(cmd->env, var_name);
+	if (index_env >= 0)
 	{
-		pars->return_value = 0;
-		return (0);
+		dest_env = ft_remove_var(cmd->env, index_env);
+		if (!dest_env)
+		{
+			pars->return_value = 1;
+			return (1);
+		}
+		ft_free_split(cmd->env);
+		cmd->env = dest_env;
 	}
-	if (!pars->arg[0])
+	return (0);
+}
+
+int	ft_unset(t_pars *pars, t_cmd *cmd)
+{
+	int	i;
+	int	check;
+
+	if (!pars || !pars->arg || !pars->arg[0])
 	{
 		pars->return_value = 0;
 		return (0);
@@ -94,21 +111,9 @@ int	ft_unset(t_pars *pars, t_cmd *cmd)
 		{
 			ft_putstr_fd("unset: not a valid identifier\n", 2);
 			check = 1;
-			i++;
-			continue ;
 		}
-		index_env = ft_find_var(cmd->env, pars->arg[i]);
-		if (index_env >= 0)
-		{
-			dest_env = ft_remove_var(cmd->env, index_env);
-			if (!dest_env)
-			{
-				pars->return_value = 1;
-				return (1);
-			}
-			ft_free_split(cmd->env);
-			cmd->env = dest_env;
-		}
+		else if (ft_process_unset(cmd, pars, pars->arg[i]))
+			return (1);
 		i++;
 	}
 	pars->return_value = check;

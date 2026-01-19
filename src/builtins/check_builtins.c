@@ -56,11 +56,37 @@ int	ft_exec_builtin_only(t_pars *pars, t_cmd *cmd)
 	return (ret);
 }
 
-void	ft_check_builtins(t_pars *pars, t_cmd *cmd)
+static void	ft_no_cmd(t_pars *pars)
+{
+	if (ft_redirection(pars->redir) < 0)
+		pars->return_value = 1;
+	else
+		pars->return_value = 0;
+}
+
+static void	ft_builtin(t_pars *pars, t_cmd *cmd)
 {
 	int	stdin_backup;
 	int	stdout_backup;
 
+	stdin_backup = dup(STDIN_FILENO);
+	stdout_backup = dup(STDOUT_FILENO);
+	if (ft_redirection(pars->redir) < 0)
+	{
+		close(stdin_backup);
+		close(stdout_backup);
+		pars->return_value = 1;
+		return ;
+	}
+	ft_exec_builtin_only(pars, cmd);
+	dup2(stdin_backup, STDIN_FILENO);
+	dup2(stdout_backup, STDOUT_FILENO);
+	close(stdin_backup);
+	close(stdout_backup);
+}
+
+void	ft_check_builtins(t_pars *pars, t_cmd *cmd)
+{
 	if (!pars || !pars->cmd || !cmd)
 		return ;
 	if (pars->next)
@@ -70,28 +96,12 @@ void	ft_check_builtins(t_pars *pars, t_cmd *cmd)
 	}
 	if (!pars->cmd)
 	{
-		if (ft_redirection(pars->redir) < 0)
-			pars->return_value = 1;
-		else
-			pars->return_value = 0;
+		ft_no_cmd(pars);
 		return ;
 	}
 	if (ft_is_builtin(pars->cmd))
 	{
-		stdin_backup = dup(STDIN_FILENO);
-		stdout_backup = dup(STDOUT_FILENO);
-		if (ft_redirection(pars->redir) < 0)
-		{
-			close(stdin_backup);
-			close(stdout_backup);
-			pars->return_value = 1;
-			return ;
-		}
-		ft_exec_builtin_only(pars, cmd);
-		dup2(stdin_backup, STDIN_FILENO);
-		dup2(stdout_backup, STDOUT_FILENO);
-		close(stdin_backup);
-		close(stdout_backup);
+		ft_builtin(pars, cmd);
 		return ;
 	}
 	ft_exec_simple(pars, cmd);

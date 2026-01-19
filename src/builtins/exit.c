@@ -44,22 +44,20 @@ static int	ft_count_args(char **args)
 	return (count);
 }
 
-int ft_exit(t_pars *pars, t_cmd *cmd)
+static int	ft_exit_only(t_pars *pars, t_cmd *cmd)
 {
-	int		exit_code;
-	int		arg_count;
+	int	exit_code;
 
-	printf("exit\n");
-	if (!pars || !pars->arg || !pars->arg[0])
-	{
-		if (pars)
-			exit_code = pars->return_value;
-		else
-			exit_code = 0;
-		free_all(cmd);
-		exit(exit_code);
-	}
-	arg_count = ft_count_args(pars->arg);
+	if (pars)
+		exit_code = pars->return_value;
+	else
+		exit_code = 0;
+	free_all(cmd);
+	exit(exit_code);
+}
+
+static int	ft_exit_arg(t_pars *pars, t_cmd *cmd, int arg_count)
+{
 	if (!ft_is_valid_number(pars->arg[0]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
@@ -73,6 +71,22 @@ int ft_exit(t_pars *pars, t_cmd *cmd)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
+	return (0);
+}
+
+int	ft_exit(t_pars *pars, t_cmd *cmd)
+{
+	int		exit_code;
+	int		arg_count;
+
+	printf("exit\n");
+	if (!pars || !pars->arg || !pars->arg[0])
+	{
+		ft_exit_only(pars, cmd);
+	}
+	arg_count = ft_count_args(pars->arg);
+	if (ft_exit_arg(pars, cmd, arg_count))
+		return (1);
 	exit_code = ft_atoi(pars->arg[0]);
 	exit_code = (unsigned char)exit_code;
 	free_all(cmd);
