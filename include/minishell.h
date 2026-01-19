@@ -118,6 +118,8 @@ char		**split_token(char *str);
 int			count_token(char *str);
 int			len_token(char *str);
 void update_quote_state(char c, int *in_sq, int *in_dq);
+int ft_is_redir(char *str);
+
 
 char		*cpy_token(char *str, char *dest);
 // put_cmd

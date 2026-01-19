@@ -41,30 +41,37 @@ char	**cpy_arg(t_pars *token)
 	char	**arg;
 	int		i;
 	int		j;
+	int		cmd_status;
 	
 	j = 0;
 	i = 0;
+	cmd_status = 0;
 	if (!token->cmd)
 		return (NULL);
-	arg = ft_calloc(sizeof(char *), token->count_token);
+	arg = ft_calloc(sizeof(char *), token->count_token + 1 );
 	if (!arg)
 		return (NULL);
 	while (token->all_token[i])
 	{
-		if (ft_strncmp(token->all_token[i],token->cmd, ft_strlen(token->cmd) - 1) == 0)
-			break;
-		i++;
-	}
-	i++;	
-	while (token->all_token[i])
-	{
-		if (ft_strncmp(token->all_token[i], ">", 1) == 0 || ft_strncmp(token->all_token[i], "<", 1) == 0)
-			break;
-		arg[j] = ft_strdup(token->all_token[i]);
-		if (!arg[j])
-			return (NULL);
-		i++;
-		j++;
+		if (ft_is_redir(token->all_token[i]))
+		{
+			i++;
+			if (token->all_token[i])
+				i++;
+		}
+		else if (cmd_status == 0)
+		{
+			cmd_status = 1;
+			i++;
+		}
+		else
+		{
+			arg[j] = ft_strdup(token->all_token[i]);
+			if (!arg[j])
+				return (ft_free_split(arg), NULL);
+			i++;
+			j++;
+		}
 	}
 	arg[j] = NULL;
 	return (arg);
