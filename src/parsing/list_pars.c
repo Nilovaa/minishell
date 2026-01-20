@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/16 15:02:02 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:46:30 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,41 +29,6 @@ void	add_list_last(t_pars *pars, char *split_pipe, t_cmd *cmd)
 	first->next = last;
 	last->next = NULL;
 }
-
-t_pars	*init_token1(t_cmd *cmd)
-{
-	t_pars	*pars;
-	t_pars	*tmp;
-
-	pars = ft_calloc(sizeof(t_pars), 1);
-	if (!pars)
-		return (NULL);
-	pars->count_token = count_token(cmd->sav->split_pipe[0]);
-	pars->global = cmd->sav;
-	pars->all_token = split_token(cmd->sav->split_pipe[0]);
-	if (!pars->all_token)
-		return (NULL);
-	process_all_tokens(pars, cmd);
-	// manala redir fotsiny
-	if (pars->all_token[0] && ft_is_redir(pars->all_token[0])
-		&& (!pars->all_token[1] || ft_is_redir(pars->all_token[1])))
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
-		return (NULL);
-	}
-	// 
-	pars->redir = init_redir(pars->all_token);
-	if (!pars->redir)
-		return (NULL);
-	pars->cmd = add_cmd(pars->all_token);
-	tmp = pars;
-	pars->arg = cpy_arg(tmp);
-	if (!pars->arg)
-		return (NULL);
-	pars->next = NULL;
-	return (pars);
-}
-
 
 static void	add_redir(t_dir *redir, char **all_token)
 {
@@ -94,32 +59,6 @@ t_dir	*init_redir(char **all_token)
 	redir->heredoc_files = NULL;
 	add_redir(redir, all_token);
 	return (redir);
-}
-
-
-t_pars	*init_token(char *split_pipe, t_cmd *cmd)
-{
-	t_pars	*pars;
-	t_pars	*tmp;
-
-	pars = ft_calloc(sizeof(t_pars), 1);
-	if (!pars)
-		return (NULL);
-	pars->count_token = count_token(split_pipe);
-	pars->all_token = split_token(split_pipe);
-	if (!pars->all_token)
-		return (NULL);
-	process_all_tokens(pars, cmd);
-	pars->redir = init_redir(pars->all_token);
-	if (!pars->redir)
-		return (NULL);
-	pars->cmd = add_cmd(pars->all_token);
-	tmp = pars;
-	pars->arg = cpy_arg(tmp);
-	if (!pars->arg)
-		return (NULL);
-	pars->next = NULL;
-	return (pars);
 }
 
 int	len_split(char **split)

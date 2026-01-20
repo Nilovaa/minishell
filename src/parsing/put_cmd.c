@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 16:00:06 by andriamr          #+#    #+#             */
-/*   Updated: 2025/12/18 15:54:33 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:44:28 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,40 +25,9 @@ void	print_char2(char **str)
 	}
 }
 
-void	print_all(t_cmd *cmd)
+void	ft_syntax_error(void)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	while (cmd->all)
-	{
-		printf("\n \033[1;32mPART$\033[0m == %d \n", 1 + i);
-		printf("all_toker == {");
-		j = 0;
-		while (cmd->all->all_token[j])
-		{
-			printf(" %s,", cmd->all->all_token[j]);
-			j++;
-		}
-		printf("...}\n");
-		printf("commande == %s\n", cmd->all->cmd);
-		if (cmd->all->arg)
-		{
-			printf("argument == {");
-			j = 0;
-			while (cmd->all->arg[j])
-			{
-				printf("%s ,", cmd->all->arg[j]);
-				j++;
-			}
-			printf("...}\n");
-		}
-		if (cmd->all->redir)
-			print_redir(cmd->all->redir);
-		cmd->all = cmd->all->next;
-		i++;
-	}
+	ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
 }
 
 void	print_redir(t_dir *redir)

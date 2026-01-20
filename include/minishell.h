@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/16 15:31:17 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:44:23 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ char		*cpy_token(char *str, char *dest);
 void		print_all(t_cmd *cmd);
 void		print_cdm2(char **str);
 void		print_redir(t_dir *redir);
+void		ft_syntax_error(void);
 //	pars_utils
 void		print_cmd(char **str);
 void		print_token(char **str);

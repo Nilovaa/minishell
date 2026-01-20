@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:10:37 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/15 16:48:12 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:47:26 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ char	**split_pipe(char *str)
 	if (str[0] == '\0')
 		return (dest);
 	else if (!check_pipe(str))
-		return (ft_putstr_fd(" syntax error near unexpected token `|'\n", 2), dest);
+	{
+		ft_putstr_fd(" syntax error near unexpected token `|'\n", 2);
+		return (dest);
+	}
 	dest = ft_calloc(sizeof(char *), (ft_count_pipe(str)) + 1);
 	if (!dest)
 		return (NULL);
