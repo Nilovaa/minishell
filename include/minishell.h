@@ -22,6 +22,13 @@
 #include <signal.h>
 # include <fcntl.h>
 
+typedef struct s_expand
+{
+	char	*res;
+	int		i;
+	int		q[2];
+}	t_expand;
+
 typedef struct s_str
 {
 	char	*str;

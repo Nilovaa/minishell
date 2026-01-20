@@ -59,7 +59,70 @@ int	handle_var(char *str, int i, char **res, t_cmd *cmd)
 	return (i);
 }
 
+static void	ft_append_char(t_expand *tools, char c)
+{
+	char	str[2];
+	char	*tmp;
+
+	str[0] = c;
+	str[1] = '\0';
+	tmp = ft_strjoin(tools->res, str);
+	free(tools->res);
+	tools->res = tmp;
+	tools->i++;
+}
+
+static int	ft_handle_quotes(char c, t_expand *tools)
+{
+	if (c == '\'' && !tools->q[1])
+	{
+		tools->q[0] = !tools->q[0];
+		tools->i++;
+		return (1);
+	}
+	if (c == '"' && !tools->q[0])
+	{
+		tools->q[1] = !tools->q[1];
+		tools->i++;
+		return (1);
+	}
+	return (0);
+}
+
+static void	init_tools(t_expand *tools)
+{
+	tools->res = ft_calloc(1, 1);
+	tools->i = 0;
+	tools->q[0] = 0;
+	tools->q[1] = 0;
+}
+
 char	*expand_and_clean(char *str, t_cmd *cmd)
+{
+	t_expand	tools;
+
+	init_tools(&tools);
+	if (!tools.res)
+		return (NULL);
+	while (str[tools.i])
+	{
+		if (ft_handle_quotes(str[tools.i], &tools))
+			continue ;
+		if (str[tools.i] == '$' && !tools.q[0]
+			&& (ft_isalnum(str[tools.i + 1])
+				|| str[tools.i + 1] == '_' || str[tools.i + 1] == '?'))
+		{
+			tools.i = handle_var(str, tools.i, &tools.res, cmd);
+		}
+		else
+		{
+			ft_append_char(&tools, str[tools.i]);
+		}
+	}
+	return (tools.res);
+}
+
+/*char	*expand_and_clean(char *str, t_cmd *cmd)
 {
 	char	*res;
 	char	*tmp;
@@ -96,7 +159,7 @@ char	*expand_and_clean(char *str, t_cmd *cmd)
 		}
 	}
 	return (res);
-}
+}*/
 
 void	process_all_tokens(t_pars *pars, t_cmd *cmd)
 {

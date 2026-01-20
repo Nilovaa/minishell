@@ -109,22 +109,6 @@ t_cmd	*cmd_init(char *line, char **envp, int last_exit_status)
 	return (cmd);
 }
 
-// void printf_test(t_cmd *cmd)
-// {
-// 	printf("debut test\n");
-// 	printf("test global ==\n");
-// 	printf("cmd->global->line = %s\n", cmd->sav->line);
-// 	printf("cmd->global->pipe = %d\n", cmd->sav->pipe);
-// 	printf("split-pipe\n");
-// 	print_cmd(cmd->sav->split_pipe);
-// 	printf("split-pipe\n");
-// 	printf("\ntest pars\n");
-// 	printf("cmd->pars->count_token = %d\n", cmd->all->count_token);
-// 	print_token(cmd->all->all_token);
-// 	printf("cmd->pars->cmd = %s\n", cmd->all->cmd);
-// 	print_cmd(cmd->all->arg);
-// }
-
 char	**cpy_env(char **envp)
 {
 	char	**env;
