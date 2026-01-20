@@ -6,13 +6,12 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 13:58:55 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/16 14:59:53 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:59:37 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// maka $ ho lasa val ao @env
 char	*get_env_val(char *var, t_cmd *cmd)
 {
 	int		i;
@@ -84,7 +83,8 @@ char	*expand_and_clean(char *str, t_cmd *cmd)
 			q[1] = !q[1];
 			i++;
 		}
-		else if (str[i] == '$' && !q[0] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'))
+		else if (str[i] == '$' && !q[0] && (ft_isalnum(str[i + 1])
+				|| str[i + 1] == '_' || str[i + 1] == '?'))
 			i = handle_var(str, i, &res, cmd);
 		else
 		{
