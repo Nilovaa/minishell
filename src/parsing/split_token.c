@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 11:28:45 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/16 15:42:20 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:53:46 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,85 +52,6 @@ char	**split_token(char *str)
 	return (dest);
 }
 
-int	ft_is_redir(char *str)
-{
-	if (ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0
-		|| ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0)
-		return (1);
-	return (0);
-}
-
-int	count_token(char *str)
-{
-	int	count;
-	int	i;
-	int	len;
-
-	count = 0;
-	i = 0;
-	while (str[i])
-	{
-		while (str[i] && ft_is_space(str[i]))
-			i++;
-		if (str[i])
-		{
-			count++;
-			len = len_token(&str[i]);
-			i += len;
-		}
-	}
-	return (count);
-}
-
-// int count_token(char *str)
-// {
-// 	int i = 0;
-// 	int count = 0;
-
-// 	while (str[i])
-// 	{	
-// 		while (str[i] && ft_is_space(str[i]))
-// 			i++;
-// 		if (!str[i])
-// 			break;
-// 		if (ft_is_redir(&str[i]))
-// 		{
-// 			if (str[i] == '>' && str[i + 1] == '>')
-// 				i += 2;
-// 			else if (str[i] == '<' && str[i + 1] == '<')
-// 				i += 2;
-// 			else
-// 				i++;
-// 			count++;
-// 		}
-// 		if (str[i] == 39)
-// 		{
-// 			i++;
-// 			while (str[i] && str[i] != 39)
-// 				i++;
-// 			if (str[i] == 39)
-// 				i++;
-// 			count++;
-// 		}
-// 		else if (str[i] == '"')
-// 		{
-// 			i++;
-// 			while (str[i] && str[i] != '"')
-// 				i++;
-// 			if (str[i] == '"')
-// 				i++;
-// 			count++;
-// 		}
-// 		else
-// 		{
-// 			while (str[i] && !ft_is_space(str[i]) && str[i] != 39 && str[i] != '"')
-// 				i++;
-// 			count++;
-// 		}
-// 	}
-// 	return count;
-// }
-
 void	update_quote_state(char c, int *in_sq, int *in_dq)
 {
 	if (c == '\'' && !(*in_dq))
@@ -165,44 +86,6 @@ int	len_token(char *str)
 	}
 	return (i);
 }
-
-// int	len_token(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i] && ft_is_space(str[i]))
-// 		i++;
-// 	if (str[i] == 39 || str[i] == '"')
-// 	{
-// 		if (str[i] == 39)
-// 		{
-// 			while (str[i] && str[i] != 39)
-// 				i++;
-// 			if (ft_is_space(str[i + 1]))
-// 				return (i);
-// 		}
-// 		else if (str[i] == '"')
-// 		{
-// 			while (str[i] && str[i] != '"')
-// 				i++;
-// 			if (ft_is_space(str[i]))
-// 				return (i);
-// 		}
-// 		else if (ft_is_redir(str))
-// 		{
-// 			if (str[i] == '>' && str[i + 1] == '>')
-// 				return (2);
-// 			else if (str[i] == '<' && str[i + 1] == '<')
-// 				return (2);
-// 			else
-// 				return (1);
-// 		}
-// 	}
-// 	while (str[i] && !ft_is_space(str[i]))
-// 		i++;
-// 	return (i);
-// }
 
 char	*cpy_token(char *str, char *dest)
 {
