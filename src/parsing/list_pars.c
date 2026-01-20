@@ -44,6 +44,14 @@ t_pars	*init_token1(t_cmd *cmd)
 	if (!pars->all_token)
 		return (NULL);
 	process_all_tokens(pars, cmd);
+	// manala redir fotsiny
+	if (pars->all_token[0] && ft_is_redir(pars->all_token[0])
+		&& (!pars->all_token[1] || ft_is_redir(pars->all_token[1])))
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+		return (NULL);
+	}
+	// 
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (NULL);
@@ -55,6 +63,7 @@ t_pars	*init_token1(t_cmd *cmd)
 	pars->next = NULL;
 	return (pars);
 }
+
 
 static void	add_redir(t_dir *redir, char **all_token)
 {
@@ -86,28 +95,7 @@ t_dir	*init_redir(char **all_token)
 	add_redir(redir, all_token);
 	return (redir);
 }
-/*
-char *add_cmd(char **tokens)
-{
-    int i;
-	
-	i = 0;
 
-    while (tokens[i])
-    {
-        if (ft_strncmp(tokens[i], ">", 1) == 0 
-			|| ft_strncmp(tokens[i], "<", 1) == 0)
-        {
-            if (tokens[i + 1])
-                i += 2;
-            else
-                i++;
-        }
-        else
-            return (ft_strdup(tokens[i]));
-    }
-    return (NULL);
-}*/
 
 t_pars	*init_token(char *split_pipe, t_cmd *cmd)
 {

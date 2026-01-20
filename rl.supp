@@ -1,0 +1,34 @@
+{
+   readline_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:readline
+}
+
+{
+   readline_history
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:add_history
+}
+
+{
+   readline_internal
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   readline_ncurses
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:/usr/lib/*/libncurses.so*
+}
+
