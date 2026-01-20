@@ -110,3 +110,27 @@ t_pars	*init_token1(t_cmd *cmd)
 	pars->next = NULL;
 	return (pars);
 }
+
+t_global	*global_init(char *line)
+{
+	t_global	*tmp;
+
+	tmp = ft_calloc(sizeof(t_global), 1);
+	if (!tmp)
+		return (NULL);
+	if (!line)
+	{
+		tmp->line = NULL;
+		tmp->exit = 0;
+		tmp->pipe = 0;
+		tmp->split_pipe = NULL;
+		return (tmp);
+	}
+	tmp->line = line;
+	tmp->exit = 0;
+	tmp->pipe = ft_count_pipe(line);
+	tmp->split_pipe = split_pipe(line);
+	if (!tmp->split_pipe)
+		return (NULL);
+	return (tmp);
+}

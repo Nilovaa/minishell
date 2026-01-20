@@ -12,122 +12,181 @@
 
 #include "../../include/minishell.h"
 
-t_global	*global_init(char *line)
+static void	init_arg_tools(t_arg_tools *tools, int count)
 {
-	t_global	*tmp;
+	tools->arg = ft_calloc(sizeof(char *), count + 1);
+	tools->i = 0;
+	tools->j = 0;
+	tools->cmd_found = 0;
+}
 
-	tmp = ft_calloc(sizeof(t_global), 1);
-	if (!tmp)
-		return (NULL);
-	if (!line)
+static int	ft_process_arg(t_pars *token, t_arg_tools *tools)
+{
+	if (ft_is_redir(token->all_token[tools->i]))
 	{
-		tmp->line = NULL;
-		tmp->exit = 0;
-		tmp->pipe = 0;
-		tmp->split_pipe = NULL;
-		return (tmp);
+		tools->i++;
+		if (token->all_token[tools->i])
+			tools->i++;
 	}
-	tmp->line = line;
-	tmp->exit = 0;
-	tmp->pipe = ft_count_pipe(line);
-	tmp->split_pipe = split_pipe(line);
-	if (!tmp->split_pipe)
-		return (NULL);
-	return (tmp);
+	else if (tools->cmd_found == 0)
+	{
+		tools->cmd_found = 1;
+		tools->i++;
+	}
+	else
+	{
+		tools->arg[tools->j] = ft_strdup(token->all_token[tools->i]);
+		if (!tools->arg[tools->j])
+			return (0);
+		tools->i++;
+		tools->j++;
+	}
+	return (1);
 }
 
 char	**cpy_arg(t_pars *token)
 {
-	char	**arg;
-	int		i;
-	int		j;
-	int		cmd_status;
+	t_arg_tools	tools;
 
-	j = 0;
-	i = 0;
-	cmd_status = 0;
 	if (!token->cmd)
 		return (NULL);
-	arg = ft_calloc(sizeof(char *), token->count_token + 1);
-	if (!arg)
+	init_arg_tools(&tools, token->count_token);
+	if (!tools.arg)
 		return (NULL);
-	while (token->all_token[i])
+	while (token->all_token[tools.i])
 	{
-		if (ft_is_redir(token->all_token[i]))
+		if (!ft_process_arg(token, &tools))
 		{
-			i++;
-			if (token->all_token[i])
-				i++;
-		}
-		else if (cmd_status == 0)
-		{
-			cmd_status = 1;
-			i++;
-		}
-		else
-		{
-			arg[j] = ft_strdup(token->all_token[i]);
-			if (!arg[j])
-				return (ft_free_split(arg), NULL);
-			i++;
-			j++;
+			ft_free_split(tools.arg);
+			return (NULL);
 		}
 	}
-	arg[j] = NULL;
-	return (arg);
+	tools.arg[tools.j] = NULL;
+	return (tools.arg);
 }
 
-t_cmd	*cmd_init(char *line, char **envp, int last_exit_status)
-{
-	t_cmd		*cmd;
-	t_pars		*tmp;
-	int			i;
+// char	**cpy_arg(t_pars *token)
+// {
+// 	char	**arg;
+// 	int		i;
+// 	int		j;
+// 	int		cmd_status;
 
-	i = 0;
+// 	j = 0;
+// 	i = 0;
+// 	cmd_status = 0;
+// 	if (!token->cmd)
+// 		return (NULL);
+// 	arg = ft_calloc(sizeof(char *), token->count_token + 1);
+// 	if (!arg)
+// 		return (NULL);
+// 	while (token->all_token[i])
+// 	{
+// 		if (ft_is_redir(token->all_token[i]))
+// 		{
+// 			i++;
+// 			if (token->all_token[i])
+// 				i++;
+// 		}
+// 		else if (cmd_status == 0)
+// 		{
+// 			cmd_status = 1;
+// 			i++;
+// 		}
+// 		else
+// 		{
+// 			arg[j] = ft_strdup(token->all_token[i]);
+// 			if (!arg[j])
+// 				return (ft_free_split(arg), NULL);
+// 			i++;
+// 			j++;
+// 		}
+// 	}
+// 	arg[j] = NULL;
+// 	return (arg);
+// }
+
+// t_cmd	*cmd_init(char *line, char **envp, int last_exit_status)
+// {
+// 	t_cmd		*cmd;
+// 	t_pars		*tmp;
+// 	int			i;
+
+// 	i = 0;
+// 	cmd = ft_calloc(sizeof(t_cmd), 1);
+// 	if (!cmd)
+// 		return (NULL);
+// 	cmd->env = cpy_env(envp);
+// 	cmd->last_exit_status = last_exit_status;
+// 	cmd->sav = global_init(line);
+// 	if (!cmd->sav)
+// 		return (NULL);
+// 	if (!line)
+// 	{
+// 		cmd->all = NULL;
+// 		return (cmd);
+// 	}
+// 	cmd->all = init_token1(cmd);
+// 	tmp = cmd->all;
+// 	i++;
+// 	while (cmd->sav->split_pipe[i])
+// 	{
+// 		add_list_last(cmd->all, cmd->sav->split_pipe[i], cmd);
+// 		i++;
+// 	}
+// 	cmd->all = tmp;
+// 	return (cmd);
+// }
+
+static t_cmd	*alloc_cmd_base(char **envp, int last_exit_status)
+{
+	t_cmd	*cmd;
+
 	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (NULL);
 	cmd->env = cpy_env(envp);
 	cmd->last_exit_status = last_exit_status;
-	cmd->sav = global_init(line);
-	if (!cmd->sav)
-		return (NULL);
-	if (!line)
-	{
-		cmd->all = NULL;
-		return (cmd);
-	}
+	return (cmd);
+}
+
+static void	build_token_list(t_cmd *cmd)
+{
+	int		i;
+	t_pars	*head;
+
 	cmd->all = init_token1(cmd);
-	tmp = cmd->all;
-	i++;
+	if (!cmd->all)
+		return ;
+	head = cmd->all;
+	i = 1;
 	while (cmd->sav->split_pipe[i])
 	{
 		add_list_last(cmd->all, cmd->sav->split_pipe[i], cmd);
 		i++;
 	}
-	cmd->all = tmp;
-	return (cmd);
+	cmd->all = head;
 }
 
-char	**cpy_env(char **envp)
+t_cmd	*cmd_init(char *line, char **envp, int last_exit_status)
 {
-	char	**env;
-	int		i;
+	t_cmd	*cmd;
 
-	i = 0;
-	while (envp[i])
-		i++;
-	env = ft_calloc(sizeof(char *), i + 1);
-	if (!env)
+	cmd = alloc_cmd_base(envp, last_exit_status);
+	if (!cmd)
 		return (NULL);
-	i = 0;
-	while (envp[i])
+	cmd->sav = global_init(line);
+	if (!cmd->sav)
 	{
-		env[i] = ft_strdup(envp[i]);
-		if (!env[i])
-			return (NULL);
-		i++;
+		ft_free_split(cmd->env);
+		free(cmd);
+		return (NULL);
 	}
-	env[i] = NULL;
-	return (env);
+	if (!line)
+	{
+		cmd->all = NULL;
+		return (cmd);
+	}
+	build_token_list(cmd);
+	return (cmd);
 }

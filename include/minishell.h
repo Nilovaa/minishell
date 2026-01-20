@@ -29,6 +29,14 @@ typedef struct s_expand
 	int		q[2];
 }	t_expand;
 
+typedef struct s_arg_tools
+{
+	char	**arg;
+	int		i;
+	int		j;
+	int		cmd_found;
+}	t_arg_tools;
+
 typedef struct s_str
 {
 	char	*str;
