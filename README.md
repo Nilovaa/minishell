@@ -1,117 +1,117 @@
 This project has been created as part of the 42 curriculum by <andriamr>[, <nyrakoto>[, ]]
 
-This project is untitled #minishell
+## minishell
 
-## 📝 Description
+## Description
 
-**Minishell** est une implémentation simplifiée d'un shell UNIX, réalisée dans le cadre du cursus de l'école 42. Ce projet vise à recréer les fonctionnalités de base d'un interpréteur de commandes, similaire à bash, en langage C avec une utilisation des fonction limitees.
+**Minishell** is a simplified implementation of a UNIX shell, created as part of the 42 school curriculum. This project aims to recreate the basic features of a command interpreter, similar to bash, in C with the use of limited functions.
 
-### Objectifs du projet
+### Project goals
 
-- Comprendre le fonctionnement interne d'un shell UNIX
-- Maîtriser les processus et la gestion des signaux sous Linux
-- Implémenter un parseur de ligne de commande robuste
-- Gérer les redirections et les pipes
-- Recréer des commandes internes (builtins)
-- Comprendre le multitasking au niveau processus
+- Understand the internal workings of a UNIX shell
+- Master processes and signal handling on Linux
+- Implement a robust command line parser
+- Handle redirections and pipes
+- Recreate built-in commands
+- Understand multitasking at the process level
 
-### Vue d'ensemble
+### Overview
 
-Le minishell offre une interface en ligne de commande permettant à l'utilisateur d'exécuter des programmes, de gérer des variables d'environnement, d'utiliser des redirections de fichiers et de chaîner des commandes avec des pipes. Il reproduit le comportement de bash pour les fonctionnalités implémentées.
-
----
-
-## ✨ Fonctionnalités
-
-### Commandes intégrées (Builtins)
-
-- **`echo`** : Affiche des arguments avec option `-n` (sans retour à la ligne)
-- **`cd`** : Change le répertoire courant (avec chemins relatifs et absolus)
-- **`pwd`** : Affiche le chemin du répertoire courant
-- **`export`** : Définit des variables d'environnement
-- **`unset`** : Supprime des variables d'environnement
-- **`env`** : Affiche les variables d'environnement
-- **`exit`** : Quitte le shell avec un code de retour optionnel
-
-### Fonctionnalités avancées
-
-- **Gestion des quotes** : Simple quotes `'` et double quotes `"`
-- **Expansion de variables** : `$VAR` et `$?` (code de retour)
-- **Redirections** :
-  - `<` : Redirection d'entrée
-  - `>` : Redirection de sortie (écrasement)
-  - `>>` : Redirection de sortie (ajout)
-  - `<<` : Here-document
-- **Pipes** : Chaînage de commandes avec `|`
-- **Gestion des signaux** :
-  - `Ctrl-C` : Affiche un nouveau prompt
-  - `Ctrl-D` : Quitte le shell
-  - `Ctrl-\` : Ignoré
-- **Historique des commandes** : Navigation avec les flèches haut/bas
-- **Gestion des erreurs** : Messages d'erreur appropriés et codes de retour
+Minishell provides a command line interface that allows the user to execute programs, manage environment variables, use file redirections, and chain commands with pipes. It similar of bash behavior for the implemented features.
 
 ---
 
-## 🛠️ Instructions
+## Features
 
-### Prérequis
+### Built-in commands (Builtins)
 
-- **Système d'exploitation** : Linux
-- **Compilateur** : GCC, CC ou CLANG avec support C99 ou supérieur
-- **Bibliothèques** :
+- **`echo`**: Prints arguments with `-n` option (no trailing newline)
+- **`cd`**: Changes the current directory (relative and absolute paths)
+- **`pwd`**: Prints the current working directory
+- **`export`**: Sets environment variables
+- **`unset`**: Unsets environment variables
+- **`env`**: Displays environment variables
+- **`exit`**: Exits the shell with an optional return code
+
+### Advanced features
+
+- **Quote handling**: Single quotes `'` and double quotes `"`
+- **Variable expansion**: `$VAR` and `$?` (return code)
+- **Redirections**:
+  - `<`: Input redirection
+  - `>`: Output redirection (truncate)
+  - `>>`: Output redirection (append)
+  - `<<`: Here-document
+- **Pipes**: Chaining commands with `|`
+- **Signal handling**:
+  - `Ctrl-C`: Displays a new prompt
+  - `Ctrl-D`: Exits the shell
+  - `Ctrl-\`: Ignored
+- **Command history**: Navigation with up/down arrows
+- **Error handling**: Appropriate error messages and return codes
+
+---
+
+## Instructions
+
+### Requirements
+
+- **Operating system**: Linux
+- **Compiler**: GCC, CC or CLANG with C99 or higher support
+- **Libraries**:
   - `readline` (GNU Readline Library)
   - `ncurses`
 
 ### Compilation
 
-Pour compiler le projet, utilisez simplement le Makefile fourni :
+To compile the project, simply use the provided Makefile:
 
 ```bash
 make
 ```
 
-Cela générera l'exécutable `minishell` à la racine du projet.
+This will generate the `minishell` executable at the root of the project.
 
-### Nettoyage
+### Cleaning
 
 ```bash
-# Supprime les fichiers objets
+# Remove object files
 make clean
 
-# Supprime les fichiers objets et l'exécutable
+# Remove object files and the executable
 make fclean
 
-# Recompile complètement le projet
+# Fully recompile the project
 make re
 ```
 
-### Exécution
+### Execution
 
-Pour lancer le minishell :
+To run minishell:
 
 ```bash
 ./minishell
 ```
 
-Vous verrez alors apparaître le prompt :
+You will then see the prompt:
 
 ```
 minishell$
 ```
 
-### Exemples d'utilisation
+### Usage examples
 
 ```bash
-# Commande simple
+# Simple command
 minishell$ echo "Hello World"
 Hello World
 
-# Expansion de variables
-minishell$ export NAME=John
+# Variable expansion
+minishell$ export NAME=andriamr
 minishell$ echo "Hello $NAME"
-Hello John
+Hello andriamr
 
-# Code de retour
+# Return code
 minishell$ ls /nonexistent
 ls: cannot access '/nonexistent': No such file or directory
 minishell$ echo $?
@@ -138,11 +138,11 @@ minishell$ cat << EOF
 Hello
 World
 
-# Commandes chainées
+# Chained commands
 minishell$ echo "First" | cat -e | cat -e
 First$
 
-# Changement de répertoire
+# Change directory
 minishell$ cd /tmp
 minishell$ pwd
 /tmp
@@ -150,58 +150,57 @@ minishell$ cd -
 minishell$ pwd
 /home/user
 
-# Quitter le shell
+# Exit the shell
 minishell$ exit 42
 ```
 
-## 📚 Resources
+## Resources
 
-### Documentation officielle
+### Official documentation
 
 - Peer to peer learning
 - [Linux Man Pages] - On UNIX terminal
-- [GNU Bash Manual](https://www.gnu.org/software/bash/manual/) - Documentation complète du shell bash
-- [POSIX Shell Command Language](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) - Standard POSIX pour les shells
-- [GNU Readline Library](https://tiswww.case.edu/php/chet/readline/rltop.html) - Documentation de la bibliothèque readline
+- [GNU Bash Manual](https://www.gnu.org/software/bash/manual/) - Complete documentation of the bash shell
+- [POSIX Shell Command Language](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) - POSIX standard for shells
+- [GNU Readline Library](https://tiswww.case.edu/php/chet/readline/rltop.html) - Documentation for the readline library
  ...
 
 ---
 
-## 🤖 Utilisation de l'IA
-- Pour mieux comprendre les demarches et pour faire le conception du projet afin de n'est pas commencer sur n'importe quoi
-- Pour tester la robustesse
-- Aider pour bien comprendre l'utilisation des fonctions autorises et les differencies
-- Dans le cadre de ce projet, l'IA (GitHub Copilot) a été utilisée comme outil d'assistance au conception de projet pour le rendre plus a realiser
-- Génération de ce fichier README.md
-- Structuration et formatage de la documentation
-- Suggestions d'exemples d'utilisation
+## Use of AI
+- To better understand the approach and design of the project instead of starting randomly
+- To test robustness
+- To better understand the use of authorized functions and their differences
+- In the context of this project, AI was used as an assistance tool for project design to make it more achievable
+- Structuring and formatting of the documentation
+- Suggestions of usage examples
 
 
-### Parties développées sans IA
+### Parts developed without AI
 
-- **Architecture globale du projet** : Conception des structures de données et de l'organisation modulaire
-- **Implémentation du parseur** : Tokenisation, gestion des quotes, expansion des variables
-- **Logique métier des builtins** : Implémentation de `cd`, `echo`, `export`, `unset`, etc.
-- **Gestion des processus** : Fork, exec, pipes, redirections
-- **Gestion des signaux** : Handlers SIGINT, SIGQUIT pour les différents contextes
-- **Gestion de la mémoire** : Allocation/libération et prévention des fuites mémoire
+- **Global project architecture**: Design of data structures and modular organization
+- **Parser implementation**: Tokenization, quote handling, variable expansion
+- **Business logic of builtins**: Implementation of `cd`, `echo`, `export`, `unset`, etc.
+- **Process management**: Fork, exec, pipes, redirections
+- **Signal management**: SIGINT, SIGQUIT handlers for different contexts
+- **Memory management**: Allocation/freeing and prevention of memory leaks
 
 ---
 
-## 🏗️ Structure du projet
+## Project structure
 
 ```
 minishell/
-├── Makefile              # Fichier de compilation
-├── README.md             # Ce fichier
+├── Makefile              # Build file
+├── README.md             # This file
 ├── include/
-│   └── minishell.h       # Header principal avec structures et prototypes
-├── LIBFT/                # Bibliothèque libft (fonctions utilitaires)
+│   └── minishell.h       # Main header with structures and prototypes
+├── LIBFT/                # Libft library (utility functions)
 │   ├── ft_*.c
 │   ├── libft.h
 │   └── Makefile
 └── src/
-    ├── builtins/         # Commandes intégrées
+    ├── builtins/         # Built-in commands
     │   ├── cd.c
     │   ├── echo.c
     │   ├── env.c
@@ -210,7 +209,7 @@ minishell/
     │   ├── pwd.c
     │   ├── unset.c
     │   └── check_builtins.c
-    ├── execution/        # Exécution des commandes
+    ├── execution/        # Command execution
     │   ├── main.c
     │   ├── cmd_line.c
     │   ├── execution.c
@@ -219,7 +218,7 @@ minishell/
     │   ├── pipeline_utils.c
     │   ├── redirection.c
     │   └── signal.c
-    └── parsing/          # Analyse et traitement des entrées
+    └── parsing/          # Input analysis and processing
         ├── tokenisation.c
         ├── split_token.c
         ├── ft_expander.c
@@ -240,38 +239,38 @@ minishell/
 
 ---
 
-## 🔧 Choix techniques
+## Technical choices
 
-### Architecture modulaire
+### Modular architecture
 
-Le projet est organisé en deux modules principaux :
+The project is organized into two main modules:
 
-1. **Parsing** : Analyse lexicale et syntaxique de la ligne de commande
-2. **Execution** : Gestion des processus, pipes et redirections, builtins
+1. **Parsing**: Lexical and syntactic analysis of the command line
+2. **Execution**: Management of processes, pipes and redirections, builtins
 
-Cette séparation facilite la maintenance et permet une meilleure testabilité.
+This separation facilitates maintenance and allows for better testability.
 
-### Gestion de la mémoire
+### Memory management
 
-- Utilisation systématique de `valgrind` pour détecter les fuites
-- Fonctions de libération dédiées pour chaque structure
-- Gestion rigoureuse des allocations lors de l'expansion de variables
+- Systematic use of `valgrind` to detect leaks
+- Dedicated free functions for each structure
+- Strict handling of allocations during variable expansion
 
 ### Parsing
 
-- Separation par pipe
-- Tokenisation en deux passes : détection des séparateurs puis extraction
-- Gestion des quotes en maintenant un état (in_quote, in_dquote)
-- Expansion des variables lors du parsing pour les double quotes
+- Separation by pipe
+- Two-pass tokenization: separator detection then extraction
+- Quote handling by maintaining a state (`in_quote`, `in_dquote`)
+- Variable expansion during parsing for double quotes
 
 ---
 
-## 🙏 Remerciements
+## Acknowledgements
 
-- L'équipe de l'ecole 42
-- L'équipe pédagogique de 42 Antananarivo
-- La communauté 42 pour les ressources partagées
+- The 42 school team
+- The teaching staff of 42 Antananarivo
+- The 42 community for the shared resources
 
 ---
 
-*Projet réalisé en janvier 2026 - 42 Antananarivo*
+*Project completed in January 2026 - 42 Antananarivo*
