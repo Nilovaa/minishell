@@ -21,6 +21,7 @@
 # include <linux/limits.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <limits.h>
 
 typedef struct s_expand
 {
@@ -136,6 +137,7 @@ int			handle_var(char *str, int i, char **res, t_cmd *cmd);
 char		*expand_and_clean(char *str, t_cmd *cmd);
 void		process_all_tokens(t_pars *pars, t_cmd *cmd);
 int			ft_is_space(char c);
+int			ft_atoll(char *str, int sign);
 int			skip_space(char *str);
 int			check_qote(char *str);
 char		**split_token_utils(char *str, char **dest);

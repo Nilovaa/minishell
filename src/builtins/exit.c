@@ -15,12 +15,18 @@
 static int	ft_is_valid_number(char *str)
 {
 	int	i;
+	int	sign;
 
 	if (!str || !*str)
 		return (0);
 	i = 0;
+	sign = 1;
 	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign = -1;
 		i++;
+	}
 	if (!str[i])
 		return (0);
 	while (str[i])
@@ -29,7 +35,9 @@ static int	ft_is_valid_number(char *str)
 			return (0);
 		i++;
 	}
-	return (1);
+	if (sign == -1 || str[0] == '+')
+		return (ft_atoll(str + 1, sign));
+	return (ft_atoll(str, sign));
 }
 
 static int	ft_count_args(char **args)

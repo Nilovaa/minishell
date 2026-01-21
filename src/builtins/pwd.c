@@ -48,3 +48,25 @@ int	ft_is_only_spaces(char *str)
 	}
 	return (1);
 }
+
+int	ft_atoll(char *str, int sign)
+{
+	unsigned long long	result;
+	unsigned long long	max_val;
+	int					i;
+
+	result = 0;
+	i = 0;
+	if (sign == -1)
+		max_val = 9223372036854775808ULL;
+	else
+		max_val = 9223372036854775807ULL;
+	while (str[i] && ft_isdigit(str[i]))
+	{
+		if (result > (max_val - (str[i] - '0')) / 10)
+			return (0);
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (1);
+}
