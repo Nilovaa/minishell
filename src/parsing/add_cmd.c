@@ -75,9 +75,14 @@ t_pars	*init_token(char *split_pipe, t_cmd *cmd)
 		return (NULL);
 	pars->cmd = add_cmd(pars->all_token);
 	tmp = pars;
-	pars->arg = cpy_arg(tmp);
-	if (!pars->arg)
-		return (NULL);
+	if (pars->cmd)
+	{
+		pars->arg = cpy_arg(tmp);
+		if (!pars->arg)
+			return (NULL);
+	}
+	else
+		pars->arg = NULL;
 	pars->next = NULL;
 	return (pars);
 }
@@ -104,9 +109,14 @@ t_pars	*init_token1(t_cmd *cmd)
 		return (NULL);
 	pars->cmd = add_cmd(pars->all_token);
 	tmp = pars;
-	pars->arg = cpy_arg(tmp);
-	if (!pars->arg)
-		return (NULL);
+	if (pars->cmd)
+	{
+		pars->arg = cpy_arg(tmp);
+		if (!pars->arg)
+			return (NULL);
+	}
+	else
+		pars->arg = NULL;
 	pars->next = NULL;
 	return (pars);
 }

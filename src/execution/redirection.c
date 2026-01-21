@@ -21,7 +21,7 @@ char	*ft_tmp_heredoc(void)
 	char		*tmp;
 	int			pid;
 
-	i = 0;
+	/* i should persist across calls to generate unique names */
 	pid = getpid();
 	pid_str = ft_itoa(pid);
 	if (!pid_str)

@@ -41,7 +41,7 @@ int	main(int ac, char **av, char **env)
 		{
 			add_history(line);
 			cmd = cmd_init(line, cmd_base->env, cmd_base->last_exit_status);
-			if (cmd && cmd->all && cmd->all->cmd)
+			if (cmd && cmd->all)
 			{
 				cmd->all->return_value = cmd_base->last_exit_status;
 				ft_check_builtins(cmd->all, cmd);
