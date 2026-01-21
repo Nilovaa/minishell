@@ -35,41 +35,67 @@ char	**ft_make_args(t_pars *pars)
 	return (argv);
 }
 
-char	*ft_make_path(t_pars *pars, t_cmd *cmd)
+static char	**ft_get_paths(t_cmd *cmd)
 {
-	int		i;
-	char	**paths;
-	char	*all;
+	int	i;
 
-	i = 0;
-	if (!pars || !pars->cmd)
+	if (!cmd)
 		return (NULL);
-	if (access(pars->cmd, X_OK) == 0)
-	{
-		return (ft_strdup(pars->cmd));
-	}
+	i = 0;
 	while (cmd->env[i] && ft_strncmp(cmd->env[i], "PATH=", 5))
 		i++;
 	if (!cmd->env[i])
 		return (NULL);
-	paths = ft_split(cmd->env[i] + 5, ':');
-	if (!paths || !paths[0])
+	return (ft_split(cmd->env[i] + 5, ':'));
+}
+
+static char	*ft_find_in_paths(char **paths, t_pars *pars)
+{
+	int		i;
+	char	*all;
+
+	if (!paths)
 		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
 		all = ft_strjoin3(paths[i], "/", pars->cmd);
-		if (access(all, X_OK) == 0)
+		if (!all)
 		{
-			ft_free_split(paths);
-			return (all);
+			i++;
+			continue ;
 		}
+		if (access(all, X_OK) == 0)
+			return (all);
 		free(all);
 		i++;
 	}
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(pars->cmd, 2);
-	ft_putstr_fd(": command not found\n", 2);
-	ft_free_split(paths);
 	return (NULL);
+}
+
+char	*ft_make_path(t_pars *pars, t_cmd *cmd)
+{
+	char	**paths;
+	char	*res;
+
+	if (!pars || !pars->cmd)
+		return (NULL);
+	if (access(pars->cmd, X_OK) == 0)
+		return (ft_strdup(pars->cmd));
+	paths = ft_get_paths(cmd);
+	if (!paths || !paths[0])
+	{
+		if (paths)
+			ft_free_split(paths);
+		return (NULL);
+	}
+	res = ft_find_in_paths(paths, pars);
+	if (!res)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(pars->cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+	}
+	ft_free_split(paths);
+	return (res);
 }

@@ -12,15 +12,66 @@
 
 #include "../../include/minishell.h"
 
+static t_cmd	*ft_init_cmd_base(char **env)
+{
+	t_cmd	*cmd_base;
+
+	cmd_base = cmd_init(NULL, env, 0);
+	return (cmd_base);
+}
+
+static int	ft_handle_exit_builtin(t_cmd *cmd_base, t_cmd *cmd)
+{
+	int	exit_code;
+
+	if (!cmd || !cmd->all || !cmd->all->global)
+		return (-1);
+	if (!cmd->all->global->exit)
+		return (-1);
+	exit_code = cmd->all->return_value;
+	if (cmd_base && cmd_base->env)
+	{
+		ft_free_split(cmd_base->env);
+		cmd_base->env = NULL;
+	}
+	free_all(cmd);
+	rl_clear_history();
+	free_all(cmd_base);
+	return (exit_code);
+}
+
+static int	ft_process_command(t_cmd *cmd, t_cmd *cmd_base)
+{
+	int	exit_code;
+
+	if (!cmd)
+		return (-2);
+	if (cmd->all)
+	{
+		cmd->all->return_value = cmd_base->last_exit_status;
+		ft_check_builtins(cmd->all, cmd);
+		cmd_base->last_exit_status = cmd->all->return_value;
+		exit_code = ft_handle_exit_builtin(cmd_base, cmd);
+		if (exit_code != -1)
+			return (exit_code);
+		ft_free_split(cmd_base->env);
+		cmd_base->env = cmd->env;
+		cmd->env = NULL;
+	}
+	free_all(cmd);
+	return (-2);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*line;
 	t_cmd	*cmd;
 	t_cmd	*cmd_base;
+	int		rc;
 
 	(void)ac;
 	(void)av;
-	cmd_base = cmd_init(NULL, env, 0);
+	cmd_base = ft_init_cmd_base(env);
 	if (!cmd_base)
 		return (1);
 	ft_signal_interactive();
@@ -41,26 +92,9 @@ int	main(int ac, char **av, char **env)
 		{
 			add_history(line);
 			cmd = cmd_init(line, cmd_base->env, cmd_base->last_exit_status);
-			if (cmd && cmd->all)
-			{
-				cmd->all->return_value = cmd_base->last_exit_status;
-				ft_check_builtins(cmd->all, cmd);
-				cmd_base->last_exit_status = cmd->all->return_value;
-				if (cmd->all->global && cmd->all->global->exit)
-				{
-					int exit_code = cmd->all->return_value;
-					ft_free_split(cmd_base->env);
-					cmd_base->env = NULL;
-					free_all(cmd);
-					rl_clear_history();
-					free_all(cmd_base);
-					return (exit_code);
-				}
-				ft_free_split(cmd_base->env);
-				cmd_base->env = cmd->env;
-				cmd->env = NULL;
-			}
-			free_all(cmd);
+			rc = ft_process_command(cmd, cmd_base);
+			if (rc >= 0)
+				return (rc);
 		}
 		free(line);
 	}
