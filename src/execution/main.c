@@ -62,12 +62,60 @@ static int	ft_process_command(t_cmd *cmd, t_cmd *cmd_base)
 	return (-2);
 }
 
-int	main(int ac, char **av, char **env)
+static int	ft_handle_readline_result(char *line, t_cmd *cmd_base)
+{
+	t_cmd	*cmd;
+	int		rc;
+
+	if (!line)
+	{
+		ft_putstr_fd("exit\n", 1);
+		rl_clear_history();
+		free_all(cmd_base);
+		return (0);
+	}
+	if (line[0] != '\0')
+	{
+		add_history(line);
+		cmd = cmd_init(line, cmd_base->env, cmd_base->last_exit_status);
+		rc = ft_process_command(cmd, cmd_base);
+		free(line);
+		if (rc >= 0)
+			return (rc);
+		return (-1);
+	}
+	free(line);
+	return (-1);
+}
+
+static void	ft_update_signal_status(t_cmd *cmd_base)
+{
+	if (g_signal_received)
+	{
+		cmd_base->last_exit_status = g_signal_received;
+		g_signal_received = 0;
+	}
+}
+
+static int	ft_main_loop(t_cmd *cmd_base)
 {
 	char	*line;
-	t_cmd	*cmd;
+	int		result;
+
+	while (1)
+	{
+		line = readline("minishell$ ");
+		ft_update_signal_status(cmd_base);
+		result = ft_handle_readline_result(line, cmd_base);
+		if (result != -1)
+			return (result);
+	}
+	return (0);
+}
+
+int	main(int ac, char **av, char **env)
+{
 	t_cmd	*cmd_base;
-	int		rc;
 
 	(void)ac;
 	(void)av;
@@ -75,30 +123,5 @@ int	main(int ac, char **av, char **env)
 	if (!cmd_base)
 		return (1);
 	ft_signal_interactive();
-	while (1)
-	{
-		line = readline("minishell$ ");
-		if (g_signal_received)
-		{
-			cmd_base->last_exit_status = g_signal_received;
-			g_signal_received = 0;
-		}
-		if (!line)
-		{
-			ft_putstr_fd("exit\n", 1);
-			break ;
-		}
-		if (line[0] != '\0')
-		{
-			add_history(line);
-			cmd = cmd_init(line, cmd_base->env, cmd_base->last_exit_status);
-			rc = ft_process_command(cmd, cmd_base);
-			if (rc >= 0)
-				return (rc);
-		}
-		free(line);
-	}
-	rl_clear_history();
-	free_all(cmd_base);
-	return (0);
+	return (ft_main_loop(cmd_base));
 }

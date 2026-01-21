@@ -81,6 +81,27 @@ void	ft_setup_redirections(int **pipes, int index, int nb_cmds)
 	}
 }
 
+static void	ft_free_partial_pipes(int **pipes, int count)
+{
+	while (--count >= 0)
+		free(pipes[count]);
+	free(pipes);
+}
+
+static int	ft_init_single_pipe(int **pipes, int index)
+{
+	pipes[index] = malloc(sizeof(int) * 2);
+	if (!pipes[index])
+		return (-1);
+	if (pipe(pipes[index]) == -1)
+	{
+		perror("pipe");
+		free(pipes[index]);
+		return (-1);
+	}
+	return (0);
+}
+
 int	**ft_create_pipes(int nb_pipes)
 {
 	int	**pipes;
@@ -94,20 +115,9 @@ int	**ft_create_pipes(int nb_pipes)
 	i = 0;
 	while (i < nb_pipes)
 	{
-		pipes[i] = malloc(sizeof(int) * 2);
-		if (!pipes[i])
+		if (ft_init_single_pipe(pipes, i) == -1)
 		{
-			while (--i >= 0)
-				free(pipes[i]);
-			free(pipes);
-			return (NULL);
-		}
-		if (pipe(pipes[i]) == -1)
-		{
-			perror("pipe");
-			while (i >= 0)
-				free(pipes[i--]);
-			free(pipes);
+			ft_free_partial_pipes(pipes, i);
 			return (NULL);
 		}
 		i++;

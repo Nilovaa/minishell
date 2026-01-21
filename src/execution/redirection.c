@@ -12,36 +12,33 @@
 
 #include "../../include/minishell.h"
 
+static char	*ft_build_heredoc_name(char *pid_str, char *num)
+{
+	char	*tmp;
+	char	*file;
+
+	tmp = ft_strjoin3("/tmp/.heredoc_", pid_str, "_");
+	if (!tmp)
+		return (NULL);
+	file = ft_strjoin(tmp, num);
+	free(tmp);
+	return (file);
+}
+
 char	*ft_tmp_heredoc(void)
 {
 	static int	i;
 	char		*num;
 	char		*file;
 	char		*pid_str;
-	char		*tmp;
-	int			pid;
 
-	/* i should persist across calls to generate unique names */
-	pid = getpid();
-	pid_str = ft_itoa(pid);
+	pid_str = ft_itoa(getpid());
 	if (!pid_str)
 		return (NULL);
-	num = ft_itoa(i);
-	i++;
+	num = ft_itoa(i++);
 	if (!num)
-	{
-		free(pid_str);
-		return (NULL);
-	}
-	tmp = ft_strjoin3("/tmp/.heredoc_", pid_str, "_");
-	if (!tmp)
-	{
-		free(pid_str);
-		free(num);
-		return (NULL);
-	}
-	file = ft_strjoin(tmp, num);
-	free(tmp);
+		return (free(pid_str), NULL);
+	file = ft_build_heredoc_name(pid_str, num);
 	free(pid_str);
 	free(num);
 	return (file);
@@ -144,13 +141,11 @@ void	ft_cleanup_heredocs(t_dir *redir)
 	}
 }
 
-int	ft_redirection(t_dir *redir)
+static int	ft_redirect_input_files(t_dir *redir)
 {
 	int	i;
 	int	fd;
 
-	if (!redir)
-		return (0);
 	i = 0;
 	if (redir->file_in)
 	{
@@ -158,15 +153,20 @@ int	ft_redirection(t_dir *redir)
 		{
 			fd = open(redir->file_in[i], O_RDONLY);
 			if (fd < 0)
-			{
-				perror(redir->file_in[i]);
-				return (-1);
-			}
+				return (perror(redir->file_in[i]), -1);
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 			i++;
 		}
 	}
+	return (0);
+}
+
+static int	ft_redirect_heredocs(t_dir *redir)
+{
+	int	i;
+	int	fd;
+
 	i = 0;
 	if (redir->heredoc_files)
 	{
@@ -174,15 +174,20 @@ int	ft_redirection(t_dir *redir)
 		{
 			fd = open(redir->heredoc_files[i], O_RDONLY);
 			if (fd < 0)
-			{
-				perror(redir->heredoc_files[i]);
-				return (-1);
-			}
+				return (perror(redir->heredoc_files[i]), -1);
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 			i++;
 		}
 	}
+	return (0);
+}
+
+static int	ft_redirect_output_files(t_dir *redir)
+{
+	int	i;
+	int	fd;
+
 	i = 0;
 	if (redir->file_out)
 	{
@@ -190,15 +195,20 @@ int	ft_redirection(t_dir *redir)
 		{
 			fd = open(redir->file_out[i], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-			{
-				perror(redir->file_out[i]);
-				return (-1);
-			}
+				return (perror(redir->file_out[i]), -1);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 			i++;
 		}
 	}
+	return (0);
+}
+
+static int	ft_redirect_append_files(t_dir *redir)
+{
+	int	i;
+	int	fd;
+
 	i = 0;
 	if (redir->file_out2)
 	{
@@ -206,14 +216,26 @@ int	ft_redirection(t_dir *redir)
 		{
 			fd = open(redir->file_out2[i], O_CREAT | O_WRONLY | O_APPEND, 0644);
 			if (fd < 0)
-			{
-				perror(redir->file_out2[i]);
-				return (-1);
-			}
+				return (perror(redir->file_out2[i]), -1);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 			i++;
 		}
 	}
+	return (0);
+}
+
+int	ft_redirection(t_dir *redir)
+{
+	if (!redir)
+		return (0);
+	if (ft_redirect_input_files(redir) < 0)
+		return (-1);
+	if (ft_redirect_heredocs(redir) < 0)
+		return (-1);
+	if (ft_redirect_output_files(redir) < 0)
+		return (-1);
+	if (ft_redirect_append_files(redir) < 0)
+		return (-1);
 	return (0);
 }
