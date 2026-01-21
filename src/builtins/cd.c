@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 21:47:52 by nyrakoto          #+#    #+#             */
-/*   Updated: 2025/12/29 03:36:49 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/21 21:46:08 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char	*ft_get_env_value(char **env, char *var)
+char	*ft_get_env_value(char **env, char *var)
 {
 	int		i;
 	int		len;
@@ -28,82 +28,6 @@ static char	*ft_get_env_value(char **env, char *var)
 		i++;
 	}
 	return (NULL);
-}
-
-static void	ft_update_oldpwd(t_cmd *cmd, char *oldpwd)
-{
-	int		i;
-	char	*new_var;
-
-	if (!cmd || !cmd->env)
-		return ;
-	new_var = ft_strjoin("OLDPWD=", oldpwd);
-	if (!new_var)
-		return ;
-	i = 0;
-	while (cmd->env[i])
-	{
-		if (ft_strncmp(cmd->env[i], "OLDPWD=", 7) == 0)
-		{
-			free(cmd->env[i]);
-			cmd->env[i] = new_var;
-			return ;
-		}
-		i++;
-	}
-	free(new_var);
-}
-
-static void	ft_update_pwd(t_cmd *cmd)
-{
-	char	cwd[PATH_MAX];
-	char	*new_var;
-	int		i;
-
-	if (!cmd || !cmd->env)
-		return ;
-	if (!getcwd(cwd, PATH_MAX))
-		return ;
-	new_var = ft_strjoin("PWD=", cwd);
-	if (!new_var)
-		return ;
-	i = 0;
-	while (cmd->env[i])
-	{
-		if (ft_strncmp(cmd->env[i], "PWD=", 4) == 0)
-		{
-			free(cmd->env[i]);
-			cmd->env[i] = new_var;
-			return ;
-		}
-		i++;
-	}
-	free(new_var);
-}
-
-static int	ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd)
-{
-	char	cwd[PATH_MAX];
-	int		has_cwd;
-
-	if (!path)
-	{
-		ft_putstr_fd("cd: HOME not set\n", 2);
-		pars->return_value = 1;
-		return (1);
-	}
-	has_cwd = (getcwd(cwd, PATH_MAX) != NULL);
-	if (chdir(path) != 0)
-	{
-		perror("cd");
-		pars->return_value = 1;
-		return (1);
-	}
-	if (has_cwd)
-		ft_update_oldpwd(cmd, cwd);
-	ft_update_pwd(cmd);
-	pars->return_value = 0;
-	return (0);
 }
 
 static int	ft_cd_home(t_pars *pars, t_cmd *cmd)

@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 20:54:33 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/21 22:05:09 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,5 +191,30 @@ void		ft_signal_heredoc(void);
 void		ft_signal_ignore(void);
 int			ft_get_signal_received(void);
 void		ft_reset_signal_received(void);
+int			ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd);
+void		ft_update_pwd(t_cmd *cmd);
+void		ft_update_oldpwd(t_cmd *cmd, char *oldpwd);
+void		ft_exec_simple(t_pars *pars, t_cmd *cmd);
+int			ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd);
+void		ft_exec_child_command(t_pars *pars, t_cmd *cmd);
+void		ft_execute_pipe(t_pars *pars, t_cmd *cmd, int fd[2]);
+char		*ft_get_path(t_pars *pars, t_cmd *cmd);
+char		**ft_get_argv(t_pars *pars, char *path);
+int			ft_handle_heredoc(t_pars *pars, char *path, char **argv);
+pid_t		ft_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd);
+void		ft_parent_wait(pid_t pid, t_pars *pars, char *path, char **argv);
+void		ft_handle_sigint(int sig);
+void		ft_handle_sigint_heredoc(int sig);
+void		ft_child_process(t_child_data *data);
+void		ft_cleanup_all_heredocs(t_pars *pars);
+pid_t		*ft_fork_processes(t_fork_data *data);
+char		*ft_build_heredoc_name(char *pid_str, char *num);
+int			ft_read_file(char *delim, int fd);
+char		*ft_tmp_heredoc(void);
+int			ft_create_heredoc(char *delim, char *tmp_file);
+int			ft_process_heredocs(t_dir *redir);
+void		ft_cleanup_heredocs(t_dir *redir);
+t_cmd		*ft_init_cmd_base(char **env);
+void		ft_update_signal_status(t_cmd *cmd_base);
 
 #endif

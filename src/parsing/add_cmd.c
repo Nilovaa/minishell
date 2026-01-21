@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 07:03:45 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 20:54:57 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/21 22:03:59 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,12 @@ int	init_pars_from_global(t_pars *pars, t_cmd *cmd)
 	else
 		pars->arg = NULL;
 	return (1);
+}
+
+t_cmd	*ft_init_cmd_base(char **env)
+{
+	t_cmd	*cmd_base;
+
+	cmd_base = cmd_init(NULL, env, 0);
+	return (cmd_base);
 }

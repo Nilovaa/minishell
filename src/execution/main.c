@@ -6,19 +6,11 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 20:27:45 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/05 14:38:42 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/21 22:06:18 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static t_cmd	*ft_init_cmd_base(char **env)
-{
-	t_cmd	*cmd_base;
-
-	cmd_base = cmd_init(NULL, env, 0);
-	return (cmd_base);
-}
 
 static int	ft_handle_exit_builtin(t_cmd *cmd_base, t_cmd *cmd)
 {
@@ -86,15 +78,6 @@ static int	ft_handle_readline_result(char *line, t_cmd *cmd_base)
 	}
 	free(line);
 	return (-1);
-}
-
-static void	ft_update_signal_status(t_cmd *cmd_base)
-{
-	if (ft_get_signal_received())
-	{
-		cmd_base->last_exit_status = ft_get_signal_received();
-		ft_reset_signal_received();
-	}
 }
 
 static int	ft_main_loop(t_cmd *cmd_base)

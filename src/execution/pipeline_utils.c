@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 00:15:52 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/07 00:15:56 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/21 21:49:06 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-int	ft_count_cmds(t_pars *pars)
-{
-	int		count;
-	t_pars	*tmp;
-
-	count = 0;
-	tmp = pars;
-	while (tmp)
-	{
-		count++;
-		tmp = tmp->next;
-	}
-	return (count);
-}
-
-void	ft_close_all_pipes(int **pipes, int nb_pipes)
-{
-	int	i;
-
-	if (!pipes)
-		return ;
-	i = 0;
-	while (i < nb_pipes)
-	{
-		if (pipes[i])
-		{
-			close(pipes[i][0]);
-			close(pipes[i][1]);
-		}
-		i++;
-	}
-}
 
 void	ft_free_pipes(int **pipes, int nb_pipes)
 {

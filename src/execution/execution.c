@@ -3,29 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 18:16:47 by nyrakoto          #+#    #+#             */
-/*   Updated: 2025/12/27 18:20:44 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/21 21:46:46 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char	*ft_get_path(t_pars *pars, t_cmd *cmd)
-{
-	char	*path;
-
-	path = ft_make_path(pars, cmd);
-	if (!path)
-	{
-		pars->return_value = 127;
-		return (NULL);
-	}
-	return (path);
-}
-
-static char	**ft_get_argv(t_pars *pars, char *path)
+char	**ft_get_argv(t_pars *pars, char *path)
 {
 	char	**argv;
 
@@ -39,7 +26,7 @@ static char	**ft_get_argv(t_pars *pars, char *path)
 	return (argv);
 }
 
-static int	ft_handle_heredoc(t_pars *pars, char *path, char **argv)
+int	ft_handle_heredoc(t_pars *pars, char *path, char **argv)
 {
 	if (ft_process_heredocs(pars->redir) < 0)
 	{
@@ -51,7 +38,7 @@ static int	ft_handle_heredoc(t_pars *pars, char *path, char **argv)
 	return (0);
 }
 
-static void	ft_child_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd)
+void	ft_child_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd)
 {
 	ft_signal_child();
 	if (ft_redirection(pars->redir) < 0)
@@ -67,7 +54,7 @@ static void	ft_child_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd)
 	exit(1);
 }
 
-static pid_t	ft_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd)
+pid_t	ft_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd)
 {
 	pid_t	pid;
 
@@ -86,7 +73,7 @@ static pid_t	ft_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd)
 	return (pid);
 }
 
-static void	ft_parent_wait(pid_t pid, t_pars *pars, char *path, char **argv)
+void	ft_parent_wait(pid_t pid, t_pars *pars, char *path, char **argv)
 {
 	int	status;
 
@@ -100,29 +87,4 @@ static void	ft_parent_wait(pid_t pid, t_pars *pars, char *path, char **argv)
 		pars->return_value = 128 + WTERMSIG(status);
 	free(path);
 	free(argv);
-}
-
-void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
-{
-	char	*path;
-	char	**argv;
-	pid_t	pid;
-
-	if (!pars || !pars->cmd)
-		return ;
-	path = ft_get_path(pars, cmd);
-	if (!path)
-		return ;
-	argv = ft_get_argv(pars, path);
-	if (!argv)
-	{
-		free(path);
-		return ;
-	}
-	if (ft_handle_heredoc(pars, path, argv) < 0)
-		return ;
-	pid = ft_exec(path, argv, pars, cmd);
-	if (pid == -1)
-		return ;
-	ft_parent_wait(pid, pars, path, argv);
 }

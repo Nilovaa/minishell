@@ -8,11 +8,19 @@ READLINE_FLAGS = -lreadline -lncurses
 SRCS = src/execution/main.c \
 		src/execution/cmd_line.c \
 		src/execution/execution.c \
+		src/execution/execution_utils.c \
 		src/execution/pipe.c \
+		src/execution/pipe_utils.c \
+		src/execution/pipe_utils2.c \
 		src/execution/pipeline.c \
 		src/execution/pipeline_utils.c \
+		src/execution/pipeline_utils1.c \
+		src/execution/pipeline_utils2.c \
 		src/execution/redirection.c \
+		src/execution/redirection_utils.c \
+		src/execution/redirection_utils2.c \
 		src/execution/signal.c \
+		src/execution/signal_utils.c \
 		src/parsing/add_cmd.c \
 		src/parsing/ft_exit.c \
 		src/parsing/checker_pipe.c \
@@ -37,6 +45,8 @@ SRCS = src/execution/main.c \
 		src/builtins/pwd.c \
 		src/builtins/unset.c \
 		src/builtins/cd.c \
+		src/builtins/cd_utils.c \
+
 
 OBJS = $(SRCS:.c=.o)
 
