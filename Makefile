@@ -19,6 +19,7 @@ SRCS = src/execution/main.c \
 		src/parsing/ft_quote.c \
 		src/parsing/list_pars.c \
 		src/parsing/pars_utils.c \
+		src/parsing/token_utils.c \
 		src/parsing/put_cmd.c \
 		src/parsing/split_by_pipe.c \
 		src/parsing/split_token.c \
@@ -27,6 +28,7 @@ SRCS = src/execution/main.c \
 		src/parsing/tokenisation.c \
 		src/parsing/ft_list_str.c \
 		src/parsing/ft_expander.c \
+		src/parsing/expander_utils.c \
 		src/builtins/check_builtins.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \

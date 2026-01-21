@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 17:44:39 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/21 20:54:33 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,12 @@ void		free_all(t_cmd *cmd);
 int			check_double_pipe(int i, char *str);
 int			check_pipe(char *str);
 char		*get_cmd_name(char **tokens);
+void		init_arg_tools(t_arg_tools *tools, int count);
 char		*add_cmd(char **all_token);
+t_cmd		*alloc_cmd_base(char **envp, int last_exit_status);
+void		build_token_list(t_cmd *cmd);
+int			init_pars_from_global(t_pars *pars, t_cmd *cmd);
+int			init_pars_common(t_pars *pars, char *split_pipe, t_cmd *cmd);
 void		add_list_last(t_pars *pars, char *split_pipe, t_cmd *cmd);
 t_pars		*init_token1(t_cmd *cmd);
 t_pars		*init_token(char *split_pipe, t_cmd *cmd);
