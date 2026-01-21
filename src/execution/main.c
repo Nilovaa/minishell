@@ -41,18 +41,21 @@ int	main(int ac, char **av, char **env)
 		{
 			add_history(line);
 			cmd = cmd_init(line, cmd_base->env, cmd_base->last_exit_status);
-			// if (ft_is_redir(cmd->all->all_token[0]) && cmd->all->all_token[1] && !cmd->all->all_token[2])
-			// {
-			// 	// execute heredoc only
-			// 	ft_redirection(cmd->all->redir);
-			// 	cmd_base->last_exit_status = 0;
-			// 	continue ;
-			// }
 			if (cmd && cmd->all && cmd->all->cmd)
 			{
 				cmd->all->return_value = cmd_base->last_exit_status;
 				ft_check_builtins(cmd->all, cmd);
 				cmd_base->last_exit_status = cmd->all->return_value;
+				if (cmd->all->global && cmd->all->global->exit)
+				{
+					int exit_code = cmd->all->return_value;
+					ft_free_split(cmd_base->env);
+					cmd_base->env = NULL;
+					free_all(cmd);
+					rl_clear_history();
+					free_all(cmd_base);
+					return (exit_code);
+				}
 				ft_free_split(cmd_base->env);
 				cmd_base->env = cmd->env;
 				cmd->env = NULL;
