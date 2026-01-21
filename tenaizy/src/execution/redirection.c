@@ -1,0 +1,112 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/10 13:48:44 by nyrakoto          #+#    #+#             */
+/*   Updated: 2026/01/21 22:02:29 by andriamr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static int	ft_redirect_input_files(t_dir *redir)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	if (redir->file_in)
+	{
+		while (redir->file_in[i])
+		{
+			fd = open(redir->file_in[i], O_RDONLY);
+			if (fd < 0)
+				return (perror(redir->file_in[i]), -1);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+			i++;
+		}
+	}
+	return (0);
+}
+
+static int	ft_redirect_heredocs(t_dir *redir)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	if (redir->heredoc_files)
+	{
+		while (redir->heredoc_files[i])
+		{
+			fd = open(redir->heredoc_files[i], O_RDONLY);
+			if (fd < 0)
+				return (perror(redir->heredoc_files[i]), -1);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+			i++;
+		}
+	}
+	return (0);
+}
+
+static int	ft_redirect_output_files(t_dir *redir)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	if (redir->file_out)
+	{
+		while (redir->file_out[i])
+		{
+			fd = open(redir->file_out[i], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			if (fd < 0)
+				return (perror(redir->file_out[i]), -1);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+			i++;
+		}
+	}
+	return (0);
+}
+
+static int	ft_redirect_append_files(t_dir *redir)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	if (redir->file_out2)
+	{
+		while (redir->file_out2[i])
+		{
+			fd = open(redir->file_out2[i], O_CREAT | O_WRONLY | O_APPEND, 0644);
+			if (fd < 0)
+				return (perror(redir->file_out2[i]), -1);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+			i++;
+		}
+	}
+	return (0);
+}
+
+int	ft_redirection(t_dir *redir)
+{
+	if (!redir)
+		return (0);
+	if (ft_redirect_input_files(redir) < 0)
+		return (-1);
+	if (ft_redirect_heredocs(redir) < 0)
+		return (-1);
+	if (ft_redirect_output_files(redir) < 0)
+		return (-1);
+	if (ft_redirect_append_files(redir) < 0)
+		return (-1);
+	return (0);
+}
