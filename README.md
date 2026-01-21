@@ -1,12 +1,10 @@
-# Minishell
+This project has been created as part of the 42 curriculum by <andriamr>[, <nyrakoto>[, ]]
 
-![42 School](https://img.shields.io/badge/42-School-000000?style=flat-square&logo=42&logoColor=white)
-![C](https://img.shields.io/badge/C-00599C?style=flat-square&logo=c&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
+This project is untitled #minishell
 
 ## 📝 Description
 
-**Minishell** est une implémentation simplifiée d'un shell UNIX, réalisée dans le cadre du cursus de l'école 42. Ce projet vise à recréer les fonctionnalités de base d'un interpréteur de commandes, similaire à bash ou zsh, en langage C.
+**Minishell** est une implémentation simplifiée d'un shell UNIX, réalisée dans le cadre du cursus de l'école 42. Ce projet vise à recréer les fonctionnalités de base d'un interpréteur de commandes, similaire à bash, en langage C avec une utilisation des fonction limitees.
 
 ### Objectifs du projet
 
@@ -14,7 +12,8 @@
 - Maîtriser les processus et la gestion des signaux sous Linux
 - Implémenter un parseur de ligne de commande robuste
 - Gérer les redirections et les pipes
-- Créer des commandes internes (builtins)
+- Recréer des commandes internes (builtins)
+- Comprendre le multitasking au niveau processus
 
 ### Vue d'ensemble
 
@@ -57,24 +56,11 @@ Le minishell offre une interface en ligne de commande permettant à l'utilisateu
 
 ### Prérequis
 
-- **Système d'exploitation** : Linux ou macOS
-- **Compilateur** : GCC avec support C99 ou supérieur
+- **Système d'exploitation** : Linux
+- **Compilateur** : GCC, CC ou CLANG avec support C99 ou supérieur
 - **Bibliothèques** :
   - `readline` (GNU Readline Library)
   - `ncurses`
-
-#### Installation des dépendances (Ubuntu/Debian)
-
-```bash
-sudo apt-get update
-sudo apt-get install libreadline-dev libncurses5-dev
-```
-
-#### Installation des dépendances (macOS)
-
-```bash
-brew install readline ncurses
-```
 
 ### Compilation
 
@@ -168,74 +154,28 @@ minishell$ pwd
 minishell$ exit 42
 ```
 
-### Tests avec Valgrind
-
-Pour vérifier les fuites mémoire :
-
-```bash
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
-         --suppressions=rl.supp ./minishell
-```
-
-Note : Le fichier `rl.supp` contient les suppressions pour les fuites connues de la bibliothèque readline.
-
----
-
 ## 📚 Resources
 
 ### Documentation officielle
 
+- Peer to peer learning
+- [Linux Man Pages] - On UNIX terminal
 - [GNU Bash Manual](https://www.gnu.org/software/bash/manual/) - Documentation complète du shell bash
 - [POSIX Shell Command Language](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) - Standard POSIX pour les shells
 - [GNU Readline Library](https://tiswww.case.edu/php/chet/readline/rltop.html) - Documentation de la bibliothèque readline
-- [Linux Man Pages](https://man7.org/linux/man-pages/) - Pages de manuel Linux
-
-### Gestion des processus et signaux
-
-- [fork(2)](https://man7.org/linux/man-pages/man2/fork.2.html) - Création de processus
-- [execve(2)](https://man7.org/linux/man-pages/man2/execve.2.html) - Exécution de programmes
-- [wait(2)](https://man7.org/linux/man-pages/man2/wait.2.html) - Attente de processus fils
-- [pipe(2)](https://man7.org/linux/man-pages/man2/pipe.2.html) - Création de pipes
-- [dup2(2)](https://man7.org/linux/man-pages/man2/dup2.2.html) - Duplication de descripteurs de fichiers
-- [signal(7)](https://man7.org/linux/man-pages/man7/signal.7.html) - Vue d'ensemble des signaux
-- [sigaction(2)](https://man7.org/linux/man-pages/man2/sigaction.2.html) - Gestion avancée des signaux
-
-### Articles et tutoriels
-
-- [Writing Your Own Shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf) - Guide complet sur la création d'un shell
-- [Building a Shell - Part 1](https://brennan.io/2015/01/16/write-a-shell-in-c/) - Tutoriel pratique en C
-- [Unix Pipes Implementation](https://toroid.org/unix-pipe-implementation) - Comprendre les pipes UNIX
-- [Understanding Environment Variables](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux) - Guide sur les variables d'environnement
-
-### Ressources 42
-
-- [42 Docs - Minishell](https://harm-smits.github.io/42docs/projects/minishell) - Documentation communautaire
-- [Shell Basics](https://github.com/jotavare/42-resources#minishell) - Ressources compilées par la communauté 42
+ ...
 
 ---
 
 ## 🤖 Utilisation de l'IA
+- Pour mieux comprendre les demarches et pour faire le conception du projet afin de n'est pas commencer sur n'importe quoi
+- Pour tester la robustesse
+- Aider pour bien comprendre l'utilisation des fonctions autorises et les differencies
+- Dans le cadre de ce projet, l'IA (GitHub Copilot) a été utilisée comme outil d'assistance au conception de projet pour le rendre plus a realiser
+- Génération de ce fichier README.md
+- Structuration et formatage de la documentation
+- Suggestions d'exemples d'utilisation
 
-### Contexte et approche
-
-Dans le cadre de ce projet, l'IA (GitHub Copilot) a été utilisée comme outil d'assistance au développement, tout en respectant les règles pédagogiques de l'école 42.
-
-### Tâches assistées par l'IA
-
-1. **Refactoring et optimisation du code** :
-   - Encapsulation de la variable globale `g_signal_received` dans le module `signal.c`
-   - Création de fonctions getter/setter (`ft_get_signal_received()`, `ft_reset_signal_received()`)
-   - Modification du code existant pour utiliser les nouvelles fonctions d'accès
-
-2. **Débogage et validation** :
-   - Vérification de la compilation après modifications
-   - Tests de régression pour s'assurer que le comportement reste identique
-   - Validation des codes de retour avec `echo $?`
-
-3. **Documentation** :
-   - Génération de ce fichier README.md
-   - Structuration et formatage de la documentation
-   - Suggestions d'exemples d'utilisation
 
 ### Parties développées sans IA
 
@@ -246,16 +186,6 @@ Dans le cadre de ce projet, l'IA (GitHub Copilot) a été utilisée comme outil 
 - **Gestion des signaux** : Handlers SIGINT, SIGQUIT pour les différents contextes
 - **Gestion de la mémoire** : Allocation/libération et prévention des fuites mémoire
 
-### Méthodologie
-
-L'IA a été utilisée principalement pour :
-- Accélérer les tâches répétitives et le refactoring
-- Obtenir des suggestions de bonnes pratiques en C
-- Générer rapidement de la documentation structurée
-- Valider la logique et détecter des erreurs potentielles
-
-Toute suggestion de l'IA a été **relue, comprise et validée** avant intégration, garantissant ainsi une maîtrise complète du code produit.
-
 ---
 
 ## 🏗️ Structure du projet
@@ -264,7 +194,6 @@ Toute suggestion de l'IA a été **relue, comprise et validée** avant intégrat
 minishell/
 ├── Makefile              # Fichier de compilation
 ├── README.md             # Ce fichier
-├── rl.supp               # Suppressions Valgrind pour readline
 ├── include/
 │   └── minishell.h       # Header principal avec structures et prototypes
 ├── LIBFT/                # Bibliothèque libft (fonctions utilitaires)
@@ -315,11 +244,10 @@ minishell/
 
 ### Architecture modulaire
 
-Le projet est organisé en trois modules principaux :
+Le projet est organisé en deux modules principaux :
 
 1. **Parsing** : Analyse lexicale et syntaxique de la ligne de commande
-2. **Execution** : Gestion des processus, pipes et redirections
-3. **Builtins** : Implémentation des commandes intégrées
+2. **Execution** : Gestion des processus, pipes et redirections, builtins
 
 Cette séparation facilite la maintenance et permet une meilleure testabilité.
 
@@ -329,38 +257,20 @@ Cette séparation facilite la maintenance et permet une meilleure testabilité.
 - Fonctions de libération dédiées pour chaque structure
 - Gestion rigoureuse des allocations lors de l'expansion de variables
 
-### Gestion des signaux
-
-- Utilisation de `sigaction()` plutôt que `signal()` pour plus de contrôle
-- Contextes différenciés : mode interactif, processus fils, heredoc
-- Variable globale encapsulée pour respecter les bonnes pratiques
-
 ### Parsing
 
+- Separation par pipe
 - Tokenisation en deux passes : détection des séparateurs puis extraction
 - Gestion des quotes en maintenant un état (in_quote, in_dquote)
 - Expansion des variables lors du parsing pour les double quotes
 
 ---
 
-## 👥 Auteurs
-
-- **andriamr** - [@andriamr](https://github.com/andriamr)
-- **nyrakoto** - [@Nilovaa](https://github.com/Nilovaa)
-
----
-
-## 📄 Licence
-
-Ce projet est réalisé dans le cadre du cursus de l'école 42. Le code est libre d'utilisation à des fins éducatives.
-
----
-
 ## 🙏 Remerciements
 
+- L'équipe de l'ecole 42
 - L'équipe pédagogique de 42 Antananarivo
 - La communauté 42 pour les ressources partagées
-- Les créateurs des outils open source utilisés (readline, ncurses)
 
 ---
 
