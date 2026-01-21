@@ -123,22 +123,10 @@ static int	ft_cd_home(t_pars *pars, t_cmd *cmd)
 	return (-1);
 }
 
-int	ft_cd(t_pars *pars, t_cmd *cmd)
+static int	ft_cd_after_home(t_pars *pars, t_cmd *cmd)
 {
 	char	*path;
-	int		home_result;
 
-	if (!pars)
-		return (1);
-	if (pars->arg[1] != NULL)
-	{
-		ft_putstr_fd("cd: too many arguments\n", 2);
-		pars->return_value = 1;
-		return (1);
-	}
-	home_result = ft_cd_home(pars, cmd);
-	if (home_result != -1)
-		return (home_result);
 	if (ft_strncmp(pars->arg[0], "-", 2) == 0)
 	{
 		path = ft_get_env_value(cmd->env, "OLDPWD");
@@ -152,4 +140,22 @@ int	ft_cd(t_pars *pars, t_cmd *cmd)
 		return (ft_change_to_dir(path, pars, cmd));
 	}
 	return (ft_change_to_dir(pars->arg[0], pars, cmd));
+}
+
+int	ft_cd(t_pars *pars, t_cmd *cmd)
+{
+	int	home_result;
+
+	if (!pars)
+		return (1);
+	if (pars->arg[1] != NULL)
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		pars->return_value = 1;
+		return (1);
+	}
+	home_result = ft_cd_home(pars, cmd);
+	if (home_result != -1)
+		return (home_result);
+	return (ft_cd_after_home(pars, cmd));
 }

@@ -57,32 +57,66 @@ char	*get_cmd_name(char **tokens)
 	return (NULL);
 }
 
+static int	init_pars_common(t_pars *pars, char *split_pipe, t_cmd *cmd)
+{
+	pars->count_token = count_token(split_pipe);
+	pars->all_token = split_token(split_pipe);
+	if (!pars->all_token)
+		return (0);
+	process_all_tokens(pars, cmd);
+	pars->redir = init_redir(pars->all_token);
+	if (!pars->redir)
+		return (0);
+	pars->cmd = add_cmd(pars->all_token);
+	if (pars->cmd)
+	{
+		pars->arg = cpy_arg(pars);
+		if (!pars->arg)
+			return (0);
+	}
+	else
+		pars->arg = NULL;
+	return (1);
+}
+
+static int	init_pars_from_global(t_pars *pars, t_cmd *cmd)
+{
+	pars->count_token = count_token(cmd->sav->split_pipe[0]);
+	pars->global = cmd->sav;
+	pars->all_token = split_token(cmd->sav->split_pipe[0]);
+	if (!pars->all_token)
+		return (0);
+	process_all_tokens(pars, cmd);
+	if (pars->all_token[0] && ft_is_redir(pars->all_token[0])
+		&& (!pars->all_token[1] || ft_is_redir(pars->all_token[1])))
+		return (ft_syntax_error(), 0);
+	pars->redir = init_redir(pars->all_token);
+	if (!pars->redir)
+		return (0);
+	pars->cmd = add_cmd(pars->all_token);
+	if (pars->cmd)
+	{
+		pars->arg = cpy_arg(pars);
+		if (!pars->arg)
+			return (0);
+	}
+	else
+		pars->arg = NULL;
+	return (1);
+}
+
 t_pars	*init_token(char *split_pipe, t_cmd *cmd)
 {
 	t_pars	*pars;
-	t_pars	*tmp;
 
 	pars = ft_calloc(sizeof(t_pars), 1);
 	if (!pars)
 		return (NULL);
-	pars->count_token = count_token(split_pipe);
-	pars->all_token = split_token(split_pipe);
-	if (!pars->all_token)
-		return (NULL);
-	process_all_tokens(pars, cmd);
-	pars->redir = init_redir(pars->all_token);
-	if (!pars->redir)
-		return (NULL);
-	pars->cmd = add_cmd(pars->all_token);
-	tmp = pars;
-	if (pars->cmd)
+	if (!init_pars_common(pars, split_pipe, cmd))
 	{
-		pars->arg = cpy_arg(tmp);
-		if (!pars->arg)
-			return (NULL);
+		free(pars);
+		return (NULL);
 	}
-	else
-		pars->arg = NULL;
 	pars->next = NULL;
 	return (pars);
 }
@@ -90,33 +124,15 @@ t_pars	*init_token(char *split_pipe, t_cmd *cmd)
 t_pars	*init_token1(t_cmd *cmd)
 {
 	t_pars	*pars;
-	t_pars	*tmp;
 
 	pars = ft_calloc(sizeof(t_pars), 1);
 	if (!pars)
 		return (NULL);
-	pars->count_token = count_token(cmd->sav->split_pipe[0]);
-	pars->global = cmd->sav;
-	pars->all_token = split_token(cmd->sav->split_pipe[0]);
-	if (!pars->all_token)
-		return (NULL);
-	process_all_tokens(pars, cmd);
-	if (pars->all_token[0] && ft_is_redir(pars->all_token[0])
-		&& (!pars->all_token[1] || ft_is_redir(pars->all_token[1])))
-		return (ft_syntax_error(), NULL);
-	pars->redir = init_redir(pars->all_token);
-	if (!pars->redir)
-		return (NULL);
-	pars->cmd = add_cmd(pars->all_token);
-	tmp = pars;
-	if (pars->cmd)
+	if (!init_pars_from_global(pars, cmd))
 	{
-		pars->arg = cpy_arg(tmp);
-		if (!pars->arg)
-			return (NULL);
+		free(pars);
+		return (NULL);
 	}
-	else
-		pars->arg = NULL;
 	pars->next = NULL;
 	return (pars);
 }
