@@ -90,10 +90,10 @@ static int	ft_handle_readline_result(char *line, t_cmd *cmd_base)
 
 static void	ft_update_signal_status(t_cmd *cmd_base)
 {
-	if (g_signal_received)
+	if (ft_get_signal_received())
 	{
-		cmd_base->last_exit_status = g_signal_received;
-		g_signal_received = 0;
+		cmd_base->last_exit_status = ft_get_signal_received();
+		ft_reset_signal_received();
 	}
 }
 

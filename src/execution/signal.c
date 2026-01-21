@@ -82,3 +82,13 @@ void	ft_signal_ignore(void)
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 }
+
+int	ft_get_signal_received(void)
+{
+	return (g_signal_received);
+}
+
+void	ft_reset_signal_received(void)
+{
+	g_signal_received = 0;
+}

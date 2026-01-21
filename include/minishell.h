@@ -189,6 +189,7 @@ void		ft_signal_interactive(void);
 void		ft_signal_child(void);
 void		ft_signal_heredoc(void);
 void		ft_signal_ignore(void);
-extern int	g_signal_received;
+int			ft_get_signal_received(void);
+void		ft_reset_signal_received(void);
 
 #endif
