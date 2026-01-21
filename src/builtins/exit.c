@@ -52,7 +52,6 @@ static int	ft_exit_only(t_pars *pars, t_cmd *cmd)
 		exit_code = pars->return_value;
 	else
 		exit_code = 0;
-	/* Do not exit here: mark that shell should exit and let main() cleanup */
 	if (pars && pars->global)
 		pars->global->exit = 1;
 	if (pars)
@@ -68,7 +67,6 @@ static int	ft_exit_arg(t_pars *pars, t_cmd *cmd, int arg_count)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(pars->arg[0], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		/* indicate shell should exit with code 2; main() will cleanup */
 		if (pars && pars->global)
 			pars->global->exit = 1;
 		if (pars)
@@ -97,14 +95,12 @@ int	ft_exit(t_pars *pars, t_cmd *cmd)
 	arg_count = ft_count_args(pars->arg);
 	if (ft_exit_arg(pars, cmd, arg_count))
 	{
-		/* if invalid numeric arg set, propagate return_value */
 		if (pars && pars->global && pars->global->exit)
 			return (pars->return_value);
 		return (1);
 	}
 	exit_code = ft_atoi(pars->arg[0]);
 	exit_code = (unsigned char)exit_code;
-	/* mark for exit and set return value; main() will cleanup and exit */
 	if (pars && pars->global)
 		pars->global->exit = 1;
 	if (pars)

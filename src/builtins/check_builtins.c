@@ -56,10 +56,11 @@ int	ft_exec_builtin_only(t_pars *pars, t_cmd *cmd)
 	return (ret);
 }
 
-static void ft_no_cmd(t_pars *pars)
+static void	ft_no_cmd(t_pars *pars)
 {
-	int in;
-	int out;
+	int	in;
+	int	out;
+
 	if (ft_process_heredocs(pars->redir) < 0)
 	{
 		ft_cleanup_heredocs(pars->redir);
