@@ -25,9 +25,10 @@ void	print_char2(char **str)
 	}
 }
 
-void	ft_syntax_error(void)
+int	ft_syntax_error(void)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+	return (2);
 }
 
 void	print_redir(t_dir *redir)

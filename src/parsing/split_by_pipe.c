@@ -35,7 +35,8 @@ static char	**utils_split(char *str, char **dest)
 	i = 0;
 	j = 0;
 	if (ft_count_pipe(str) == 0)
-		return (ft_putstr_fd("ERROR QUOTE\n", 2), NULL);
+		return (ft_putstr_fd("minishell: syntax error: unclosed quote\n", 2),
+			NULL);
 	while (j < ft_count_pipe(str))
 	{
 		if (str[i] == '|')
@@ -64,7 +65,7 @@ char	**split_pipe(char *str)
 		return (dest);
 	else if (!check_pipe(str))
 	{
-		ft_putstr_fd(" syntax error near unexpected token `|'\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		return (dest);
 	}
 	dest = ft_calloc(sizeof(char *), (ft_count_pipe(str)) + 1);

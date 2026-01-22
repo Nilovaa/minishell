@@ -1,5 +1,7 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*                                                                         void	print_redir(t_dir *redir);
+int		ft_syntax_error(void);
+void	print_cmd(char **str);*/
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -155,7 +157,7 @@ char		*cpy_token(char *str, char *dest);
 void		print_all(t_cmd *cmd);
 void		print_cdm2(char **str);
 void		print_redir(t_dir *redir);
-void		ft_syntax_error(void);
+int			ft_syntax_error(void);
 void		print_cmd(char **str);
 void		print_token(char **str);
 void		parsing(void);

@@ -44,7 +44,8 @@ char	**split_token(char *str)
 	char	**dest;
 
 	if (check_qote(str))
-		return (ft_putstr_fd("Error: Unclosed quote\n", 2), NULL);
+		return (ft_putstr_fd("minishell: syntax error: unclosed quote\n", 2),
+			NULL);
 	dest = ft_calloc(sizeof(char *), count_token(str) + 1);
 	if (!dest)
 		return (NULL);

@@ -37,7 +37,10 @@ static int	ft_process_command(t_cmd *cmd, t_cmd *cmd_base)
 	int	exit_code;
 
 	if (!cmd)
+	{
+		cmd_base->last_exit_status = 2;
 		return (-2);
+	}
 	if (cmd->all)
 	{
 		cmd->all->return_value = cmd_base->last_exit_status;
@@ -50,6 +53,8 @@ static int	ft_process_command(t_cmd *cmd, t_cmd *cmd_base)
 		cmd_base->env = cmd->env;
 		cmd->env = NULL;
 	}
+	else
+		cmd_base->last_exit_status = 2;
 	free_all(cmd);
 	return (-2);
 }
