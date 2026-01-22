@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:48:41 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 22:06:00 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:44:07 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,7 @@ pid_t	*ft_fork_processes(t_fork_data *data)
 			perror("fork");
 			while (--i >= 0)
 				kill(pids[i], SIGKILL);
-			free(pids);
-			return (NULL);
+			return (free(pids), NULL);
 		}
 		current = current->next;
 		i++;

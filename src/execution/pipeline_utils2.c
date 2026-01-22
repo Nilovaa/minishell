@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:50:28 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 21:52:18 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:46:39 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,20 @@ void	ft_cleanup_all_heredocs(t_pars *pars)
 		ft_cleanup_heredocs(current->redir);
 		current = current->next;
 	}
+}
+
+void	ft_free_pipes(int **pipes, int nb_pipes)
+{
+	int	i;
+
+	if (!pipes)
+		return ;
+	i = 0;
+	while (i < nb_pipes)
+	{
+		if (pipes[i])
+			free(pipes[i]);
+		i++;
+	}
+	free(pipes);
 }

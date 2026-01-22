@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:34:48 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:46 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:42:53 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ void	ft_second_child(t_pars *pars, t_cmd *cmd, int fd[2])
 	ft_exec_child_command(pars, cmd);
 }
 
+static void	ft_exec_child_command_utils(char *path, char **arg, t_cmd *cmd)
+{
+	if (path)
+		free(path);
+	if (arg)
+		free(arg);
+	if (cmd && cmd->cmd_base)
+		free_all(cmd->cmd_base);
+	free_all(cmd);
+	exit(127);
+}
+
 void	ft_exec_child_command(t_pars *pars, t_cmd *cmd)
 {
 	char	*path;
@@ -52,16 +64,7 @@ void	ft_exec_child_command(t_pars *pars, t_cmd *cmd)
 	path = ft_make_path(pars, cmd);
 	arg = ft_make_args(pars);
 	if (!path || !arg)
-	{
-		if (path)
-			free(path);
-		if (arg)
-			free(arg);
-		if (cmd && cmd->cmd_base)
-			free_all(cmd->cmd_base);
-		free_all(cmd);
-		exit(127);
-	}
+		ft_exec_child_command_utils(path, arg, cmd);
 	execve(path, arg, cmd->env);
 	perror("execve");
 	free(path);

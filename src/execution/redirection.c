@@ -6,18 +6,11 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 13:48:44 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/21 22:02:29 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:38:33 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static void	ft_cleanup_and_exit_redir(t_cmd *cmd, char *file, int is_child)
-{
-	perror(file);
-	(void)cmd;
-	(void)is_child;
-}
 
 static int	ft_redirect_input_files(t_dir *redir, t_cmd *cmd, int is_child)
 {
@@ -45,8 +38,9 @@ static int	ft_redirect_input_files(t_dir *redir, t_cmd *cmd, int is_child)
 
 static int	ft_redirect_heredocs(t_dir *redir, t_cmd *cmd, int is_child)
 {
-	int	i;
-	int	fd;
+	int		i;
+	int		fd;
+	char	*tmp;
 
 	i = 0;
 	if (redir->heredoc_files)
@@ -56,7 +50,8 @@ static int	ft_redirect_heredocs(t_dir *redir, t_cmd *cmd, int is_child)
 			fd = open(redir->heredoc_files[i], O_RDONLY);
 			if (fd < 0)
 			{
-				ft_cleanup_and_exit_redir(cmd, redir->heredoc_files[i], is_child);
+				tmp = redir->heredoc_files[i];
+				ft_cleanup_and_exit_redir(cmd, tmp, is_child);
 				return (-1);
 			}
 			dup2(fd, STDIN_FILENO);

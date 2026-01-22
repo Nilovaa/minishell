@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 22:05:09 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:36:12 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,5 +223,6 @@ int			ft_process_heredocs(t_dir *redir);
 void		ft_cleanup_heredocs(t_dir *redir);
 t_cmd		*ft_init_cmd_base(char **env);
 void		ft_update_signal_status(t_cmd *cmd_base);
+void		ft_cleanup_and_exit_redir(t_cmd *cmd, char *file, int is_child);
 
 #endif

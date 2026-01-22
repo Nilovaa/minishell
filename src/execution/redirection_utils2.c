@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:57:46 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 22:05:30 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:45:08 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,11 @@ void	ft_cleanup_heredocs(t_dir *redir)
 		unlink(redir->heredoc_files[i]);
 		i++;
 	}
+}
+
+void	ft_cleanup_and_exit_redir(t_cmd *cmd, char *file, int is_child)
+{
+	perror(file);
+	(void)cmd;
+	(void)is_child;
 }

@@ -6,26 +6,24 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 00:15:52 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/21 21:49:06 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:50:09 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_free_pipes(int **pipes, int nb_pipes)
+static void	ft_setup_redirections_utils(t_child_data	*data)
 {
-	int	i;
+	perror("dup2 stdout");
+	if (data->pids)
+		free(data->pids);
+	ft_free_pipes(data->pipes, data->nb_cmds - 1);
+	if (data->cmd && data->cmd->cmd_base)
+		free_all(data->cmd->cmd_base);
+	if (data->cmd)
+		free_all(data->cmd);
+	exit(1);
 
-	if (!pipes)
-		return ;
-	i = 0;
-	while (i < nb_pipes)
-	{
-		if (pipes[i])
-			free(pipes[i]);
-		i++;
-	}
-	free(pipes);
 }
 
 void	ft_setup_redirections(t_child_data *data)
@@ -49,15 +47,16 @@ void	ft_setup_redirections(t_child_data *data)
 	{
 		if (dup2(data->pipes[data->index][1], STDOUT_FILENO) == -1)
 		{
-			perror("dup2 stdout");
-			if (data->pids)
-				free(data->pids);
-			ft_free_pipes(data->pipes, data->nb_cmds - 1);
-			if (data->cmd && data->cmd->cmd_base)
-				free_all(data->cmd->cmd_base);
-			if (data->cmd)
-				free_all(data->cmd);
-			exit(1);
+			ft_setup_redirections_utils(data);
+			// perror("dup2 stdout");
+			// if (data->pids)
+			// 	free(data->pids);
+			// ft_free_pipes(data->pipes, data->nb_cmds - 1);
+			// if (data->cmd && data->cmd->cmd_base)
+			// 	free_all(data->cmd->cmd_base);
+			// if (data->cmd)
+			// 	free_all(data->cmd);
+			// exit(1);
 		}
 	}
 }
