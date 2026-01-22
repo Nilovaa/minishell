@@ -1,14 +1,12 @@
 /* ************************************************************************** */
-/*                                                                         void	print_redir(t_dir *redir);
-int		ft_syntax_error(void);
-void	print_cmd(char **str);*/
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/22 19:36:12 by andriamr         ###   ########.fr       */
+/*   Created: 2026/01/22 22:21:38 by andriamr          #+#    #+#             */
+/*   Updated: 2026/01/22 22:21:42 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

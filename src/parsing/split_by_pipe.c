@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:10:37 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/20 16:47:26 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 22:25:56 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ static char	**utils_split(char *str, char **dest)
 	while (j < ft_count_pipe(str))
 	{
 		if (str[i] == '|')
-		{
-			free_cmd2(dest);
-			return (dest);
-		}
+			return (free_cmd2(dest), dest);
 		dest[j] = ft_calloc(sizeof(char), len_sep(&str[i]) + 1);
 		if (!dest[j])
 			return (free_cmd2(dest), free (str), NULL);
