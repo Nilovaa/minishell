@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/20 16:46:30 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 03:27:15 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ char	**join_redir(char *file, char **redir)
 	if (!redir)
 	{
 		tmp[0] = ft_strdup(file);
+		if (!tmp[0])
+			return (free(tmp) ,NULL);
 		tmp[1] = NULL;
 		return (tmp);
 	}
@@ -93,9 +95,23 @@ char	**join_redir(char *file, char **redir)
 	while (i < len)
 	{
 		tmp[i] = ft_strdup(redir[i]);
+		if (!tmp[i])
+		{
+			while(i > 0)
+				free(tmp[i--]);
+			free(tmp);
+			return (NULL);
+		}
 		i++;
 	}
 	tmp[i] = ft_strdup(file);
+	if (!tmp[i])
+	{
+		while (i > 0)
+			free(tmp[i--]);
+		free (tmp);
+		return(NULL);
+	}
 	tmp[i + 1] = NULL;
 	return (free_cmd2(redir), tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:48:03 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 20:53:55 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 04:04:35 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,20 @@ t_cmd	*cmd_init(char *line, char **envp, int last_exit_status)
 {
 	t_cmd	*cmd;
 
-	cmd = alloc_cmd_base(envp, last_exit_status);
+	// cmd = alloc_cmd_base(envp, last_exit_status);
+	cmd = ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (NULL);
+	cmd->env = envp;
+	cmd->last_exit_status = last_exit_status;
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
 	{
-		ft_free_split(cmd->env);
-		free(cmd);
+		// ft_free_split(cmd->env);
+		free_all(cmd);
 		return (NULL);
 	}
-	if (!line)
+	if (!line || !cmd->sav->split_pipe)
 	{
 		cmd->all = NULL;
 		return (cmd);

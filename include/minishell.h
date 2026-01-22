@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 22:05:09 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/22 03:41:19 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct s_fork_data
 int			len_sep(char *str);
 int			ft_count_pipe(char *str);
 t_pars		*parssing(char *str);
+void		free_global(t_global *global);
 void		print_cmd(char **str);
 void		print_token(char **str);
 int			skip_2cot(char *str);
