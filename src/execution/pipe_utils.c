@@ -19,11 +19,19 @@ void	ft_first_child(t_pars *pars, t_cmd *cmd, int fd[2])
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 	{
 		perror("dup2");
+		if (cmd && cmd->cmd_base)
+			free_all(cmd->cmd_base);
+		free_all(cmd);
 		exit(1);
 	}
 	close(fd[1]);
-	if (ft_redirection(pars->redir) < 0)
+	if (ft_redirection(pars->redir, cmd, 1) < 0)
+	{
+		if (cmd && cmd->cmd_base)
+			free_all(cmd->cmd_base);
+		free_all(cmd);
 		exit(1);
+	}
 	ft_exec_child_command(pars, cmd);
 }
 

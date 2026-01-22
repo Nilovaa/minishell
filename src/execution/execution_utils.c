@@ -22,11 +22,15 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 		return ;
 	path = ft_get_path(pars, cmd);
 	if (!path)
+	{
+		ft_cleanup_heredocs(pars->redir);
 		return ;
+	}
 	argv = ft_get_argv(pars, path);
 	if (!argv)
 	{
 		free(path);
+		ft_cleanup_heredocs(pars->redir);
 		return ;
 	}
 	if (ft_handle_heredoc(pars, path, argv) < 0)

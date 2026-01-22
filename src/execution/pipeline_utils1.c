@@ -86,6 +86,7 @@ pid_t	ft_fork_single_process(t_fork_data *data, int i)
 		child.pars = data->pars;
 		child.cmd = data->cmd;
 		child.pipes = data->pipes;
+		child.pids = data->pids;
 		child.index = i;
 		child.nb_cmds = data->nb_cmds;
 		ft_child_process(&child);
@@ -102,6 +103,7 @@ pid_t	*ft_fork_processes(t_fork_data *data)
 	pids = malloc(sizeof(pid_t) * data->nb_cmds);
 	if (!pids)
 		return (NULL);
+	data->pids = pids;
 	current = data->pars;
 	i = 0;
 	while (i < data->nb_cmds && current)

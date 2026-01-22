@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 20:27:45 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/22 04:03:14 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/21 22:06:18 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,9 @@ static int	ft_handle_exit_builtin(t_cmd *cmd_base, t_cmd *cmd)
 	if (cmd_base && cmd_base->env)
 	{
 		ft_free_split(cmd_base->env);
-		// cmd_base->env = cmd->env;
-		cmd->env = NULL;
+		cmd_base->env = NULL;
 	}
-	// free_all(cmd);
+	free_all(cmd);
 	rl_clear_history();
 	free_all(cmd_base);
 	return (exit_code);
@@ -47,8 +46,8 @@ static int	ft_process_command(t_cmd *cmd, t_cmd *cmd_base)
 		exit_code = ft_handle_exit_builtin(cmd_base, cmd);
 		if (exit_code != -1)
 			return (exit_code);
-		// ft_free_split(cmd_base->env);
-		//  cmd->env;
+		ft_free_split(cmd_base->env);
+		cmd_base->env = cmd->env;
 		cmd->env = NULL;
 	}
 	free_all(cmd);
@@ -71,6 +70,8 @@ static int	ft_handle_readline_result(char *line, t_cmd *cmd_base)
 	{
 		add_history(line);
 		cmd = cmd_init(line, cmd_base->env, cmd_base->last_exit_status);
+		if (cmd)
+			cmd->cmd_base = cmd_base;
 		rc = ft_process_command(cmd, cmd_base);
 		free(line);
 		if (rc >= 0)

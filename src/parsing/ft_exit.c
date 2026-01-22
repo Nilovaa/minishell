@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 09:03:51 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/22 03:42:07 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:38:35 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	free_redir(t_dir *redir)
 
 void	free_pars(t_pars	*pars)
 {
+	if (!pars)
+		return ;
 	if (pars->all_token)
 		free_cmd2(pars->all_token);
 	if (pars->arg)
@@ -65,8 +67,9 @@ void	free_all(t_cmd *cmd)
 		return ;
 	if (cmd->sav)
 	{
-		free_global(cmd->sav);
-		cmd->sav = NULL;
+		if (cmd->sav->split_pipe)
+			free_cmd2(cmd->sav->split_pipe);
+		free(cmd->sav);
 	}
 	if (cmd->all)
 	{
@@ -81,13 +84,4 @@ void	free_all(t_cmd *cmd)
 	if (cmd->env)
 		ft_free_split(cmd->env);
 	free(cmd);
-}
-
-void	free_global(t_global *global)
-{
-    if (!global)
-        return ;
-    if (global->split_pipe)
-        free_cmd2(global->split_pipe);
-    free(global);
 }

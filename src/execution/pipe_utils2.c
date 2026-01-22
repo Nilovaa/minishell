@@ -19,11 +19,19 @@ void	ft_second_child(t_pars *pars, t_cmd *cmd, int fd[2])
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		perror("dup2");
+		if (cmd && cmd->cmd_base)
+			free_all(cmd->cmd_base);
+		free_all(cmd);
 		exit(1);
 	}
 	close(fd[0]);
-	if (ft_redirection(pars->redir) < 0)
+	if (ft_redirection(pars->redir, cmd, 1) < 0)
+	{
+		if (cmd && cmd->cmd_base)
+			free_all(cmd->cmd_base);
+		free_all(cmd);
 		exit(1);
+	}
 	ft_exec_child_command(pars, cmd);
 }
 
@@ -36,6 +44,9 @@ void	ft_exec_child_command(t_pars *pars, t_cmd *cmd)
 	if (ft_is_builtin(pars->cmd))
 	{
 		ret = ft_exec_builtin_only(pars, cmd);
+		if (cmd && cmd->cmd_base)
+			free_all(cmd->cmd_base);
+		free_all(cmd);
 		exit(ret);
 	}
 	path = ft_make_path(pars, cmd);
@@ -45,12 +56,18 @@ void	ft_exec_child_command(t_pars *pars, t_cmd *cmd)
 		if (path)
 			free(path);
 		if (arg)
-			ft_free_split(arg);
+			free(arg);
+		if (cmd && cmd->cmd_base)
+			free_all(cmd->cmd_base);
+		free_all(cmd);
 		exit(127);
 	}
 	execve(path, arg, cmd->env);
 	perror("execve");
 	free(path);
-	ft_free_split(arg);
+	free(arg);
+	if (cmd && cmd->cmd_base)
+		free_all(cmd->cmd_base);
+	free_all(cmd);
 	exit(1);
 }

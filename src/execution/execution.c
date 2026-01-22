@@ -32,6 +32,7 @@ int	ft_handle_heredoc(t_pars *pars, char *path, char **argv)
 	{
 		free(path);
 		ft_free_split(argv);
+		ft_cleanup_heredocs(pars->redir);
 		pars->return_value = 1;
 		return (-1);
 	}
@@ -41,16 +42,22 @@ int	ft_handle_heredoc(t_pars *pars, char *path, char **argv)
 void	ft_child_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd)
 {
 	ft_signal_child();
-	if (ft_redirection(pars->redir) < 0)
+	if (ft_redirection(pars->redir, cmd, 1) < 0)
 	{
 		free(path);
-		ft_free_split(argv);
+		free(argv);
+		if (cmd && cmd->cmd_base)
+			free_all(cmd->cmd_base);
+		free_all(cmd);
 		exit(1);
 	}
 	execve(path, argv, cmd->env);
 	perror("execve");
 	free(path);
-	ft_free_split(argv);
+	free(argv);
+	if (cmd && cmd->cmd_base)
+		free_all(cmd->cmd_base);
+	free_all(cmd);
 	exit(1);
 }
 

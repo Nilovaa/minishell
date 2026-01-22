@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 08:58:40 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/22 03:44:33 by andriamr         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:17:40 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,11 @@ char	**cpy_env(char **envp)
 {
 	char	**env;
 	int		i;
-	int		count;
 
-	count = 0;
-	while (envp[count])
-		count++;
-	env = ft_calloc(sizeof(char *), count + 1);
+	i = 0;
+	while (envp[i])
+		i++;
+	env = ft_calloc(sizeof(char *), i + 1);
 	if (!env)
 		return (NULL);
 	i = 0;
@@ -76,12 +75,7 @@ char	**cpy_env(char **envp)
 	{
 		env[i] = ft_strdup(envp[i]);
 		if (!env[i])
-		{
-			while (i > 0)
-				free(env[i--]);
-			free (env);
-			return (NULL);			
-		}
+			return (NULL);
 		i++;
 	}
 	env[i] = NULL;

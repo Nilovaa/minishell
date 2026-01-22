@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 14:47:57 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/22 03:41:19 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/21 22:05:09 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,23 @@ typedef struct s_pars
 	struct s_pars	*next;
 }	t_pars;
 
-typedef struct s_cmd
+typedef struct s_cmd	t_cmd;
+
+struct s_cmd
 {
 	t_pars			*all;
 	t_global		*sav;
 	char			**env;
 	int				last_exit_status;
-}	t_cmd;
+	t_cmd			*cmd_base;
+};
 
 typedef struct s_child_data
 {
 	t_pars	*pars;
 	t_cmd	*cmd;
 	int		**pipes;
+	pid_t	*pids;
 	int		index;
 	int		nb_cmds;
 }	t_child_data;
@@ -96,13 +100,13 @@ typedef struct s_fork_data
 	t_pars	*pars;
 	t_cmd	*cmd;
 	int		**pipes;
+	pid_t	*pids;
 	int		nb_cmds;
 }	t_fork_data;
 
 int			len_sep(char *str);
 int			ft_count_pipe(char *str);
 t_pars		*parssing(char *str);
-void		free_global(t_global *global);
 void		print_cmd(char **str);
 void		print_token(char **str);
 int			skip_2cot(char *str);
@@ -180,12 +184,12 @@ int			ft_exec_builtin_only(t_pars *pars, t_cmd *cmd);
 void		ft_check_builtins(t_pars *pars, t_cmd *cmd);
 void		ft_exec_pipeline(t_pars *pars, t_cmd *cmd);
 int			ft_wait_all(pid_t *pids, int nb_cmds);
-void		ft_setup_redirections(int **pipes, int index, int nb_cmds);
+void		ft_setup_redirections(t_child_data *data);
 int			**ft_create_pipes(int nb_pipes);
 void		ft_free_pipes(int **pipes, int nb_pipes);
 void		ft_close_all_pipes(int **pipes, int nb_pipes);
 int			ft_count_cmds(t_pars *pars);
-int			ft_redirection(t_dir *redir);
+int			ft_redirection(t_dir *redir, t_cmd *cmd, int is_child);
 int			ft_process_heredocs(t_dir *redir);
 void		ft_cleanup_heredocs(t_dir *redir);
 void		ft_signal_interactive(void);

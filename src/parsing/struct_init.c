@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:36:36 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/22 03:59:21 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/21 20:51:27 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,6 @@ t_cmd	*alloc_cmd_base(char **envp, int last_exit_status)
 	if (!cmd)
 		return (NULL);
 	cmd->env = cpy_env(envp);
-	if (!cmd->env)
-	{
-		free(cmd);
-		return (NULL);
-	}
 	cmd->last_exit_status = last_exit_status;
 	return (cmd);
 }

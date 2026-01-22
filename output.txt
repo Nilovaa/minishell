@@ -1,0 +1,8 @@
+include
+LIBFT
+Makefile
+minishell
+output.txt
+README.md
+rl.supp
+src

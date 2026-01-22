@@ -69,7 +69,7 @@ static void	ft_no_cmd(t_pars *pars)
 	}
 	in = dup(STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
-	if (ft_redirection(pars->redir) < 0)
+	if (ft_redirection(pars->redir, NULL, 0) < 0)
 		pars->return_value = 1;
 	else
 		pars->return_value = 0;
@@ -85,12 +85,19 @@ static void	ft_builtin(t_pars *pars, t_cmd *cmd)
 	int	stdin_backup;
 	int	stdout_backup;
 
+	if (ft_process_heredocs(pars->redir) < 0)
+	{
+		ft_cleanup_heredocs(pars->redir);
+		pars->return_value = 130;
+		return ;
+	}
 	stdin_backup = dup(STDIN_FILENO);
 	stdout_backup = dup(STDOUT_FILENO);
-	if (ft_redirection(pars->redir) < 0)
+	if (ft_redirection(pars->redir, NULL, 0) < 0)
 	{
 		close(stdin_backup);
 		close(stdout_backup);
+		ft_cleanup_heredocs(pars->redir);
 		pars->return_value = 1;
 		return ;
 	}
@@ -99,6 +106,7 @@ static void	ft_builtin(t_pars *pars, t_cmd *cmd)
 	dup2(stdout_backup, STDOUT_FILENO);
 	close(stdin_backup);
 	close(stdout_backup);
+	ft_cleanup_heredocs(pars->redir);
 }
 
 void	ft_check_builtins(t_pars *pars, t_cmd *cmd)

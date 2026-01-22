@@ -12,7 +12,14 @@
 
 #include "../../include/minishell.h"
 
-static int	ft_redirect_input_files(t_dir *redir)
+static void	ft_cleanup_and_exit_redir(t_cmd *cmd, char *file, int is_child)
+{
+	perror(file);
+	(void)cmd;
+	(void)is_child;
+}
+
+static int	ft_redirect_input_files(t_dir *redir, t_cmd *cmd, int is_child)
 {
 	int	i;
 	int	fd;
@@ -24,7 +31,10 @@ static int	ft_redirect_input_files(t_dir *redir)
 		{
 			fd = open(redir->file_in[i], O_RDONLY);
 			if (fd < 0)
-				return (perror(redir->file_in[i]), -1);
+			{
+				ft_cleanup_and_exit_redir(cmd, redir->file_in[i], is_child);
+				return (-1);
+			}
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 			i++;
@@ -33,7 +43,7 @@ static int	ft_redirect_input_files(t_dir *redir)
 	return (0);
 }
 
-static int	ft_redirect_heredocs(t_dir *redir)
+static int	ft_redirect_heredocs(t_dir *redir, t_cmd *cmd, int is_child)
 {
 	int	i;
 	int	fd;
@@ -45,7 +55,10 @@ static int	ft_redirect_heredocs(t_dir *redir)
 		{
 			fd = open(redir->heredoc_files[i], O_RDONLY);
 			if (fd < 0)
-				return (perror(redir->heredoc_files[i]), -1);
+			{
+				ft_cleanup_and_exit_redir(cmd, redir->heredoc_files[i], is_child);
+				return (-1);
+			}
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 			i++;
@@ -54,7 +67,7 @@ static int	ft_redirect_heredocs(t_dir *redir)
 	return (0);
 }
 
-static int	ft_redirect_output_files(t_dir *redir)
+static int	ft_redirect_output_files(t_dir *redir, t_cmd *cmd, int is_child)
 {
 	int	i;
 	int	fd;
@@ -66,7 +79,10 @@ static int	ft_redirect_output_files(t_dir *redir)
 		{
 			fd = open(redir->file_out[i], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				return (perror(redir->file_out[i]), -1);
+			{
+				ft_cleanup_and_exit_redir(cmd, redir->file_out[i], is_child);
+				return (-1);
+			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 			i++;
@@ -75,7 +91,7 @@ static int	ft_redirect_output_files(t_dir *redir)
 	return (0);
 }
 
-static int	ft_redirect_append_files(t_dir *redir)
+static int	ft_redirect_append_files(t_dir *redir, t_cmd *cmd, int is_child)
 {
 	int	i;
 	int	fd;
@@ -87,7 +103,10 @@ static int	ft_redirect_append_files(t_dir *redir)
 		{
 			fd = open(redir->file_out2[i], O_CREAT | O_WRONLY | O_APPEND, 0644);
 			if (fd < 0)
-				return (perror(redir->file_out2[i]), -1);
+			{
+				ft_cleanup_and_exit_redir(cmd, redir->file_out2[i], is_child);
+				return (-1);
+			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 			i++;
@@ -96,17 +115,17 @@ static int	ft_redirect_append_files(t_dir *redir)
 	return (0);
 }
 
-int	ft_redirection(t_dir *redir)
+int	ft_redirection(t_dir *redir, t_cmd *cmd, int is_child)
 {
 	if (!redir)
 		return (0);
-	if (ft_redirect_input_files(redir) < 0)
+	if (ft_redirect_input_files(redir, cmd, is_child) < 0)
 		return (-1);
-	if (ft_redirect_heredocs(redir) < 0)
+	if (ft_redirect_heredocs(redir, cmd, is_child) < 0)
 		return (-1);
-	if (ft_redirect_output_files(redir) < 0)
+	if (ft_redirect_output_files(redir, cmd, is_child) < 0)
 		return (-1);
-	if (ft_redirect_append_files(redir) < 0)
+	if (ft_redirect_append_files(redir, cmd, is_child) < 0)
 		return (-1);
 	return (0);
 }

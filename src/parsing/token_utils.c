@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:48:03 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/22 04:04:35 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/21 20:53:55 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,17 @@ t_cmd	*cmd_init(char *line, char **envp, int last_exit_status)
 {
 	t_cmd	*cmd;
 
-	// cmd = alloc_cmd_base(envp, last_exit_status);
-	cmd = ft_calloc(sizeof(t_cmd), 1);
+	cmd = alloc_cmd_base(envp, last_exit_status);
 	if (!cmd)
 		return (NULL);
-	cmd->env = envp;
-	cmd->last_exit_status = last_exit_status;
 	cmd->sav = global_init(line);
 	if (!cmd->sav)
 	{
-		// ft_free_split(cmd->env);
-		free_all(cmd);
+		ft_free_split(cmd->env);
+		free(cmd);
 		return (NULL);
 	}
-	if (!line || !cmd->sav->split_pipe)
+	if (!line)
 	{
 		cmd->all = NULL;
 		return (cmd);
@@ -45,7 +42,16 @@ void	build_token_list(t_cmd *cmd)
 
 	cmd->all = init_token1(cmd);
 	if (!cmd->all)
+	{
+		if (cmd->sav)
+		{
+			if (cmd->sav->split_pipe)
+				free_cmd2(cmd->sav->split_pipe);
+			free(cmd->sav);
+			cmd->sav = NULL;
+		}
 		return ;
+	}
 	head = cmd->all;
 	i = 1;
 	while (cmd->sav->split_pipe[i])
@@ -76,7 +82,10 @@ t_global	*global_init(char *line)
 	tmp->pipe = ft_count_pipe(line);
 	tmp->split_pipe = split_pipe(line);
 	if (!tmp->split_pipe)
+	{
+		free(tmp);
 		return (NULL);
+	}
 	return (tmp);
 }
 
@@ -89,6 +98,7 @@ t_pars	*init_token1(t_cmd *cmd)
 		return (NULL);
 	if (!init_pars_from_global(pars, cmd))
 	{
+		free_pars(pars);
 		free(pars);
 		return (NULL);
 	}
@@ -105,6 +115,7 @@ t_pars	*init_token(char *split_pipe, t_cmd *cmd)
 		return (NULL);
 	if (!init_pars_common(pars, split_pipe, cmd))
 	{
+		free_pars(pars);
 		free(pars);
 		return (NULL);
 	}

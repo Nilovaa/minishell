@@ -28,21 +28,35 @@ void	ft_free_pipes(int **pipes, int nb_pipes)
 	free(pipes);
 }
 
-void	ft_setup_redirections(int **pipes, int index, int nb_cmds)
+void	ft_setup_redirections(t_child_data *data)
 {
-	if (index > 0)
+	if (data->index > 0)
 	{
-		if (dup2(pipes[index - 1][0], STDIN_FILENO) == -1)
+		if (dup2(data->pipes[data->index - 1][0], STDIN_FILENO) == -1)
 		{
 			perror("dup2 stdin");
+			if (data->pids)
+				free(data->pids);
+			ft_free_pipes(data->pipes, data->nb_cmds - 1);
+			if (data->cmd && data->cmd->cmd_base)
+				free_all(data->cmd->cmd_base);
+			if (data->cmd)
+				free_all(data->cmd);
 			exit(1);
 		}
 	}
-	if (index < nb_cmds - 1)
+	if (data->index < data->nb_cmds - 1)
 	{
-		if (dup2(pipes[index][1], STDOUT_FILENO) == -1)
+		if (dup2(data->pipes[data->index][1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 stdout");
+			if (data->pids)
+				free(data->pids);
+			ft_free_pipes(data->pipes, data->nb_cmds - 1);
+			if (data->cmd && data->cmd->cmd_base)
+				free_all(data->cmd->cmd_base);
+			if (data->cmd)
+				free_all(data->cmd);
 			exit(1);
 		}
 	}
