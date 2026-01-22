@@ -81,6 +81,8 @@ int	init_pars_common(t_pars *pars, char *split_pipe, t_cmd *cmd)
 
 int	init_pars_from_global(t_pars *pars, t_cmd *cmd)
 {
+	int i = 0;
+
 	pars->count_token = count_token(cmd->sav->split_pipe[0]);
 	pars->global = cmd->sav;
 	pars->all_token = split_token(cmd->sav->split_pipe[0]);
@@ -90,6 +92,19 @@ int	init_pars_from_global(t_pars *pars, t_cmd *cmd)
 	if (pars->all_token[0] && ft_is_redir(pars->all_token[0])
 		&& (!pars->all_token[1] || ft_is_redir(pars->all_token[1])))
 		return (ft_syntax_error(), 0);
+	if (pars->all_token)
+	{
+		// 
+		while (pars->all_token[i])
+		{
+			if (ft_strncmp("&", pars->all_token[i], 1) == 0)
+			{
+				return (ft_syntax_error(), 0);
+			}
+				i++;
+		}
+		// 
+	}
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (0);

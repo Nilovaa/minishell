@@ -30,6 +30,22 @@ static int	ft_find_var(t_cmd *cmd, char *name)
 	return (-1);
 }
 
+static int	ft_valid_name(char *arg)
+{
+	int	i;
+
+	if (!arg || (!ft_isalpha(arg[0]) && arg[0] != '_'))
+		return (0);
+	i = 1;
+	while (arg[i] && arg[i] != '=')
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static char	**ft_add_var(t_cmd *cmd, char *var)
 {
 	char	**dest_env;
@@ -83,10 +99,20 @@ static int	ft_update(t_cmd *cmd, t_pars *pars, char *arg)
 
 static int	ft_no_arg(t_pars *pars, t_cmd *cmd)
 {
+	int	i;
+
+	i = 0;
 	if (!pars->arg[0])
 	{
 		pars->return_value = 0;
-		ft_env(pars, cmd);
+		while (cmd && cmd->env && cmd->env[i])
+		{
+			ft_putstr_fd("export ", 1);
+			ft_putstr_fd(cmd->env[i], 1);
+			ft_putstr_fd("\n", 1);
+			i++;
+		}
+		
 		return (1);
 	}
 	return (0);
@@ -106,10 +132,15 @@ int	ft_export(t_pars *pars, t_cmd *cmd)
 	j = 0;
 	while (pars->arg[j])
 	{
+		if (!ft_valid_name(pars->arg[j]))
+		{
+			ft_putstr_fd("export: not a valid identifier\n", 2);
+			pars->return_value = 1;
+			j++;
+			continue ;
+		}
 		if (!ft_strchr(pars->arg[j], '='))
 		{
-			ft_putstr_fd("export: invalid format\n", 2);
-			pars->return_value = 1;
 			j++;
 			continue ;
 		}

@@ -53,6 +53,13 @@ void	ft_exec_child_command(t_pars *pars, t_cmd *cmd)
 	char	**arg;
 	int		ret;
 
+	if (!pars->cmd || !pars->cmd[0])
+	{
+		if (cmd && cmd->cmd_base)
+			free_all(cmd->cmd_base);
+		free_all(cmd);
+		exit(0);
+	}
 	if (ft_is_builtin(pars->cmd))
 	{
 		ret = ft_exec_builtin_only(pars, cmd);

@@ -37,7 +37,7 @@ void	ft_first_child(t_pars *pars, t_cmd *cmd, int fd[2])
 
 int	ft_check_pipe_params(t_pars *pars)
 {
-	if (!pars || !pars->next || !pars->cmd || !pars->next->cmd)
+	if (!pars || !pars->next)
 	{
 		if (pars)
 			pars->return_value = 1;

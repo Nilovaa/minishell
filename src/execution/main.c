@@ -107,8 +107,12 @@ int	main(int ac, char **av, char **env)
 {
 	t_cmd	*cmd_base;
 
-	(void)ac;
 	(void)av;
+	if (ac != 1)
+	{
+		ft_putstr_fd("minishell: too many arguments\n", 2);
+		return (1);
+	}
 	cmd_base = ft_init_cmd_base(env);
 	if (!cmd_base)
 		return (1);

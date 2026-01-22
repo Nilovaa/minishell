@@ -34,7 +34,7 @@ static void	ft_exec_command(t_child_data *data)
 			free(path);
 		if (argv)
 			free(argv);
-		ft_putstr_fd("command not found\n", 2);
+		// ft_putstr_fd("command not found\n", 2);
 		ft_free_child_resources(data);
 		free_all(data->cmd);
 		exit(127);

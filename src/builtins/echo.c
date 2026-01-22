@@ -48,6 +48,8 @@ void	ft_expansion(char *str, t_pars *pars)
 			}
 			else if (ft_isalpha(str[i]) || str[i] == '_')
 				ft_expand_variable(str, &i);
+			else if (ft_isdigit(str[i]))
+				i++;
 			else
 				write(1, "$", 1);
 		}
@@ -102,7 +104,7 @@ int	ft_echo(t_pars *pars)
 	i = ft_parse_flags(pars, &n);
 	while (pars->arg[i])
 	{
-		ft_putstr_fd(pars->arg[i], 1);
+		ft_expansion(pars->arg[i], pars);
 		if (pars->arg[i + 1])
 			write(1, " ", 1);
 		i++;

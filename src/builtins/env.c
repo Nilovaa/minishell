@@ -18,6 +18,12 @@ int	ft_env(t_pars *pars, t_cmd *cmd)
 
 	if (!pars)
 		return (1);
+	if (cmd->all->arg && cmd->all->arg[0])
+	{
+		ft_putstr_fd("env: No such file or directory\n", 2);
+		pars->return_value = 127;
+		return (1);
+	}
 	i = 0;
 	while (cmd->env && cmd->env[i])
 	{

@@ -72,9 +72,6 @@ char	*ft_get_path(t_pars *pars, t_cmd *cmd)
 
 	path = ft_make_path(pars, cmd);
 	if (!path)
-	{
-		pars->return_value = 127;
 		return (NULL);
-	}
 	return (path);
 }

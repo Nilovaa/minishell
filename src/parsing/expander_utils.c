@@ -40,6 +40,8 @@ int	handle_var(char *str, int i, char **res, t_cmd *cmd)
 	start = i;
 	if (str[i] == '?')
 		i++;
+	else if (ft_isdigit(str[i]))
+		i++;
 	else
 		while (ft_isalnum(str[i]) || str[i] == '_')
 			i++;

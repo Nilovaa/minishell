@@ -65,11 +65,23 @@ static char	*ft_find_in_paths(char **paths, t_pars *pars)
 			i++;
 			continue ;
 		}
-		if (access(all, X_OK) == 0)
-			return (all);
+		if (access(all, F_OK) == 0)
+		{
+			if (access(all, X_OK) == 0)
+				return (all);
+			else
+			free(all);
+			ft_putstr_fd(pars->cmd, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			pars->return_value = 126;
+			return (NULL);
+		}
 		free(all);
 		i++;
 	}
+	ft_putstr_fd(pars->cmd, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	pars->return_value = 127;
 	return (NULL);
 }
 
@@ -80,8 +92,15 @@ char	*ft_make_path(t_pars *pars, t_cmd *cmd)
 
 	if (!pars || !pars->cmd)
 		return (NULL);
-	if (access(pars->cmd, X_OK) == 0)
-		return (ft_strdup(pars->cmd));
+	if (access(pars->cmd, F_OK) == 0)
+	{
+		if (access(pars->cmd, X_OK) == 0)
+			return (ft_strdup(pars->cmd));
+		ft_putstr_fd(pars->cmd, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		pars->return_value = 126;
+		return (NULL);
+	}
 	paths = ft_get_paths(cmd);
 	if (!paths || !paths[0])
 	{
@@ -90,12 +109,6 @@ char	*ft_make_path(t_pars *pars, t_cmd *cmd)
 		return (NULL);
 	}
 	res = ft_find_in_paths(paths, pars);
-	if (!res)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(pars->cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
-	}
 	ft_free_split(paths);
 	return (res);
 }
