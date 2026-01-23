@@ -12,14 +12,14 @@
 
 #include "../../include/minishell.h"
 
-static int	ft_prepare_all_heredocs(t_pars *pars)
+static int	ft_prepare_all_heredocs(t_pars *pars, t_cmd *cmd)
 {
 	t_pars	*current;
 
 	current = pars;
 	while (current)
 	{
-		if (ft_process_heredocs(current->redir) < 0)
+		if (ft_process_heredocs(current->redir, cmd) < 0)
 			return (-1);
 		current = current->next;
 	}
@@ -94,9 +94,9 @@ void	ft_exec_pipeline(t_pars *pars, t_cmd *cmd)
 	nb_cmds = ft_count_cmds(pars);
 	if (ft_handle_simple_cases(pars, cmd, nb_cmds))
 		return ;
-	if (ft_prepare_all_heredocs(pars) < 0)
+	if (ft_prepare_all_heredocs(pars, cmd) < 0)
 	{
-		pars->return_value = 1;
+		pars->return_value = 130;
 		return ;
 	}
 	if (ft_setup_pipes(pars, nb_cmds, &pipes) < 0)

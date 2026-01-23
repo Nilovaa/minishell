@@ -59,10 +59,10 @@ int	ft_create_pipe(t_pars *pars, int fd[2])
 	return (0);
 }
 
-int	ft_prepare_heredocs(t_pars *pars)
+int	ft_prepare_heredocs(t_pars *pars, t_cmd *cmd)
 {
-	if (ft_process_heredocs(pars->redir) < 0
-		|| ft_process_heredocs(pars->next->redir) < 0)
+	if (ft_process_heredocs(pars->redir, cmd) < 0
+		|| ft_process_heredocs(pars->next->redir, cmd) < 0)
 	{
 		ft_cleanup_heredocs(pars->redir);
 		ft_cleanup_heredocs(pars->next->redir);
@@ -78,7 +78,7 @@ void	ft_exec_simple_pipe(t_pars *pars, t_cmd *cmd)
 
 	if (ft_check_pipe_params(pars) < 0)
 		return ;
-	if (ft_prepare_heredocs(pars) < 0)
+	if (ft_prepare_heredocs(pars, cmd) < 0)
 		return ;
 	if (ft_create_pipe(pars, fd) < 0)
 		return ;

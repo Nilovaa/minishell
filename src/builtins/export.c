@@ -6,11 +6,29 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:49:23 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/23 03:56:02 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:27:38 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static int	ft_find_var(t_cmd *cmd, char *name)
+{
+	int	i;
+	int	len;
+
+	len = 0;
+	i = 0;
+	while (name[len] && name[len] != '=')
+		len++;
+	while (cmd->env && cmd->env[i])
+	{
+		if (!ft_strncmp(cmd->env[i], name, len) && cmd->env[i][len] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
 
 static char	**ft_add_var(t_cmd *cmd, char *var)
 {
@@ -38,12 +56,12 @@ static char	**ft_add_var(t_cmd *cmd, char *var)
 	return (dest_env);
 }
 
-static int	ft_update(t_cmd *cmd, t_pars *pars, char *arg)
+int	ft_update(t_cmd *cmd, t_pars *pars, char *arg)
 {
 	int		i;
 	char	**dest_env;
 
-	i = ft_find_var(cmd->env, arg);
+	i = ft_find_var(cmd, arg);
 	if (i >= 0)
 	{
 		free(cmd->env[i]);
@@ -83,12 +101,6 @@ static int	ft_no_arg(t_pars *pars, t_cmd *cmd)
 	return (0);
 }
 
-static void	not_valid(t_pars *pars)
-{
-	ft_putstr_fd("export: not a valid identifier\n", 2);
-	pars->return_value = 1;
-}
-
 int	ft_export(t_pars *pars, t_cmd *cmd)
 {
 	int	j;
@@ -103,14 +115,7 @@ int	ft_export(t_pars *pars, t_cmd *cmd)
 	j = 0;
 	while (pars->arg[j])
 	{
-		if (!ft_valid_name(pars->arg[j]))
-		{
-			not_valid(pars);
-			j++;
-		}
-		if (!ft_strchr(pars->arg[j], '='))
-			j++;
-		if (ft_update(cmd, pars, pars->arg[j]))
+		if (ft_arg_export(pars, cmd, j))
 			return (1);
 		j++;
 	}

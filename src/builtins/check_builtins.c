@@ -56,12 +56,12 @@ int	ft_exec_builtin_only(t_pars *pars, t_cmd *cmd)
 	return (ret);
 }
 
-static void	ft_no_cmd(t_pars *pars)
+static void	ft_no_cmd(t_pars *pars, t_cmd *cmd)
 {
 	int	in;
 	int	out;
 
-	if (ft_process_heredocs(pars->redir) < 0)
+	if (ft_process_heredocs(pars->redir, cmd) < 0)
 	{
 		ft_cleanup_heredocs(pars->redir);
 		pars->return_value = 130;
@@ -85,7 +85,7 @@ static void	ft_builtin(t_pars *pars, t_cmd *cmd)
 	int	stdin_backup;
 	int	stdout_backup;
 
-	if (ft_process_heredocs(pars->redir) < 0)
+	if (ft_process_heredocs(pars->redir, cmd) < 0)
 	{
 		ft_cleanup_heredocs(pars->redir);
 		pars->return_value = 130;
@@ -120,7 +120,7 @@ void	ft_check_builtins(t_pars *pars, t_cmd *cmd)
 	}
 	if (!pars->cmd)
 	{
-		ft_no_cmd(pars);
+		ft_no_cmd(pars, cmd);
 		return ;
 	}
 	if (ft_is_builtin(pars->cmd))

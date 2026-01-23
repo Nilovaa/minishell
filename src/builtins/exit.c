@@ -56,7 +56,9 @@ static int	ft_exit_only(t_pars *pars, t_cmd *cmd)
 {
 	int	exit_code;
 
-	if (pars)
+	if (cmd)
+		exit_code = cmd->last_exit_status;
+	else if (pars)
 		exit_code = pars->return_value;
 	else
 		exit_code = 0;
@@ -64,7 +66,6 @@ static int	ft_exit_only(t_pars *pars, t_cmd *cmd)
 		pars->global->exit = 1;
 	if (pars)
 		pars->return_value = exit_code;
-	(void)cmd;
 	return (exit_code);
 }
 

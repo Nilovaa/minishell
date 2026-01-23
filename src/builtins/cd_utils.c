@@ -79,20 +79,17 @@ int	ft_valid_name(char *arg)
 	return (1);
 }
 
-// int	ft_find_var(t_cmd *cmd, char *name)
-// {
-// 	int	i;
-// 	int	len;
-
-// 	len = 0;
-// 	i = 0;
-// 	while (name[len] && name[len] != '=')
-// 		len++;
-// 	while (cmd->env && cmd->env[i])
-// 	{
-// 		if (!ft_strncmp(cmd->env[i], name, len) && cmd->env[i][len] == '=')
-// 			return (i);
-// 		i++;
-// 	}
-// 	return (-1);
-// }
+int	ft_arg_export(t_pars *pars, t_cmd *cmd, int j)
+{
+	if (!ft_valid_name(pars->arg[j]))
+	{
+		ft_putstr_fd("export: not a valid identifier\n", 2);
+		pars->return_value = 1;
+		return (1);
+	}
+	if (!ft_strchr(pars->arg[j], '='))
+		return (0);
+	if (ft_update(cmd, pars, pars->arg[j]))
+		return (1);
+	return (0);
+}

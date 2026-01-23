@@ -33,7 +33,7 @@ void	ft_exec_simple(t_pars *pars, t_cmd *cmd)
 		ft_cleanup_heredocs(pars->redir);
 		return ;
 	}
-	if (ft_handle_heredoc(pars, path, argv) < 0)
+	if (ft_handle_heredoc(pars, path, argv, cmd) < 0)
 		return ;
 	pid = ft_exec(path, argv, pars, cmd);
 	if (pid == -1)

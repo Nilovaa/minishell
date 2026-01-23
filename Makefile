@@ -50,7 +50,7 @@ SRCS = src/execution/main.c \
 
 OBJS = $(SRCS:.c=.o)
 
-LIBFT_DIR = LIBFT
+LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 all: $(NAME)

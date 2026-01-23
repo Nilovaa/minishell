@@ -25,19 +25,24 @@ char	*ft_build_heredoc_name(char *pid_str, char *num)
 	return (file);
 }
 
-int	ft_create_heredoc(char *delim, char *tmp_file)
+int	ft_create_heredoc(char *delim, char *tmp_file, t_cmd *cmd)
 {
 	int		fd;
+	int		ret;
 
 	fd = open(tmp_file, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
 		return (-1);
-	ft_read_file(delim, fd);
-	close(fd);
+	ret = ft_read_file(delim, fd, cmd, tmp_file);
+	if (ret < 0)
+	{
+		unlink(tmp_file);
+		return (-1);
+	}
 	return (0);
 }
 
-int	ft_process_heredocs(t_dir *redir)
+int	ft_process_heredocs(t_dir *redir, t_cmd *cmd)
 {
 	int		i;
 	char	*tmp_file;
@@ -50,7 +55,7 @@ int	ft_process_heredocs(t_dir *redir)
 		tmp_file = ft_tmp_heredoc();
 		if (!tmp_file)
 			return (-1);
-		if (ft_create_heredoc(redir->file_in2[i], tmp_file) < 0)
+		if (ft_create_heredoc(redir->file_in2[i], tmp_file, cmd) < 0)
 		{
 			free(tmp_file);
 			return (-1);

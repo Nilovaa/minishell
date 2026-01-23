@@ -15,8 +15,10 @@
 void	ft_handle_sigint_heredoc(int sig)
 {
 	(void)sig;
+	close(STDIN_FILENO);
 	write(1, "\n", 1);
-	exit(130);
+	rl_clear_history();
+	_exit(130);
 }
 
 void	ft_signal_interactive(void)

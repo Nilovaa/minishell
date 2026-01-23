@@ -12,7 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include "../LIBFT/libft.h"
+# include "../libft/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -190,7 +190,10 @@ void		ft_free_pipes(int **pipes, int nb_pipes);
 void		ft_close_all_pipes(int **pipes, int nb_pipes);
 int			ft_count_cmds(t_pars *pars);
 int			ft_redirection(t_dir *redir, t_cmd *cmd, int is_child);
-int			ft_process_heredocs(t_dir *redir);
+int			ft_process_heredocs(t_dir *redir, t_cmd *cmd);
+int			ft_create_heredoc(char *delim, char *tmp_file, t_cmd *cmd);
+int			ft_read_file(char *delim, int fd, t_cmd *cmd, char *tmp_file);
+char		*ft_tmp_heredoc(void);
 void		ft_cleanup_heredocs(t_dir *redir);
 void		ft_signal_interactive(void);
 void		ft_signal_child(void);
@@ -207,7 +210,7 @@ void		ft_exec_child_command(t_pars *pars, t_cmd *cmd);
 void		ft_execute_pipe(t_pars *pars, t_cmd *cmd, int fd[2]);
 char		*ft_get_path(t_pars *pars, t_cmd *cmd);
 char		**ft_get_argv(t_pars *pars, char *path);
-int			ft_handle_heredoc(t_pars *pars, char *path, char **argv);
+int			ft_handle_heredoc(t_pars *pars, char *path, char **argv, t_cmd *cmd);
 pid_t		ft_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd);
 void		ft_parent_wait(pid_t pid, t_pars *pars, char *path, char **argv);
 void		ft_handle_sigint(int sig);
@@ -216,15 +219,11 @@ void		ft_child_process(t_child_data *data);
 void		ft_cleanup_all_heredocs(t_pars *pars);
 pid_t		*ft_fork_processes(t_fork_data *data);
 char		*ft_build_heredoc_name(char *pid_str, char *num);
-int			ft_read_file(char *delim, int fd);
-char		*ft_tmp_heredoc(void);
-int			ft_create_heredoc(char *delim, char *tmp_file);
-int			ft_process_heredocs(t_dir *redir);
-void		ft_cleanup_heredocs(t_dir *redir);
 t_cmd		*ft_init_cmd_base(char **env);
 void		ft_update_signal_status(t_cmd *cmd_base);
 void		ft_cleanup_and_exit_redir(t_cmd *cmd, char *file, int is_child);
 int			ft_valid_name(char *arg);
-int			ft_find_var(char **env, char *name);
+int			ft_arg_export(t_pars *pars, t_cmd *cmd, int j);
+int			ft_update(t_cmd *cmd, t_pars *pars, char *arg);
 
 #endif

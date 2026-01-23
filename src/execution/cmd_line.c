@@ -94,6 +94,12 @@ char	*ft_make_path(t_pars *pars, t_cmd *cmd)
 
 	if (!pars || !pars->cmd)
 		return (NULL);
+	if (pars->cmd[0] == '\0')
+	{
+		ft_putstr_fd("'': command not found\n", 2);
+		pars->return_value = 127;
+		return (NULL);
+	}
 	if (access(pars->cmd, F_OK) == 0)
 	{
 		if (access(pars->cmd, X_OK) == 0)

@@ -26,14 +26,14 @@ char	**ft_get_argv(t_pars *pars, char *path)
 	return (argv);
 }
 
-int	ft_handle_heredoc(t_pars *pars, char *path, char **argv)
+int	ft_handle_heredoc(t_pars *pars, char *path, char **argv, t_cmd *cmd)
 {
-	if (ft_process_heredocs(pars->redir) < 0)
+	if (ft_process_heredocs(pars->redir, cmd) < 0)
 	{
 		free(path);
 		ft_free_split(argv);
 		ft_cleanup_heredocs(pars->redir);
-		pars->return_value = 1;
+		pars->return_value = 130;
 		return (-1);
 	}
 	return (0);
