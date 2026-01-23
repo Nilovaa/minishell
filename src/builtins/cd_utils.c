@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:24:02 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 22:06:34 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:54:16 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,3 +62,37 @@ void	ft_update_oldpwd(t_cmd *cmd, char *oldpwd)
 	}
 	free(new_var);
 }
+
+int	ft_valid_name(char *arg)
+{
+	int	i;
+
+	if (!arg || (!ft_isalpha(arg[0]) && arg[0] != '_'))
+		return (0);
+	i = 1;
+	while (arg[i] && arg[i] != '=')
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+// int	ft_find_var(t_cmd *cmd, char *name)
+// {
+// 	int	i;
+// 	int	len;
+
+// 	len = 0;
+// 	i = 0;
+// 	while (name[len] && name[len] != '=')
+// 		len++;
+// 	while (cmd->env && cmd->env[i])
+// 	{
+// 		if (!ft_strncmp(cmd->env[i], name, len) && cmd->env[i][len] == '=')
+// 			return (i);
+// 		i++;
+// 	}
+// 	return (-1);
+// }

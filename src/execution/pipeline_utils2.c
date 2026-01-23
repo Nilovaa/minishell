@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:50:28 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/22 19:46:39 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:39:32 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	ft_exec_command(t_child_data *data)
 			free(path);
 		if (argv)
 			free(argv);
-		// ft_putstr_fd("command not found\n", 2);
 		ft_free_child_resources(data);
 		free_all(data->cmd);
 		exit(127);

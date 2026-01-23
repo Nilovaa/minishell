@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 07:03:45 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/23 03:06:49 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 04:16:30 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,27 +36,6 @@ char	*add_cmd(char **all_token)
 	return (cmd);
 }
 
-char	*get_cmd_name(char **tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		if (ft_strncmp(tokens[i], ">", 1) == 0
-			|| ft_strncmp(tokens[i], "<", 1) == 0)
-		{
-			if (tokens[i + 1])
-				i += 2;
-			else
-				i++;
-		}
-		else
-			return (tokens[i]);
-	}
-	return (NULL);
-}
-
 int	init_pars_common(t_pars *pars, char *split_pipe, t_cmd *cmd)
 {
 	pars->count_token = count_token(split_pipe);
@@ -79,28 +58,38 @@ int	init_pars_common(t_pars *pars, char *split_pipe, t_cmd *cmd)
 	return (1);
 }
 
-int	init_pars_from_global(t_pars *pars, t_cmd *cmd)
+static void	init_pars_global(t_pars *pars, t_cmd *cmd)
 {
-	int i = 0;
-
 	pars->count_token = count_token(cmd->sav->split_pipe[0]);
 	pars->global = cmd->sav;
 	pars->all_token = split_token(cmd->sav->split_pipe[0]);
+}
+
+static int	ft_token_is_sp(t_pars *pars)
+{
+	int	i;
+
+	i = 0;
+	while (pars->all_token[i])
+	{
+		if (ft_strncmp("&", pars->all_token[i], 1) == 0)
+			return (ft_syntax_error(), 0);
+		i++;
+	}
+	return (i);
+}
+
+int	init_pars_from_global(t_pars *pars, t_cmd *cmd)
+{
+	init_pars_global(pars, cmd);
 	if (!pars->all_token)
 		return (0);
 	process_all_tokens(pars, cmd);
 	if (pars->all_token[0] && ft_is_redir(pars->all_token[0])
 		&& (!pars->all_token[1] || ft_is_redir(pars->all_token[1])))
 		return (ft_syntax_error(), 0);
-	if (pars->all_token)
-	{
-		while (pars->all_token[i])
-		{
-			if (ft_strncmp("&", pars->all_token[i], 1) == 0)
-				return (ft_syntax_error(), 0);
-			i++;
-		}
-	}
+	if (!ft_token_is_sp(pars))
+		return (0);
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
 		return (0);
@@ -114,12 +103,4 @@ int	init_pars_from_global(t_pars *pars, t_cmd *cmd)
 	else
 		pars->arg = NULL;
 	return (1);
-}
-
-t_cmd	*ft_init_cmd_base(char **env)
-{
-	t_cmd	*cmd_base;
-
-	cmd_base = cmd_init(NULL, env, 0);
-	return (cmd_base);
 }

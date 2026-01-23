@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 22:21:38 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/22 22:21:42 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:53:00 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,5 +224,7 @@ void		ft_cleanup_heredocs(t_dir *redir);
 t_cmd		*ft_init_cmd_base(char **env);
 void		ft_update_signal_status(t_cmd *cmd_base);
 void		ft_cleanup_and_exit_redir(t_cmd *cmd, char *file, int is_child);
+int			ft_valid_name(char *arg);
+int			ft_find_var(char **env, char *name);
 
 #endif

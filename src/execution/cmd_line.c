@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 18:18:37 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/23 03:00:48 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:42:48 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	**ft_get_paths(t_cmd *cmd)
 	return (ft_split(cmd->env[i] + 5, ':'));
 }
 
-static char *ft_find_in_path_utils(char *all, t_pars *pars)
+static char	*ft_find_in_path_utils(char *all, t_pars *pars)
 {
 	if (access(all, X_OK) == 0)
 		return (all);
@@ -58,8 +58,7 @@ static char *ft_find_in_path_utils(char *all, t_pars *pars)
 	ft_putstr_fd(": Permission denied\n", 2);
 	pars->return_value = 126;
 	return (NULL);
-} 
-
+}
 
 static char	*ft_find_in_paths(char **paths, t_pars *pars)
 {

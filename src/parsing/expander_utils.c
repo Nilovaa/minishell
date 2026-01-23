@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:55:23 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/23 03:05:57 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:44:28 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	process_all_tokens(t_pars *pars, t_cmd *cmd)
 
 static void	handle_val_utils(char **res, char *val)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = ft_strjoin(*res, val);
 	free(*res);

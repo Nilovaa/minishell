@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 01:36:33 by nyrakoto          #+#    #+#             */
-/*   Updated: 2025/12/29 03:36:38 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:55:26 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ft_check_name(char *str)
 	return (1);
 }
 
-static int	ft_find_var(char **env, char *name)
+int	ft_find_var(char **env, char *name)
 {
 	int	i;
 	int	len;
