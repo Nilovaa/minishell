@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nyrakoto <nyrakoto@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 18:18:37 by nyrakoto          #+#    #+#             */
-/*   Updated: 2025/12/27 18:20:45 by nyrakoto         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:00:48 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,18 @@ static char	**ft_get_paths(t_cmd *cmd)
 	return (ft_split(cmd->env[i] + 5, ':'));
 }
 
+static char *ft_find_in_path_utils(char *all, t_pars *pars)
+{
+	if (access(all, X_OK) == 0)
+		return (all);
+	free(all);
+	ft_putstr_fd(pars->cmd, 2);
+	ft_putstr_fd(": Permission denied\n", 2);
+	pars->return_value = 126;
+	return (NULL);
+} 
+
+
 static char	*ft_find_in_paths(char **paths, t_pars *pars)
 {
 	int		i;
@@ -66,16 +78,7 @@ static char	*ft_find_in_paths(char **paths, t_pars *pars)
 			continue ;
 		}
 		if (access(all, F_OK) == 0)
-		{
-			if (access(all, X_OK) == 0)
-				return (all);
-			else
-			free(all);
-			ft_putstr_fd(pars->cmd, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-			pars->return_value = 126;
-			return (NULL);
-		}
+			return (ft_find_in_path_utils(all, pars));
 		free(all);
 		i++;
 	}

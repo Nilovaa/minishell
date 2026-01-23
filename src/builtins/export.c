@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:49:23 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/09 17:27:38 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 02:53:28 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,7 @@ static int	ft_no_arg(t_pars *pars, t_cmd *cmd)
 			ft_putstr_fd(cmd->env[i], 1);
 			ft_putstr_fd("\n", 1);
 			i++;
-		}
-		
+		}		
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 17:03:35 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/16 14:33:41 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 02:48:00 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ void	ft_expansion(char *str, t_pars *pars)
 				write(1, "$", 1);
 		}
 		else
-		{
-			write(1, &str[i], 1);
-			i++;
-		}
+			write(1, &str[i++], 1);
 	}
 }
 

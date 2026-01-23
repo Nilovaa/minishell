@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 07:03:45 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 22:03:59 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:06:49 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,12 @@ int	init_pars_from_global(t_pars *pars, t_cmd *cmd)
 		return (ft_syntax_error(), 0);
 	if (pars->all_token)
 	{
-		// 
 		while (pars->all_token[i])
 		{
 			if (ft_strncmp("&", pars->all_token[i], 1) == 0)
-			{
 				return (ft_syntax_error(), 0);
-			}
-				i++;
+			i++;
 		}
-		// 
 	}
 	pars->redir = init_redir(pars->all_token);
 	if (!pars->redir)
