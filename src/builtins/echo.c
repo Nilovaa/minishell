@@ -6,57 +6,11 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 17:03:35 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/23 02:48:00 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 12:20:54 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static void	ft_expand_variable(char *str, int *i)
-{
-	int		start;
-	char	*key;
-	char	*value;
-
-	start = *i;
-	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
-		(*i)++;
-	key = ft_substr(str, start, *i - start);
-	if (key)
-	{
-		value = getenv(key);
-		if (value)
-			ft_putstr_fd(value, 1);
-		free(key);
-	}
-}
-
-void	ft_expansion(char *str, t_pars *pars)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$' && str[i + 1])
-		{
-			i++;
-			if (str[i] == '?')
-			{
-				ft_print_exit_code(pars);
-				i++;
-			}
-			else if (ft_isalpha(str[i]) || str[i] == '_')
-				ft_expand_variable(str, &i);
-			else if (ft_isdigit(str[i]))
-				i++;
-			else
-				write(1, "$", 1);
-		}
-		else
-			write(1, &str[i++], 1);
-	}
-}
 
 static int	ft_check_n_flag(char *arg)
 {
@@ -101,7 +55,7 @@ int	ft_echo(t_pars *pars)
 	i = ft_parse_flags(pars, &n);
 	while (pars->arg[i])
 	{
-		ft_expansion(pars->arg[i], pars);
+		ft_putstr_fd(pars->arg[i], 1);
 		if (pars->arg[i + 1])
 			write(1, " ", 1);
 		i++;
