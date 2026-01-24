@@ -12,17 +12,16 @@
 
 #include "../../include/minishell.h"
 
-volatile sig_atomic_t	g_signal_received = 0;
-static int				g_heredoc_fd = -1;
+int	g_signal_received = 0;
 
 void	ft_set_heredoc_fd(int fd)
 {
-	g_heredoc_fd = fd;
+	g_signal_received = fd;
 }
 
 int	ft_get_heredoc_fd(void)
 {
-	return (g_heredoc_fd);
+	return (g_signal_received);
 }
 
 void	ft_handle_sigint(int sig)
@@ -70,4 +69,3 @@ void	ft_reset_signal_received(void)
 {
 	g_signal_received = 0;
 }
-
