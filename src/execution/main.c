@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 20:27:45 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/21 22:06:18 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 12:45:44 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@ static int	ft_handle_readline_result(char *line, t_cmd *cmd_base)
 		free_all(cmd_base);
 		return (0);
 	}
+	if (ft_is_only_spaces(line))
+	{
+		free(line);
+		cmd_base->last_exit_status = 0;
+		return (-1);
+	}
 	if (line[0] != '\0')
 	{
 		add_history(line);
@@ -83,8 +89,7 @@ static int	ft_handle_readline_result(char *line, t_cmd *cmd_base)
 			return (rc);
 		return (-1);
 	}
-	free(line);
-	return (-1);
+	return (free (line), -1);
 }
 
 static int	ft_main_loop(t_cmd *cmd_base)

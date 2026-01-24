@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 18:18:37 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/23 03:42:48 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 13:44:35 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,42 @@ static char	*ft_find_in_paths(char **paths, t_pars *pars)
 	return (NULL);
 }
 
+static char	*ft_make_path_retur(t_pars *pars)
+{
+	if (access(pars->cmd, X_OK) == 0)
+		return (ft_strdup(pars->cmd));
+	ft_putstr_fd(pars->cmd, 2);
+	ft_putstr_fd(": Permission denied\n", 2);
+	pars->return_value = 126;
+	return (NULL);
+}
+
+static char	*ft_handle_direct_path(t_pars *pars)
+{
+	if (access(pars->cmd, F_OK) != 0)
+	{
+		ft_putstr_fd(pars->cmd, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		pars->return_value = 127;
+		return (NULL);
+	}
+	if (access(pars->cmd, X_OK) != 0)
+	{
+		ft_putstr_fd(pars->cmd, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		pars->return_value = 126;
+		return (NULL);
+	}
+	return (ft_strdup(pars->cmd));
+}
+
+void	no_such_file(t_pars *pars)
+{
+	ft_putstr_fd(pars->cmd, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+	pars->return_value = 127;
+}
+
 char	*ft_make_path(t_pars *pars, t_cmd *cmd)
 {
 	char	**paths;
@@ -100,21 +136,16 @@ char	*ft_make_path(t_pars *pars, t_cmd *cmd)
 		pars->return_value = 127;
 		return (NULL);
 	}
+	if (ft_strchr(pars->cmd, '/'))
+		return (ft_handle_direct_path(pars));
 	if (access(pars->cmd, F_OK) == 0)
-	{
-		if (access(pars->cmd, X_OK) == 0)
-			return (ft_strdup(pars->cmd));
-		ft_putstr_fd(pars->cmd, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-		pars->return_value = 126;
-		return (NULL);
-	}
+		return (ft_make_path_retur(pars));
 	paths = ft_get_paths(cmd);
 	if (!paths || !paths[0])
 	{
 		if (paths)
 			ft_free_split(paths);
-		return (NULL);
+		return (no_such_file(pars), NULL);
 	}
 	res = ft_find_in_paths(paths, pars);
 	ft_free_split(paths);
