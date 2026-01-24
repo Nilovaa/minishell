@@ -201,6 +201,8 @@ void		ft_signal_heredoc(void);
 void		ft_signal_ignore(void);
 int			ft_get_signal_received(void);
 void		ft_reset_signal_received(void);
+void		ft_set_heredoc_fd(int fd);
+int			ft_get_heredoc_fd(void);
 int			ft_change_to_dir(char *path, t_pars *pars, t_cmd *cmd);
 void		ft_update_pwd(t_cmd *cmd);
 void		ft_update_oldpwd(t_cmd *cmd, char *oldpwd);

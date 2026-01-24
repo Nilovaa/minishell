@@ -70,11 +70,10 @@ int	cat_2cot(char *src, char *dest, int i, int k)
 {
 	int	a;
 
+	(void)i;
 	a = 0;
-	while (src[a] && src[i] != '"')
+	while (src[a] && src[a] != '"')
 	{
-		if (src[a] == '"')
-			break ;
 		dest[k] = src[a];
 		a++;
 		k++;

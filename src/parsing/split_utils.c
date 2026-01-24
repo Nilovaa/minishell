@@ -16,13 +16,11 @@ int	ft_count_pipe(char *str)
 {
 	int	count;
 	int	i;
-	int	tmp;
 
 	i = 0;
 	count = 0;
 	while (str[i])
 	{
-		tmp = 1;
 		if (str[i] == '|')
 			count++;
 		else if (str[i] == '"')
@@ -30,8 +28,6 @@ int	ft_count_pipe(char *str)
 		else if (str[i] == 39)
 			i += skip_1cot(&str[i]);
 		i++;
-		if (tmp == 0)
-			return (0);
 	}
 	return (count + 1);
 }

@@ -44,9 +44,24 @@ char	*ft_tmp_heredoc(void)
 static void	ft_heredoc_child(char *delim, int fd, t_cmd *cmd, char *tmp_file)
 {
 	char	*line;
+	char	*delim_cpy;
 	size_t	len;
 
-	len = ft_strlen(delim);
+	delim_cpy = ft_strdup(delim);
+	if (!delim_cpy)
+	{
+		close(fd);
+		if (cmd)
+		{
+			if (cmd->cmd_base)
+				free_all(cmd->cmd_base);
+			free_all(cmd);
+		}
+		free(tmp_file);
+		rl_clear_history();
+		_exit(1);
+	}
+	len = ft_strlen(delim_cpy);
 	if (cmd)
 	{
 		if (cmd->cmd_base)
@@ -54,13 +69,14 @@ static void	ft_heredoc_child(char *delim, int fd, t_cmd *cmd, char *tmp_file)
 		free_all(cmd);
 	}
 	free(tmp_file);
+	ft_set_heredoc_fd(fd);
 	ft_signal_heredoc();
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (ft_strncmp(line, delim, len) == 0 && line[len] == '\0')
+		if (ft_strncmp(line, delim_cpy, len) == 0 && line[len] == '\0')
 		{
 			free(line);
 			break ;
@@ -69,6 +85,7 @@ static void	ft_heredoc_child(char *delim, int fd, t_cmd *cmd, char *tmp_file)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	free(delim_cpy);
 	close(fd);
 	rl_clear_history();
 	_exit(0);

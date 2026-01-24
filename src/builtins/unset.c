@@ -64,7 +64,11 @@ static char	**ft_remove_var(char **env, int index_env)
 		{
 			dest_env[j] = ft_strdup(env[i]);
 			if (!dest_env[j])
-				return (NULL);
+			{
+				while (--j >= 0)
+					free(dest_env[j]);
+				return (free(dest_env), NULL);
+			}
 			j++;
 		}
 		i++;

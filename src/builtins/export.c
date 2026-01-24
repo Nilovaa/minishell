@@ -34,6 +34,7 @@ static char	**ft_add_var(t_cmd *cmd, char *var)
 {
 	char	**dest_env;
 	int		i;
+	int		j;
 
 	i = 0;
 	while (cmd->env && cmd->env[i])
@@ -41,18 +42,26 @@ static char	**ft_add_var(t_cmd *cmd, char *var)
 	dest_env = malloc(sizeof(char *) * (i + 2));
 	if (!dest_env)
 		return (NULL);
-	i = 0;
-	while (cmd->env && cmd->env[i])
+	j = 0;
+	while (cmd->env && cmd->env[j])
 	{
-		dest_env[i] = ft_strdup(cmd->env[i]);
-		if (!dest_env[i])
-			return (NULL);
-		i++;
+		dest_env[j] = ft_strdup(cmd->env[j]);
+		if (!dest_env[j])
+		{
+			while (--j >= 0)
+				free(dest_env[j]);
+			return (free(dest_env), NULL);
+		}
+		j++;
 	}
-	dest_env[i] = ft_strdup(var);
-	if (!dest_env[i])
-		return (NULL);
-	dest_env[i + 1] = NULL;
+	dest_env[j] = ft_strdup(var);
+	if (!dest_env[j])
+	{
+		while (--j >= 0)
+			free(dest_env[j]);
+		return (free(dest_env), NULL);
+	}
+	dest_env[j + 1] = NULL;
 	return (dest_env);
 }
 

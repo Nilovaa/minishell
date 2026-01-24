@@ -31,7 +31,7 @@ int	ft_handle_hrdc(t_pars *pars, char *path, char **argv, t_cmd *cmd)
 	if (ft_process_heredocs(pars->redir, cmd) < 0)
 	{
 		free(path);
-		ft_free_split(argv);
+		free(argv);
 		ft_cleanup_heredocs(pars->redir);
 		pars->return_value = 130;
 		return (-1);
@@ -71,7 +71,7 @@ pid_t	ft_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd)
 		perror("fork");
 		pars->return_value = 1;
 		free(path);
-		ft_free_split(argv);
+		free(argv);
 		ft_cleanup_heredocs(pars->redir);
 		return (-1);
 	}

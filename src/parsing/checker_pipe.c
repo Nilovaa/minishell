@@ -64,6 +64,8 @@ char	**cpy_env(char **envp)
 	char	**env;
 	int		i;
 
+	if (!envp)
+		return (NULL);
 	i = 0;
 	while (envp[i])
 		i++;
@@ -75,7 +77,11 @@ char	**cpy_env(char **envp)
 	{
 		env[i] = ft_strdup(envp[i]);
 		if (!env[i])
-			return (NULL);
+		{
+			while (--i >= 0)
+				free(env[i]);
+			return (free(env), NULL);
+		}
 		i++;
 	}
 	env[i] = NULL;

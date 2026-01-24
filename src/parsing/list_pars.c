@@ -86,6 +86,8 @@ char	**join_redir(char *file, char **redir)
 	if (!redir)
 	{
 		tmp[0] = ft_strdup(file);
+		if (!tmp[0])
+			return (free(tmp), NULL);
 		tmp[1] = NULL;
 		return (tmp);
 	}
@@ -93,9 +95,21 @@ char	**join_redir(char *file, char **redir)
 	while (i < len)
 	{
 		tmp[i] = ft_strdup(redir[i]);
+		if (!tmp[i])
+		{
+			while (--i >= 0)
+				free(tmp[i]);
+			return (free(tmp), NULL);
+		}
 		i++;
 	}
 	tmp[i] = ft_strdup(file);
+	if (!tmp[i])
+	{
+		while (--i >= 0)
+			free(tmp[i]);
+		return (free(tmp), NULL);
+	}
 	tmp[i + 1] = NULL;
 	return (free_cmd2(redir), tmp);
 }

@@ -14,7 +14,12 @@
 
 void	ft_handle_sigint_heredoc(int sig)
 {
+	int	fd;
+
 	(void)sig;
+	fd = ft_get_heredoc_fd();
+	if (fd >= 0)
+		close(fd);
 	close(STDIN_FILENO);
 	write(1, "\n", 1);
 	rl_clear_history();
