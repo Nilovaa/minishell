@@ -12,20 +12,122 @@
 
 #include "../../include/minishell.h"
 
+static int	ft_is_quoted_token(char *token)
+{
+	int	i;
+
+	if (!token || !*token)
+		return (0);
+	if (token[0] == '"' || token[0] == '\'')
+		return (1);
+	i = 0;
+	while (token[i])
+	{
+		if (token[i] == '"' || token[i] == '\'')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	ft_count_words_expanded(char *str)
+{
+	int	count;
+	int	in_word;
+	int	i;
+
+	count = 0;
+	in_word = 0;
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t' && !in_word)
+		{
+			in_word = 1;
+			count++;
+		}
+		else if ((str[i] == ' ' || str[i] == '\t') && in_word)
+			in_word = 0;
+		i++;
+	}
+	return (count);
+}
+
+static char	**ft_split_expanded(char *str, t_pars *pars, int idx, t_cmd *cmd)
+{
+	char	**words;
+	char	**new_tokens;
+	int		word_count;
+	int		i;
+	int		j;
+	int		new_size;
+
+	words = ft_split(str, ' ');
+	if (!words || !words[0])
+	{
+		if (words)
+			ft_free_split(words);
+		return (pars->all_token);
+	}
+	word_count = 0;
+	while (words[word_count])
+		word_count++;
+	if (word_count <= 1)
+	{
+		ft_free_split(words);
+		return (pars->all_token);
+	}
+	new_size = pars->count_token + word_count - 1;
+	new_tokens = ft_calloc(sizeof(char *), new_size + 1);
+	if (!new_tokens)
+	{
+		ft_free_split(words);
+		return (pars->all_token);
+	}
+	i = 0;
+	j = 0;
+	while (i < idx)
+		new_tokens[j++] = ft_strdup(pars->all_token[i++]);
+	i = 0;
+	while (words[i])
+		new_tokens[j++] = ft_strdup(words[i++]);
+	i = idx + 1;
+	while (pars->all_token[i])
+		new_tokens[j++] = ft_strdup(pars->all_token[i++]);
+	new_tokens[j] = NULL;
+	ft_free_split(words);
+	ft_free_split(pars->all_token);
+	pars->count_token = new_size;
+	(void)cmd;
+	return (new_tokens);
+}
+
 void	process_all_tokens(t_pars *pars, t_cmd *cmd)
 {
 	int		i;
 	char	*cleaned;
+	char	*original;
+	int		was_quoted;
+	int		word_count;
 
 	i = 0;
 	if (!pars || !pars->all_token)
 		return ;
 	while (pars->all_token[i])
 	{
-		cleaned = expand_and_clean(pars->all_token[i], cmd);
+		original = pars->all_token[i];
+		was_quoted = ft_is_quoted_token(original);
+		cleaned = expand_and_clean(original, cmd);
 		free(pars->all_token[i]);
 		pars->all_token[i] = cleaned;
-		i++;
+		word_count = ft_count_words_expanded(cleaned);
+		if (!was_quoted && word_count > 1)
+		{
+			pars->all_token = ft_split_expanded(cleaned, pars, i, cmd);
+			i += word_count;
+		}
+		else
+			i++;
 	}
 }
 

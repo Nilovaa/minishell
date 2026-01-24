@@ -210,7 +210,7 @@ void		ft_exec_child_command(t_pars *pars, t_cmd *cmd);
 void		ft_execute_pipe(t_pars *pars, t_cmd *cmd, int fd[2]);
 char		*ft_get_path(t_pars *pars, t_cmd *cmd);
 char		**ft_get_argv(t_pars *pars, char *path);
-int			ft_handle_heredoc(t_pars *pars, char *path, char **argv, t_cmd *cmd);
+int			ft_handle_hrdc(t_pars *pars, char *path, char **argv, t_cmd *cmd);
 pid_t		ft_exec(char *path, char **argv, t_pars *pars, t_cmd *cmd);
 void		ft_parent_wait(pid_t pid, t_pars *pars, char *path, char **argv);
 void		ft_handle_sigint(int sig);
