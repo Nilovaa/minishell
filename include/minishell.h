@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 22:21:38 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/23 03:53:00 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 20:47:14 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,5 +227,20 @@ void		ft_cleanup_and_exit_redir(t_cmd *cmd, char *file, int is_child);
 int			ft_valid_name(char *arg);
 int			ft_arg_export(t_pars *pars, t_cmd *cmd, int j);
 int			ft_update(t_cmd *cmd, t_pars *pars, char *arg);
+int			ft_is_quoted_token(char *token);
+int			ft_count_words_expanded(char *str);
+void		handle_val_utils(char **res, char *val);
+char		*ft_make_heredoc_name(int count);
+char		*ft_tmp_heredoc(void);
+int			ft_main_loop(t_cmd *cmd_base);
+void		ft_exit_child(t_cmd *cmd, char *path, char **argv, int code);
+int			ft_check_empty_cmd(t_pars *pars);
+void		no_such_file(t_pars *pars);
+char		*ft_handle_direct_path(t_pars *pars);
+int			ft_find_var(t_cmd *cmd, char *name);
+int			copy_old_env(char **dest, char **src);
+char		**ft_add_var(t_cmd *cmd, char *var);
+int			ft_find_var1(char **env, char *name);
+int			free_env_error(char **env, int len);
 
 #endif

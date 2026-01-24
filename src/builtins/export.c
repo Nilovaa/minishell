@@ -6,31 +6,13 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:49:23 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/24 12:31:32 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 20:48:46 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	ft_find_var(t_cmd *cmd, char *name)
-{
-	int	i;
-	int	len;
-
-	len = 0;
-	i = 0;
-	while (name[len] && name[len] != '=')
-		len++;
-	while (cmd->env && cmd->env[i])
-	{
-		if (!ft_strncmp(cmd->env[i], name, len) && cmd->env[i][len] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-static void	*free_env_error(char **env, int len)
+static void	*free_env_error1(char **env, int len)
 {
 	while (--len >= 0)
 		free(env[len]);
@@ -38,7 +20,7 @@ static void	*free_env_error(char **env, int len)
 	return (NULL);
 }
 
-static int	copy_old_env(char **dest, char **src)
+int	copy_old_env(char **dest, char **src)
 {
 	int	i;
 
@@ -48,7 +30,7 @@ static int	copy_old_env(char **dest, char **src)
 		dest[i] = ft_strdup(src[i]);
 		if (!dest[i])
 		{
-			free_env_error(dest, i);
+			free_env_error1(dest, i);
 			return (-1);
 		}
 		i++;
@@ -56,7 +38,7 @@ static int	copy_old_env(char **dest, char **src)
 	return (i);
 }
 
-static char	**ft_add_var(t_cmd *cmd, char *var)
+char	**ft_add_var(t_cmd *cmd, char *var)
 {
 	char	**dest;
 	int		len;
@@ -73,34 +55,9 @@ static char	**ft_add_var(t_cmd *cmd, char *var)
 		return (NULL);
 	dest[idx] = ft_strdup(var);
 	if (!dest[idx])
-		return (free_env_error(dest, idx));
+		return (free_env_error1(dest, idx));
 	dest[idx + 1] = NULL;
 	return (dest);
-}
-
-int	ft_update(t_cmd *cmd, t_pars *pars, char *arg)
-{
-	int		i;
-	char	**dest_env;
-
-	i = ft_find_var(cmd, arg);
-	if (i >= 0)
-	{
-		free(cmd->env[i]);
-		cmd->env[i] = ft_strdup(arg);
-	}
-	else
-	{
-		dest_env = ft_add_var(cmd, arg);
-		if (!dest_env)
-		{
-			pars->return_value = 0;
-			return (1);
-		}
-		ft_free_split(cmd->env);
-		cmd->env = dest_env;
-	}
-	return (0);
 }
 
 static int	ft_no_arg(t_pars *pars, t_cmd *cmd)

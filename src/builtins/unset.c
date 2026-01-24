@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 01:36:33 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/24 12:37:06 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 20:49:42 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,6 @@ static int	ft_check_name(char *str)
 		i++;
 	}
 	return (1);
-}
-
-int	ft_find_var(char **env, char *name)
-{
-	int	i;
-	int	len;
-
-	len = ft_strlen(name);
-	i = 0;
-	while (env && env[i])
-	{
-		if (!ft_strncmp(env[i], name, len) && env[i][len] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-static int	free_env_error(char **env, int len)
-{
-	while (--len >= 0)
-		free(env[len]);
-	free(env);
-	return (0);
 }
 
 static int	copy_env_except(char **dest, char **src, int skip_idx)
@@ -95,7 +71,7 @@ static int	ft_process_unset(t_cmd *cmd, t_pars *pars, char *var_name)
 	int		index_env;
 	char	**dest_env;
 
-	index_env = ft_find_var(cmd->env, var_name);
+	index_env = ft_find_var1(cmd->env, var_name);
 	if (index_env >= 0)
 	{
 		dest_env = ft_remove_var(cmd->env, index_env);

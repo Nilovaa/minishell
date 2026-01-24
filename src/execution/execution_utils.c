@@ -6,25 +6,11 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:26:38 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/24 18:13:14 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 20:33:29 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// 
-
 #include "../../include/minishell.h"
-
-static void	ft_exit_child(t_cmd *cmd, char *path, char **argv, int code)
-{
-	if (path)
-		free(path);
-	if (argv)
-		free(argv);
-	if (cmd && cmd->cmd_base)
-		free_all(cmd->cmd_base);
-	free_all(cmd);
-	exit(code);
-}
 
 static void	ft_child_simple(t_pars *pars, t_cmd *cmd)
 {
@@ -57,18 +43,6 @@ static void	ft_wait_simple(pid_t pid, t_pars *pars)
 		pars->return_value = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		pars->return_value = 128 + WTERMSIG(status);
-}
-
-static int	ft_check_empty_cmd(t_pars *pars)
-{
-	if (pars->cmd[0] == '\0')
-	{
-		ft_putstr_fd("'': command not found\n", 2);
-		pars->return_value = 127;
-		ft_cleanup_heredocs(pars->redir);
-		return (1);
-	}
-	return (0);
 }
 
 void	ft_exec_simple(t_pars *pars, t_cmd *cmd)

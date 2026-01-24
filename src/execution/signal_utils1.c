@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/22 20:27:45 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/24 20:30:48 by andriamr         ###   ########.fr       */
+/*   Created: 2026/01/24 20:20:43 by andriamr          #+#    #+#             */
+/*   Updated: 2026/01/24 20:20:59 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	ft_handle_sigint_heredoc(int sig)
 {
-	t_cmd	*cmd_base;
+	int	fd;
 
-	(void)av;
-	if (ac != 1)
-	{
-		ft_putstr_fd("minishell: too many arguments\n", 2);
-		return (1);
-	}
-	cmd_base = ft_init_cmd_base(env);
-	if (!cmd_base)
-		return (1);
-	ft_signal_interactive();
-	return (ft_main_loop(cmd_base));
+	(void)sig;
+	fd = ft_get_heredoc_fd();
+	if (fd >= 0)
+		close(fd);
+	close(STDIN_FILENO);
+	write(1, "\n", 1);
+	rl_clear_history();
+	exit(130);
 }

@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   execution_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/22 20:27:45 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/24 20:30:48 by andriamr         ###   ########.fr       */
+/*   Created: 2026/01/24 20:32:09 by andriamr          #+#    #+#             */
+/*   Updated: 2026/01/24 20:33:40 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	ft_exit_child(t_cmd *cmd, char *path, char **argv, int code)
 {
-	t_cmd	*cmd_base;
+	if (path)
+		free(path);
+	if (argv)
+		free(argv);
+	if (cmd && cmd->cmd_base)
+		free_all(cmd->cmd_base);
+	free_all(cmd);
+	exit(code);
+}
 
-	(void)av;
-	if (ac != 1)
+int	ft_check_empty_cmd(t_pars *pars)
+{
+	if (pars->cmd[0] == '\0')
 	{
-		ft_putstr_fd("minishell: too many arguments\n", 2);
+		ft_putstr_fd("'': command not found\n", 2);
+		pars->return_value = 127;
+		ft_cleanup_heredocs(pars->redir);
 		return (1);
 	}
-	cmd_base = ft_init_cmd_base(env);
-	if (!cmd_base)
-		return (1);
-	ft_signal_interactive();
-	return (ft_main_loop(cmd_base));
+	return (0);
 }

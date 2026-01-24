@@ -1,30 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   redirection_utils1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/22 20:27:45 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/24 20:30:48 by andriamr         ###   ########.fr       */
+/*   Created: 2026/01/24 20:23:51 by andriamr          #+#    #+#             */
+/*   Updated: 2026/01/24 20:26:15 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	main(int ac, char **av, char **env)
+char	*ft_tmp_heredoc(void)
 {
-	t_cmd	*cmd_base;
+	static int	count = 0;
+	char		*file;
 
-	(void)av;
-	if (ac != 1)
+	file = ft_make_heredoc_name(count);
+	while (file && access(file, F_OK) == 0)
 	{
-		ft_putstr_fd("minishell: too many arguments\n", 2);
-		return (1);
+		free(file);
+		count++;
+		file = ft_make_heredoc_name(count);
 	}
-	cmd_base = ft_init_cmd_base(env);
-	if (!cmd_base)
-		return (1);
-	ft_signal_interactive();
-	return (ft_main_loop(cmd_base));
+	count++;
+	return (file);
+}
+
+char	*ft_make_heredoc_name(int count)
+{
+	char	*num;
+	char	*file;
+
+	num = ft_itoa(count);
+	if (!num)
+		return (NULL);
+	file = ft_strjoin("/tmp/.heredoc_", num);
+	free(num);
+	return (file);
 }
