@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 11:51:33 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/20 16:46:30 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 12:27:40 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,45 +71,66 @@ int	len_split(char **split)
 	return (i);
 }
 
-char	**join_redir(char *file, char **redir)
+static void	*ft_free_tmp(char **tmp, int len)
+{
+	while (--len >= 0)
+		free(tmp[len]);
+	free(tmp);
+	return (NULL);
+}
+
+static char	**create_first_redir(char *file)
 {
 	char	**tmp;
-	int		len;
-	int		i;
 
-	len = 0;
-	if (redir)
-		len = len_split(redir);
-	tmp = malloc(sizeof(char *) * (len + 2));
+	tmp = malloc(sizeof(char *) * 2);
 	if (!tmp)
 		return (NULL);
-	if (!redir)
+	tmp[0] = ft_strdup(file);
+	if (!tmp[0])
 	{
-		tmp[0] = ft_strdup(file);
-		if (!tmp[0])
-			return (free(tmp), NULL);
-		tmp[1] = NULL;
-		return (tmp);
+		free(tmp);
+		return (NULL);
 	}
+	tmp[1] = NULL;
+	return (tmp);
+}
+
+static int	copy_existing_redir(char **tmp, char **redir, int len)
+{
+	int	i;
+
 	i = 0;
 	while (i < len)
 	{
 		tmp[i] = ft_strdup(redir[i]);
 		if (!tmp[i])
 		{
-			while (--i >= 0)
-				free(tmp[i]);
-			return (free(tmp), NULL);
+			ft_free_tmp(tmp, i);
+			return (0);
 		}
 		i++;
 	}
-	tmp[i] = ft_strdup(file);
-	if (!tmp[i])
-	{
-		while (--i >= 0)
-			free(tmp[i]);
-		return (free(tmp), NULL);
-	}
-	tmp[i + 1] = NULL;
-	return (free_cmd2(redir), tmp);
+	return (1);
+}
+
+char	**join_redir(char *file, char **redir)
+{
+	char	**tmp;
+	int		len;
+
+	if (!redir)
+		return (create_first_redir(file));
+	len = len_split(redir);
+	tmp = malloc(sizeof(char *) * (len + 2));
+	if (!tmp)
+		return (NULL);
+	if (!copy_existing_redir(tmp, redir, len))
+		return (NULL);
+	tmp[len] = ft_strdup(file);
+	if (!tmp[len])
+		return (ft_free_tmp(tmp, len));
+	tmp[len + 1] = NULL;
+	free_cmd2(redir);
+	return (tmp);
 }
