@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:37:50 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/21 22:05:01 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 19:47:27 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_handle_sigint_heredoc(int sig)
 	close(STDIN_FILENO);
 	write(1, "\n", 1);
 	rl_clear_history();
-	_exit(130);
+	exit(130);
 }
 
 void	ft_signal_interactive(void)

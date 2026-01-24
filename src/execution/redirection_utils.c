@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 21:58:26 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/23 04:23:59 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 19:46:43 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,28 @@ char	*ft_tmp_heredoc(void)
 	return (file);
 }
 
-static void	ft_heredoc_child(char *delim, int fd, t_cmd *cmd, char *tmp_file)
+static void	ft_clean_child_mem(t_cmd *cmd, char *tmp_file)
 {
-	char	*line;
-	char	delim_buf[PATH_MAX];
-	size_t	len;
-
-	ft_strlcpy(delim_buf, delim, PATH_MAX);
 	if (cmd)
 	{
 		if (cmd->cmd_base)
 			free_all(cmd->cmd_base);
 		free_all(cmd);
 	}
-	free(tmp_file);
-	len = ft_strlen(delim_buf);
-	ft_set_heredoc_fd(fd);
-	ft_signal_heredoc();
+	if (tmp_file)
+		free(tmp_file);
+}
+
+static void	ft_heredoc_loop(int fd, char *delim, size_t len)
+{
+	char	*line;
+
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (ft_strncmp(line, delim_buf, len) == 0 && line[len] == '\0')
+		if (ft_strncmp(line, delim, len) == 0 && line[len] == '\0')
 		{
 			free(line);
 			break ;
@@ -72,9 +71,22 @@ static void	ft_heredoc_child(char *delim, int fd, t_cmd *cmd, char *tmp_file)
 		write(fd, "\n", 1);
 		free(line);
 	}
+}
+
+static void	ft_heredoc_child(char *delim, int fd, t_cmd *cmd, char *tmp_file)
+{
+	char	delim_buf[PATH_MAX];
+	size_t	len;
+
+	ft_strlcpy(delim_buf, delim, PATH_MAX);
+	ft_clean_child_mem(cmd, tmp_file);
+	len = ft_strlen(delim_buf);
+	ft_set_heredoc_fd(fd);
+	ft_signal_heredoc();
+	ft_heredoc_loop(fd, delim_buf, len);
 	close(fd);
 	rl_clear_history();
-	_exit(0);
+	exit(0);
 }
 
 int	ft_read_file(char *delim, int fd, t_cmd *cmd, char *tmp_file)
