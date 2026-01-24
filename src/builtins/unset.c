@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 01:36:33 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/23 03:55:26 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 12:37:06 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,36 +44,49 @@ int	ft_find_var(char **env, char *name)
 	return (-1);
 }
 
-static char	**ft_remove_var(char **env, int index_env)
+static int	free_env_error(char **env, int len)
 {
-	int		i;
-	int		j;
-	char	**dest_env;
+	while (--len >= 0)
+		free(env[len]);
+	free(env);
+	return (0);
+}
+
+static int	copy_env_except(char **dest, char **src, int skip_idx)
+{
+	int	i;
+	int	j;
 
 	i = 0;
-	while (env[i])
-		i++;
-	dest_env = malloc(sizeof(char *) * i);
-	if (!dest_env)
-		return (NULL);
-	i = 0;
 	j = 0;
-	while (env[i])
+	while (src[i])
 	{
-		if (i != index_env)
+		if (i != skip_idx)
 		{
-			dest_env[j] = ft_strdup(env[i]);
-			if (!dest_env[j])
-			{
-				while (--j >= 0)
-					free(dest_env[j]);
-				return (free(dest_env), NULL);
-			}
+			dest[j] = ft_strdup(src[i]);
+			if (!dest[j])
+				return (free_env_error(dest, j));
 			j++;
 		}
 		i++;
 	}
-	dest_env[j] = NULL;
+	dest[j] = NULL;
+	return (1);
+}
+
+static char	**ft_remove_var(char **env, int index_env)
+{
+	char	**dest_env;
+	int		len;
+
+	len = 0;
+	while (env[len])
+		len++;
+	dest_env = malloc(sizeof(char *) * len);
+	if (!dest_env)
+		return (NULL);
+	if (!copy_env_except(dest_env, env, index_env))
+		return (NULL);
 	return (dest_env);
 }
 

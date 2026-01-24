@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:49:23 by nyrakoto          #+#    #+#             */
-/*   Updated: 2026/01/09 17:27:38 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/24 12:31:32 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,39 +30,52 @@ static int	ft_find_var(t_cmd *cmd, char *name)
 	return (-1);
 }
 
-static char	**ft_add_var(t_cmd *cmd, char *var)
+static void	*free_env_error(char **env, int len)
 {
-	char	**dest_env;
-	int		i;
-	int		j;
+	while (--len >= 0)
+		free(env[len]);
+	free(env);
+	return (NULL);
+}
+
+static int	copy_old_env(char **dest, char **src)
+{
+	int	i;
 
 	i = 0;
-	while (cmd->env && cmd->env[i])
-		i++;
-	dest_env = malloc(sizeof(char *) * (i + 2));
-	if (!dest_env)
-		return (NULL);
-	j = 0;
-	while (cmd->env && cmd->env[j])
+	while (src && src[i])
 	{
-		dest_env[j] = ft_strdup(cmd->env[j]);
-		if (!dest_env[j])
+		dest[i] = ft_strdup(src[i]);
+		if (!dest[i])
 		{
-			while (--j >= 0)
-				free(dest_env[j]);
-			return (free(dest_env), NULL);
+			free_env_error(dest, i);
+			return (-1);
 		}
-		j++;
+		i++;
 	}
-	dest_env[j] = ft_strdup(var);
-	if (!dest_env[j])
-	{
-		while (--j >= 0)
-			free(dest_env[j]);
-		return (free(dest_env), NULL);
-	}
-	dest_env[j + 1] = NULL;
-	return (dest_env);
+	return (i);
+}
+
+static char	**ft_add_var(t_cmd *cmd, char *var)
+{
+	char	**dest;
+	int		len;
+	int		idx;
+
+	len = 0;
+	while (cmd->env && cmd->env[len])
+		len++;
+	dest = malloc(sizeof(char *) * (len + 2));
+	if (!dest)
+		return (NULL);
+	idx = copy_old_env(dest, cmd->env);
+	if (idx == -1)
+		return (NULL);
+	dest[idx] = ft_strdup(var);
+	if (!dest[idx])
+		return (free_env_error(dest, idx));
+	dest[idx + 1] = NULL;
+	return (dest);
 }
 
 int	ft_update(t_cmd *cmd, t_pars *pars, char *arg)
