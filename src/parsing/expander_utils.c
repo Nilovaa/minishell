@@ -6,7 +6,7 @@
 /*   By: andriamr <andriamr@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 20:55:23 by andriamr          #+#    #+#             */
-/*   Updated: 2026/01/24 16:47:09 by andriamr         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:44:28 by andriamr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,56 +53,53 @@ static int	ft_count_words_expanded(char *str)
 	return (count);
 }
 
-
-static char	**ft_abort_expansion(char **words, char **original)
+static char	**ft_split_expanded(char *str, t_pars *pars, int idx, t_cmd *cmd)
 {
-	if (words)
+	char	**words;
+	char	**new_tokens;
+	int		word_count;
+	int		i;
+	int		j;
+	int		new_size;
+
+	words = ft_split(str, ' ');
+	if (!words || !words[0])
+	{
+		if (words)
+			ft_free_split(words);
+		return (pars->all_token);
+	}
+	word_count = 0;
+	while (words[word_count])
+		word_count++;
+	if (word_count <= 1)
+	{
 		ft_free_split(words);
-	return (original);
-}
-
-static void	ft_fill_new_tokens(char **dest, char **src, char **add, int idx)
-{
-	int	i;
-	int	j;
-	int	k;
-
+		return (pars->all_token);
+	}
+	new_size = pars->count_token + word_count - 1;
+	new_tokens = ft_calloc(sizeof(char *), new_size + 1);
+	if (!new_tokens)
+	{
+		ft_free_split(words);
+		return (pars->all_token);
+	}
 	i = 0;
 	j = 0;
 	while (i < idx)
-		dest[j++] = ft_strdup(src[i++]);
-	k = 0;
-	while (add[k])
-		dest[j++] = ft_strdup(add[k++]);
-	i++;
-	while (src[i])
-		dest[j++] = ft_strdup(src[i++]);
-	dest[j] = NULL;
-}
-
-char	**ft_split_expanded(char *str, t_pars *pars, int idx, t_cmd *cmd)
-{
-	char	**words;
-	char	**new_tok;
-	int		cnt;
-
-	(void)cmd;
-	words = ft_split(str, ' ');
-	if (!words || !words[0])
-		return (ft_abort_expansion(words, pars->all_token));
-	cnt = 0;
-	while (words[cnt])
-		cnt++;
-	if (cnt <= 1)
-		return (ft_abort_expansion(words, pars->all_token));
-	new_tok = ft_calloc(sizeof(char *), pars->count_token + cnt);
-	if (!new_tok)
-		return (ft_abort_expansion(words, pars->all_token));
-	ft_fill_new_tokens(new_tok, pars->all_token, words, idx);
+		new_tokens[j++] = ft_strdup(pars->all_token[i++]);
+	i = 0;
+	while (words[i])
+		new_tokens[j++] = ft_strdup(words[i++]);
+	i = idx + 1;
+	while (pars->all_token[i])
+		new_tokens[j++] = ft_strdup(pars->all_token[i++]);
+	new_tokens[j] = NULL;
 	ft_free_split(words);
 	ft_free_split(pars->all_token);
-	pars->count_token += cnt - 1;
-	return (new_tok);
+	pars->count_token = new_size;
+	(void)cmd;
+	return (new_tokens);
 }
 
 void	process_all_tokens(t_pars *pars, t_cmd *cmd)
