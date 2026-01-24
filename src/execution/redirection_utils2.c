@@ -79,8 +79,11 @@ void	ft_cleanup_heredocs(t_dir *redir)
 	while (redir->heredoc_files[i])
 	{
 		unlink(redir->heredoc_files[i]);
+		free(redir->heredoc_files[i]);
 		i++;
 	}
+	free(redir->heredoc_files);
+	redir->heredoc_files = NULL;
 }
 
 void	ft_cleanup_and_exit_redir(t_cmd *cmd, char *file, int is_child)
